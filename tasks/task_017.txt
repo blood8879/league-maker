@@ -1,0 +1,43 @@
+# Task ID: 17
+# Title: Personal Statistics Dashboard
+# Status: deferred
+# Dependencies: 16
+# Priority: medium
+# Description: Implement individual player statistics and attendance rate tracking
+# Details:
+Create PersonalStats dashboard showing individual goals, assists, attendance rate, and match history. Implement team-specific stats filtering. Setup stats calculation functions. Create visual charts for stats display. Implement stats comparison features.
+
+# Test Strategy:
+Test stats calculation accuracy, verify team-specific filtering, test chart rendering, validate attendance rate calculation, and test stats history.
+
+# Subtasks:
+## 1. Individual Statistics Calculation and Display [pending]
+### Dependencies: None
+### Description: Develop functionality to calculate and display personal statistics for each user, such as performance metrics, scores, or activity counts.
+### Details:
+This includes aggregating raw data into meaningful statistics and presenting them in a user-friendly format.
+
+## 2. Attendance Rate Tracking [pending]
+### Dependencies: 17.1
+### Description: Implement a system to track and calculate attendance rates for individuals over a specified period.
+### Details:
+Attendance data should be collected, stored, and used to compute attendance percentages or trends for each user.
+
+## 3. Team-Specific Stats Filtering [pending]
+### Dependencies: 17.1
+### Description: Enable filtering of personal statistics based on team membership or participation.
+### Details:
+Users should be able to view their stats within the context of specific teams, allowing for more granular analysis.
+
+## 4. Visual Charts and Analytics [pending]
+### Dependencies: 17.1, 17.2, 17.3
+### Description: Create visual representations (charts, graphs, dashboards) of personal and team statistics for easier analysis and interpretation.
+### Details:
+Utilize data visualization libraries to present trends, comparisons, and progress over time.
+
+## 5. Stats Comparison Features [pending]
+### Dependencies: 17.1, 17.3, 17.4
+### Description: Develop features that allow users to compare their statistics with others or with team averages.
+### Details:
+This includes side-by-side comparisons, ranking, and highlighting differences or improvements.
+

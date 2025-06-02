@@ -1,0 +1,11 @@
+# Task ID: 14
+# Title: Match Attendance Management
+# Status: pending
+# Dependencies: 13
+# Priority: high
+# Description: Implement attendance tracking for regular members and mercenaries
+# Details:
+Create AttendanceManagement component for match organizers. Implement member attendance status tracking (attending/not attending/maybe). Setup mercenary addition functionality. Create real-time attendance counter. Implement attendance status updates with real-time sync.
+
+# Test Strategy:
+Test attendance status updates, verify real-time synchronization, test mercenary addition, validate attendance counting, and test status change notifications.

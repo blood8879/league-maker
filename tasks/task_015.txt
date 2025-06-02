@@ -1,0 +1,11 @@
+# Task ID: 15
+# Title: Real-time Updates System
+# Status: deferred
+# Dependencies: 14
+# Priority: medium
+# Description: Implement Supabase real-time subscriptions for live attendance and match updates
+# Details:
+Setup Supabase real-time subscriptions for match_attendances table. Implement real-time attendance updates in UI. Create real-time notification system for match changes. Setup connection management and error handling for real-time features.
+
+# Test Strategy:
+Test real-time attendance updates across multiple clients, verify subscription management, test connection recovery, and validate notification delivery.

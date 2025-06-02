@@ -1,0 +1,11 @@
+# Task ID: 13
+# Title: Match Creation and Management
+# Status: pending
+# Dependencies: 11, 12
+# Priority: high
+# Description: Implement match creation with home stadium selection and opponent configuration
+# Details:
+Create MatchCreation component with home stadium selection (mandatory), opponent selection (registered team vs external team), date/time picker. Implement match type differentiation. Setup match validation and creation logic. Create match listing and detail views.
+
+# Test Strategy:
+Test match creation flow, verify home stadium requirement, test opponent selection for both registered and external teams, validate date/time handling.

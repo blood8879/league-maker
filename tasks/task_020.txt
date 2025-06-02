@@ -1,0 +1,11 @@
+# Task ID: 20
+# Title: Multi-team Support System
+# Status: deferred
+# Dependencies: 19
+# Priority: medium
+# Description: Implement support for users belonging to multiple teams
+# Details:
+Create team switching interface in navigation. Implement primary team designation. Setup team-specific dashboards and data filtering. Create unified schedule view across all teams. Implement team conflict detection for overlapping matches.
+
+# Test Strategy:
+Test team switching functionality, verify data isolation between teams, test unified schedule view, validate conflict detection, and test primary team features.

@@ -1,0 +1,11 @@
+# Task ID: 19
+# Title: Mercenary Management System
+# Status: deferred
+# Dependencies: 18
+# Priority: medium
+# Description: Implement comprehensive mercenary tracking and management
+# Details:
+Create MercenaryPool management for tracking all mercenaries. Implement mercenary profile creation with contact info, position, rating. Setup mercenary stats tracking across matches. Create mercenary search and invitation system. Implement mercenary performance analytics.
+
+# Test Strategy:
+Test mercenary profile creation, verify stats tracking across matches, test search functionality, validate invitation system, and test performance analytics.

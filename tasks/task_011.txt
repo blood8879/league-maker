@@ -1,0 +1,11 @@
+# Task ID: 11
+# Title: Member Management System
+# Status: pending
+# Dependencies: 10
+# Priority: medium
+# Description: Implement comprehensive member management with approval and role assignment
+# Details:
+Create MemberManagement dashboard for team administrators. Implement member approval/rejection functionality. Create role assignment interface. Setup member removal/kick functionality. Implement member list with role indicators and management actions.
+
+# Test Strategy:
+Test member approval/rejection flow, verify role assignment works, test member removal functionality, validate permission checks for management actions.

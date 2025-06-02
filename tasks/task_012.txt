@@ -1,0 +1,37 @@
+# Task ID: 12
+# Title: External Team Management
+# Status: pending
+# Dependencies: 11
+# Priority: medium
+# Description: Implement system for managing non-registered teams and their information
+# Details:
+Create ExternalTeam registration component with fields: name, region, contact info. Implement external team CRUD operations. Setup external team listing and search. Create external team profile pages. Implement team-specific external team management (each team manages their own external teams).
+
+# Test Strategy:
+Test external team registration, verify CRUD operations, test team-specific data isolation, validate external team profiles, and test search functionality.
+
+# Subtasks:
+## 1. External Team Registration and Profile Creation [pending]
+### Dependencies: None
+### Description: Design and implement the process for registering new external teams and creating their profiles, including capturing essential team information and member details.
+### Details:
+This includes UI/UX for registration forms, backend logic for storing team profiles, and validation of input data.
+
+## 2. External Team CRUD Operations [pending]
+### Dependencies: 12.1
+### Description: Develop Create, Read, Update, and Delete (CRUD) functionalities for managing external teams and their profiles.
+### Details:
+Ensure that teams can be edited, updated, or deleted as needed, and that all changes are reflected in the system.
+
+## 3. External Team Search and Listing [pending]
+### Dependencies: 12.2
+### Description: Implement search and listing features to allow users to find and view external teams based on various criteria.
+### Details:
+This includes building efficient search algorithms, filters, and paginated listings for external teams.
+
+## 4. Team-Specific External Team Data Isolation [pending]
+### Dependencies: 12.1, 12.2, 12.3
+### Description: Ensure that each external team only has access to its own data and cannot view or modify data belonging to other teams.
+### Details:
+Implement access control mechanisms and data partitioning strategies to enforce strict data isolation between teams.
+

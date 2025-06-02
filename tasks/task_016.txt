@@ -1,0 +1,37 @@
+# Task ID: 16
+# Title: Match Statistics Input System
+# Status: deferred
+# Dependencies: 15
+# Priority: medium
+# Description: Implement goal and assist tracking for players including mercenaries
+# Details:
+Create MatchStats input component for post-match data entry. Implement player selection (members + mercenaries) with goal/assist counters. Setup match result recording. Create stats validation and submission logic. Implement edit functionality for match organizers.
+
+# Test Strategy:
+Test stats input for both members and mercenaries, verify data validation, test stats editing, validate submission process, and test result calculation.
+
+# Subtasks:
+## 1. Design Match Statistics Input Interface [pending]
+### Dependencies: None
+### Description: Create a user-friendly interface for inputting match statistics with clear layouts and progressive disclosure of data fields
+### Details:
+Develop a clean, organized layout with 60% white space for better readability. Implement color-coded team bars and collapsible sections to prevent overwhelming users with complex data. Include basic match information fields prominently while allowing deeper statistical inputs through expandable sections.
+
+## 2. Implement Player Selection and Stats Tracking [pending]
+### Dependencies: 16.1
+### Description: Build functionality for selecting players and tracking their individual statistics throughout a match
+### Details:
+Create a player roster system with quick-select options for active players. Design real-time stat tracking components that update without full page reloads. Include templates for different sports with sport-specific statistics fields. Implement a multi-agent tracking system for team sports that maintains context between players.
+
+## 3. Develop Stats Validation and Submission System [pending]
+### Dependencies: 16.1, 16.2
+### Description: Create validation rules for statistical inputs and build a secure submission process
+### Details:
+Implement client-side validation to catch common errors before submission. Create server-side validation rules to ensure data integrity and prevent impossible statistical combinations. Design a confirmation system that summarizes entered stats before final submission. Include progress indicators for multi-step submission processes.
+
+## 4. Build Stats Editing and Correction Features [pending]
+### Dependencies: 16.3
+### Description: Develop functionality to edit, correct, and update previously entered statistics
+### Details:
+Create an interface for reviewing submitted statistics with clear highlighting of editable fields. Implement version control to track changes to statistics over time. Design an approval workflow for corrections that might affect aggregated team statistics. Include batch editing capabilities for efficient corrections across multiple players or events.
+

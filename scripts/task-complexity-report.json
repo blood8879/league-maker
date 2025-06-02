@@ -1,0 +1,213 @@
+{
+  "meta": {
+    "generatedAt": "2025-05-30T15:19:55.251Z",
+    "tasksAnalyzed": 25,
+    "totalTasks": 25,
+    "analysisCount": 25,
+    "thresholdScore": 5,
+    "projectName": "Taskmaster",
+    "usedResearch": false
+  },
+  "complexityAnalysis": [
+    {
+      "taskId": 1,
+      "taskTitle": "Project Setup and Infrastructure",
+      "complexityScore": 6,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down the project initialization into: Next.js project creation with TypeScript configuration, Supabase client setup and environment configuration, TailwindCSS and styling framework installation, project structure organization, and CI/CD pipeline setup.",
+      "reasoning": "Moderate complexity involving multiple technology integrations and configuration steps. Each component requires specific setup procedures and testing."
+    },
+    {
+      "taskId": 2,
+      "taskTitle": "Supabase Database Schema Design",
+      "complexityScore": 8,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Divide schema design into: user and authentication tables, team and membership relationship tables, match and stadium tables, statistics and performance tracking tables, external team management tables, database constraints and indexes, and schema migration scripts.",
+      "reasoning": "High complexity due to intricate relationships between multiple entities, foreign key constraints, and the need for careful data modeling to support all application features."
+    },
+    {
+      "taskId": 3,
+      "taskTitle": "Row Level Security (RLS) Implementation",
+      "complexityScore": 9,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down RLS into: team-based data isolation policies, role hierarchy permission policies, match and statistics access policies, member management security policies, RLS testing and validation procedures, and performance optimization for security policies.",
+      "reasoning": "Very high complexity requiring deep understanding of PostgreSQL RLS, complex role-based permissions, and ensuring data security across multiple user types and team boundaries."
+    },
+    {
+      "taskId": 4,
+      "taskTitle": "Social Authentication System",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Separate authentication into: OAuth provider configuration (Google/Kakao), authentication UI components and flows, auth state management implementation, user session handling and persistence, and authentication error handling and recovery.",
+      "reasoning": "High complexity involving third-party OAuth integration, state management, and handling various authentication edge cases and error scenarios."
+    },
+    {
+      "taskId": 5,
+      "taskTitle": "User Profile Management",
+      "complexityScore": 5,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Divide profile management into: profile creation form and validation, profile editing interface, profile data persistence and updates, and profile completion workflow for new users.",
+      "reasoning": "Moderate complexity with standard CRUD operations, form validation, and user experience considerations for profile setup flow."
+    },
+    {
+      "taskId": 6,
+      "taskTitle": "Core UI Component Library",
+      "complexityScore": 6,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down component library into: basic form components (Button, Input, Select), layout components (Card, Modal, Navigation), feedback components (Toast, Loading, Alert), responsive design system implementation, accessibility features integration, and component documentation and testing.",
+      "reasoning": "Moderate to high complexity requiring consistent design system, accessibility compliance, responsive behavior, and reusable component architecture."
+    },
+    {
+      "taskId": 7,
+      "taskTitle": "Team Creation and Basic Management",
+      "complexityScore": 6,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Separate team creation into: team creation form and validation, automatic role assignment logic, team dashboard interface, and team data management operations.",
+      "reasoning": "Moderate complexity involving form handling, database operations, role assignment logic, and basic team management interface."
+    },
+    {
+      "taskId": 8,
+      "taskTitle": "Role-Based Permission System",
+      "complexityScore": 8,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down permission system into: role hierarchy definition and utilities, permission checking hooks and components, role assignment and modification interfaces, UI conditional rendering based on roles, and permission system testing and validation.",
+      "reasoning": "High complexity requiring careful design of hierarchical permissions, secure role checking, and comprehensive testing across different user roles."
+    },
+    {
+      "taskId": 9,
+      "taskTitle": "Home Stadium Management System",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Divide stadium management into: stadium registration form with map integration, mandatory stadium requirement enforcement, stadium CRUD operations interface, favorite stadiums functionality, and location-based stadium features.",
+      "reasoning": "High complexity involving map integration, geolocation features, mandatory business logic enforcement, and comprehensive stadium management."
+    },
+    {
+      "taskId": 10,
+      "taskTitle": "Team Search and Join System",
+      "complexityScore": 6,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Break down team search into: team discovery and search interface, join request submission system, request approval/rejection workflow, and notification system for join requests.",
+      "reasoning": "Moderate complexity involving search functionality, request workflow management, and notification integration."
+    },
+    {
+      "taskId": 11,
+      "taskTitle": "Member Management System",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Separate member management into: member approval/rejection interface, role assignment and modification tools, member removal and kick functionality, member listing and status display, and member management permission controls.",
+      "reasoning": "High complexity requiring role-based access controls, member lifecycle management, and comprehensive administrative interfaces."
+    },
+    {
+      "taskId": 12,
+      "taskTitle": "External Team Management",
+      "complexityScore": 5,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Divide external team management into: external team registration and profile creation, external team CRUD operations, external team search and listing, and team-specific external team data isolation.",
+      "reasoning": "Moderate complexity with standard CRUD operations, data isolation requirements, and search functionality."
+    },
+    {
+      "taskId": 13,
+      "taskTitle": "Match Creation and Management",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down match management into: match creation form with stadium and opponent selection, match type and configuration options, match validation and business rules, match listing and detail views, and match editing and cancellation features.",
+      "reasoning": "High complexity involving multiple selection options, business rule validation, and comprehensive match lifecycle management."
+    },
+    {
+      "taskId": 14,
+      "taskTitle": "Match Attendance Management",
+      "complexityScore": 8,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Separate attendance management into: attendance status tracking interface, mercenary addition and management, real-time attendance counter, attendance status update system, attendance notifications, and attendance history tracking.",
+      "reasoning": "High complexity requiring real-time updates, mercenary integration, status management, and notification systems."
+    },
+    {
+      "taskId": 15,
+      "taskTitle": "Real-time Updates System",
+      "complexityScore": 8,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Divide real-time system into: Supabase real-time subscription setup, real-time UI update implementation, connection management and error handling, and real-time notification delivery system.",
+      "reasoning": "High complexity involving real-time technology integration, connection management, error handling, and ensuring data consistency across clients."
+    },
+    {
+      "taskId": 16,
+      "taskTitle": "Match Statistics Input System",
+      "complexityScore": 6,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Break down stats input into: match statistics input interface, player selection and stats tracking, stats validation and submission, and stats editing and correction features.",
+      "reasoning": "Moderate complexity involving form handling, player selection logic, data validation, and edit functionality."
+    },
+    {
+      "taskId": 17,
+      "taskTitle": "Personal Statistics Dashboard",
+      "complexityScore": 6,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Separate personal stats into: individual statistics calculation and display, attendance rate tracking, team-specific stats filtering, visual charts and analytics, and stats comparison features.",
+      "reasoning": "Moderate complexity requiring data aggregation, chart visualization, filtering logic, and comparative analytics."
+    },
+    {
+      "taskId": 18,
+      "taskTitle": "Team Statistics and Records",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Divide team stats into: team performance aggregation, external team records tracking, team ranking and comparison system, season-based filtering, and team analytics dashboard.",
+      "reasoning": "High complexity involving complex data aggregation, ranking algorithms, seasonal data management, and comprehensive analytics."
+    },
+    {
+      "taskId": 19,
+      "taskTitle": "Mercenary Management System",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down mercenary management into: mercenary profile creation and management, mercenary stats tracking across matches, mercenary search and invitation system, mercenary performance analytics, and mercenary pool management.",
+      "reasoning": "High complexity requiring cross-match data tracking, search functionality, invitation systems, and performance analytics for non-team members."
+    },
+    {
+      "taskId": 20,
+      "taskTitle": "Multi-team Support System",
+      "complexityScore": 8,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Separate multi-team support into: team switching interface and navigation, primary team designation system, team-specific data filtering and isolation, unified schedule and conflict detection, and multi-team user experience optimization.",
+      "reasoning": "High complexity requiring context switching, data isolation, conflict detection algorithms, and complex user experience design for multiple team memberships."
+    },
+    {
+      "taskId": 21,
+      "taskTitle": "Notification and Announcement System",
+      "complexityScore": 6,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Divide notification system into: announcement creation and management interface, notification delivery and targeting system, notification preferences and settings, and notification history and read status tracking.",
+      "reasoning": "Moderate complexity involving notification delivery, user preferences, read status management, and administrative announcement features."
+    },
+    {
+      "taskId": 22,
+      "taskTitle": "Mobile UI/UX Optimization",
+      "complexityScore": 7,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down mobile optimization into: responsive component optimization, touch-friendly interaction implementation, mobile navigation and layout optimization, performance optimization for mobile networks, offline functionality implementation, and mobile-specific gesture integration.",
+      "reasoning": "High complexity requiring comprehensive mobile experience design, performance optimization, offline capabilities, and touch interaction implementation."
+    },
+    {
+      "taskId": 23,
+      "taskTitle": "Data Migration and Import Tools",
+      "complexityScore": 5,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Separate data migration into: CSV/Excel import functionality, data validation and error handling, data mapping and transformation interface, and export functionality for backup purposes.",
+      "reasoning": "Moderate complexity involving file processing, data validation, transformation logic, and error handling for various data formats."
+    },
+    {
+      "taskId": 24,
+      "taskTitle": "Performance Optimization and Caching",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Divide performance optimization into: client-side caching implementation, image and asset optimization, code splitting and lazy loading, database query optimization, and CDN integration and static asset management.",
+      "reasoning": "High complexity requiring multiple optimization strategies, caching mechanisms, performance monitoring, and infrastructure considerations."
+    },
+    {
+      "taskId": 25,
+      "taskTitle": "Testing and Quality Assurance",
+      "complexityScore": 8,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down testing into: unit testing setup and implementation, integration testing for critical flows, end-to-end testing automation, automated testing pipeline configuration, error monitoring and logging implementation, and user acceptance testing procedures.",
+      "reasoning": "High complexity requiring comprehensive testing strategy, multiple testing frameworks, automation setup, monitoring systems, and quality assurance processes."
+    }
+  ]
+}

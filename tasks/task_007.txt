@@ -1,0 +1,37 @@
+# Task ID: 7
+# Title: Team Creation and Basic Management
+# Status: pending
+# Dependencies: 5, 6
+# Priority: high
+# Description: Implement team creation functionality with automatic 구단주 role assignment
+# Details:
+Create TeamCreation component with fields: team name, description, region, activity_info. Implement automatic 구단주 role assignment to team creator. Setup team validation and creation logic. Create basic team dashboard view. Implement team_members relationship creation.
+
+# Test Strategy:
+Test team creation flow, verify 구단주 role assignment, validate team data persistence, test team dashboard access, and handle creation errors.
+
+# Subtasks:
+## 1. Team Creation Form and Validation [pending]
+### Dependencies: None
+### Description: Design and implement a user interface form for creating a new team, including input fields for team name, description, and initial members. Implement validation logic to ensure all required fields are correctly filled and data integrity is maintained.
+### Details:
+This subtask covers both the frontend form and backend validation logic to prevent invalid or incomplete team creation requests.
+
+## 2. Automatic Role Assignment Logic [pending]
+### Dependencies: 7.1
+### Description: Develop logic to automatically assign roles (e.g., team leader, member) to users upon team creation based on predefined rules or input from the creation form.
+### Details:
+This includes implementing backend logic to ensure each team member receives the correct role and permissions upon team creation.
+
+## 3. Team Dashboard Interface [pending]
+### Dependencies: 7.1, 7.2
+### Description: Create a dashboard interface for teams, displaying relevant information such as team members, roles, recent activity, and management options.
+### Details:
+The dashboard should provide an overview of the team and allow for basic interactions such as viewing member details and accessing team management features.
+
+## 4. Team Data Management Operations [pending]
+### Dependencies: 7.1, 7.2, 7.3
+### Description: Implement backend operations for managing team data, including creating, updating, deleting teams, and modifying team membership and roles.
+### Details:
+This subtask ensures robust CRUD operations for teams and supports ongoing team management through the dashboard.
+

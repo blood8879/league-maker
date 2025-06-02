@@ -1,54 +1,120 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useAuthStore } from "@/stores/authStore";
+import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
 
 export default function Home() {
+  const [connectionStatus, setConnectionStatus] =
+    useState<string>("연결 확인 중...");
+  const { user, isLoading, initialize, signOut } = useAuthStore();
+
+  useEffect(() => {
+    // 인증 상태 초기화
+    initialize();
+
+    const testConnection = async () => {
+      try {
+        const supabase = createClient();
+        const { error } = await supabase.from("_realtime").select("*").limit(1);
+        if (error) {
+          console.log("Connection test (expected error):", error);
+          setConnectionStatus("✅ Supabase 연결 성공!");
+        } else {
+          setConnectionStatus("✅ Supabase 연결 성공!");
+        }
+      } catch (error) {
+        console.error("Connection error:", error);
+        setConnectionStatus("❌ Supabase 연결 실패");
+      }
+    };
+
+    testConnection();
+  }, [initialize]);
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4">⚽ League Maker</h1>
+          <p className="text-lg text-gray-600 mb-8">풋볼 리그 관리 시스템</p>
+
+          <div className="bg-white p-6 rounded-lg shadow-md border">
+            <h2 className="text-xl font-semibold mb-4">시스템 상태</h2>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700">Supabase 연결:</span>
+                <span className="font-medium">{connectionStatus}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700">로그인 상태:</span>
+                <span className="font-medium">
+                  {isLoading
+                    ? "확인 중..."
+                    : user
+                    ? `✅ ${user.email}`
+                    : "❌ 로그인 필요"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 사용자 정보 */}
+          {user && (
+            <div className="bg-blue-50 p-4 rounded-lg mt-4">
+              <h3 className="text-lg font-semibold mb-2">환영합니다!</h3>
+              <p className="text-gray-700">이메일: {user.email}</p>
+              {user.user_metadata?.full_name && (
+                <p className="text-gray-700">
+                  이름: {user.user_metadata.full_name}
+                </p>
+              )}
+              <p className="text-sm text-gray-500 mt-2">
+                로그인 방법: {user.app_metadata?.provider || "unknown"}
+              </p>
+            </div>
+          )}
+        </div>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          {user ? (
+            <>
+              <Link
+                href="/dashboard"
+                className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+              >
+                대시보드
+              </Link>
+              <button
+                onClick={handleSignOut}
+                disabled={isLoading}
+                className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44 disabled:opacity-50"
+              >
+                {isLoading ? "처리 중..." : "로그아웃"}
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+              >
+                로그인
+              </Link>
+              <Link
+                href="/docs"
+                className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
+              >
+                문서 보기
+              </Link>
+            </>
+          )}
         </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
@@ -97,6 +163,9 @@ export default function Home() {
           />
           Go to nextjs.org →
         </a>
+        <span className="text-sm text-gray-500">
+          League Maker v0.1.0 - 풋볼 팀 관리 시스템
+        </span>
       </footer>
     </div>
   );

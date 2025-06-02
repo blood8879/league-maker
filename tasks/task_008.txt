@@ -1,0 +1,11 @@
+# Task ID: 8
+# Title: Role-Based Permission System
+# Status: pending
+# Dependencies: 7
+# Priority: high
+# Description: Implement hierarchical role system (구단주 > 운영진 > 주장 > 일반멤버)
+# Details:
+Define role hierarchy and permissions matrix. Create role management utilities and hooks. Implement permission checking for UI components and API calls. Setup role assignment and modification functionality for authorized users. Create role-based navigation and feature access.
+
+# Test Strategy:
+Test role hierarchy enforcement, verify permission checks work correctly, test role assignment/modification, validate UI elements show/hide based on roles.

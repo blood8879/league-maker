@@ -1,0 +1,55 @@
+# Task ID: 2
+# Title: Supabase Database Schema Design
+# Status: done
+# Dependencies: 1
+# Priority: high
+# Description: Create comprehensive database schema for users, teams, matches, and all core entities
+# Details:
+Design and implement PostgreSQL schema including: users table (id, email, name, nickname, phone, position), teams table (id, name, description, region, activity_info), team_members table (team_id, user_id, role, is_primary_team), home_stadiums, external_teams, matches, match_attendances, match_stats, mercenary_records tables. Setup proper foreign key relationships, indexes, and constraints.
+
+# Test Strategy:
+Validate schema creation, test foreign key constraints, verify data types and nullable fields. Run sample data insertion and query tests.
+
+# Subtasks:
+## 1. 사용자 프로필 테이블 설계 및 생성 [done]
+### Dependencies: None
+### Description: 사용자 기본 정보와 프로필 관리를 위한 테이블을 설계하고 생성합니다.
+### Details:
+users 테이블: id (UUID, PK), email (unique), name, nickname, phone, position (enum), avatar_url, created_at, updated_at. Supabase Auth와 연동하여 사용자 프로필 정보를 관리합니다.
+
+## 2. 팀 및 팀 멤버십 테이블 설계 [done]
+### Dependencies: 2.1
+### Description: 팀 정보와 팀 멤버 관계를 관리하는 테이블들을 설계하고 생성합니다.
+### Details:
+teams 테이블: id (UUID, PK), name (unique), description, home_stadium, region, created_by, created_at, updated_at. team_members 테이블: id (UUID, PK), team_id (FK), user_id (FK), role (enum: owner, manager, captain, member), status (enum: pending, approved, rejected), joined_at.
+
+## 3. 홈 구장 및 외부 팀 테이블 설계 [done]
+### Dependencies: 2.2
+### Description: 홈 구장 정보와 등록되지 않은 외부 팀 관리를 위한 테이블들을 설계합니다.
+### Details:
+home_stadiums 테이블: id (UUID, PK), name, address, facilities, contact_info, team_id (FK). external_teams 테이블: id (UUID, PK), name, region, contact_info, created_by_team_id (FK), notes, created_at.
+
+## 4. 경기 및 출석 관리 테이블 설계 [done]
+### Dependencies: 2.3
+### Description: 경기 정보와 참석자 출석 관리를 위한 테이블들을 설계하고 생성합니다.
+### Details:
+matches 테이블: id (UUID, PK), home_team_id (FK), away_team_id (FK, nullable), away_team_name (외부팀용), stadium, match_date, status (enum), description, created_at. match_attendances 테이블: id (UUID, PK), match_id (FK), user_id (FK), status (enum: attending, not_attending, maybe), is_mercenary (boolean), notes.
+
+## 5. 경기 통계 및 용병 기록 테이블 설계 [done]
+### Dependencies: 2.4
+### Description: 경기 중 개인 통계와 용병 활동 기록을 관리하는 테이블들을 설계합니다.
+### Details:
+match_stats 테이블: id (UUID, PK), match_id (FK), user_id (FK), goals, assists, yellow_cards, red_cards, is_mercenary. mercenary_records 테이블: id (UUID, PK), user_id (FK), team_id (FK), match_id (FK), contact_method, notes, created_at.
+
+## 6. 데이터베이스 제약조건 및 인덱스 설정 [done]
+### Dependencies: 2.5
+### Description: 외래키 제약조건, 인덱스, 및 데이터 무결성을 위한 설정을 구현합니다.
+### Details:
+모든 테이블 간 외래키 관계 설정, 성능 최적화를 위한 인덱스 생성 (team_id, user_id, match_date 등), unique 제약조건 설정 (team name, user email 등), check 제약조건 추가.
+
+## 7. 기본 RLS 정책 구조 설계 [done]
+### Dependencies: 2.6
+### Description: 팀 기반 데이터 접근 제어를 위한 기본적인 RLS 정책 구조를 설계합니다.
+### Details:
+각 테이블별 기본 RLS 정책 활성화, 팀 멤버십 기반 접근 제어 정책 설계, 사용자 자신의 데이터 접근 정책, 팀 소유자/관리자 권한 정책 기본 구조 생성. 실제 구현은 작업 3에서 진행.
+

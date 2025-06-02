@@ -1,0 +1,11 @@
+# Task ID: 18
+# Title: Team Statistics and Records
+# Status: deferred
+# Dependencies: 17
+# Priority: medium
+# Description: Implement team-level statistics and win/loss records against external teams
+# Details:
+Create TeamStats dashboard with overall team performance. Implement external team records (win/loss/draw, goals for/against). Setup team ranking and comparison features. Create season-based stats filtering. Implement team performance analytics.
+
+# Test Strategy:
+Test team stats aggregation, verify external team records accuracy, test ranking calculations, validate season filtering, and test performance analytics.
