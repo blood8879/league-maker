@@ -40,9 +40,9 @@ export const validateNickname = (nickname: string): string | null => {
 /**
  * 전화번호 유효성 검사
  */
-export const validatePhone = (phone?: string): string | null => {
+export const validatePhone = (phone: string): string | null => {
   if (!phone || !phone.trim()) {
-    return null; // 전화번호는 선택사항
+    return "전화번호를 입력해주세요."; // 필수값으로 변경
   }
 
   // 한국 전화번호 형식 검사
@@ -57,7 +57,13 @@ export const validatePhone = (phone?: string): string | null => {
  * 포지션 유효성 검사
  */
 export const validatePosition = (position: string): string | null => {
-  const validPositions = ["GK", "DF", "MF", "FW"];
+  const validPositions = [
+    "goalkeeper",
+    "defender",
+    "midfielder",
+    "forward",
+    "any",
+  ];
   if (!validPositions.includes(position)) {
     return "올바른 포지션을 선택해주세요.";
   }

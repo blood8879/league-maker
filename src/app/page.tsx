@@ -2,13 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 import { createClient } from "@/utils/supabase/client";
+import { getProfile } from "@/lib/profile";
 import Image from "next/image";
 
 export default function Home() {
+  const router = useRouter();
   const [connectionStatus, setConnectionStatus] =
     useState<string>("연결 확인 중...");
+  const [checkingProfile, setCheckingProfile] = useState(false);
   const { user, isLoading, initialize, signOut } = useAuthStore();
 
   useEffect(() => {
@@ -34,9 +38,51 @@ export default function Home() {
     testConnection();
   }, [initialize]);
 
+  // 로그인 후 프로필 상태 확인 및 리다이렉트
+  useEffect(() => {
+    const checkProfileAndRedirect = async () => {
+      // 로그인되지 않았거나 로딩 중이면 체크하지 않음
+      if (!user || isLoading || checkingProfile) return;
+
+      setCheckingProfile(true);
+      try {
+        const { profile } = await getProfile(user.id);
+
+        // 프로필이 없으면 프로필 설정 페이지로 리다이렉트
+        if (!profile) {
+          router.push("/profile/setup");
+          return;
+        }
+
+        // 프로필이 있으면 현재 페이지에 머물거나 대시보드로 이동
+        // 여기서는 현재 페이지에 머물도록 함
+      } catch (error) {
+        console.error("Profile check error:", error);
+        // 에러가 발생해도 프로필 설정으로 안내
+        router.push("/profile/setup");
+      } finally {
+        setCheckingProfile(false);
+      }
+    };
+
+    checkProfileAndRedirect();
+  }, [user, isLoading, router, checkingProfile]);
+
   const handleSignOut = async () => {
     await signOut();
   };
+
+  // 프로필 확인 중이면 로딩 표시
+  if (checkingProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">프로필 확인 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -66,7 +112,7 @@ export default function Home() {
           </div>
 
           {/* 사용자 정보 */}
-          {user && (
+          {user && !checkingProfile && (
             <div className="bg-blue-50 p-4 rounded-lg mt-4">
               <h3 className="text-lg font-semibold mb-2">환영합니다!</h3>
               <p className="text-gray-700">이메일: {user.email}</p>
@@ -90,6 +136,12 @@ export default function Home() {
                 className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
               >
                 대시보드
+              </Link>
+              <Link
+                href="/profile/edit"
+                className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+              >
+                프로필 수정
               </Link>
               <button
                 onClick={handleSignOut}

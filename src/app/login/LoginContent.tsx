@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
+import { getProfile } from "@/lib/profile";
 import type { AuthProvider } from "@/lib/supabase";
 
 export default function LoginContent() {
@@ -10,11 +11,35 @@ export default function LoginContent() {
   const searchParams = useSearchParams();
   const { signIn, user, isLoading, error, clearError } = useAuthStore();
   const [localError, setLocalError] = useState<string | null>(null);
+  const [checkingProfile, setCheckingProfile] = useState(false);
 
   useEffect(() => {
-    // 이미 로그인된 사용자는 홈으로 리다이렉트
+    // 로그인된 사용자의 프로필 상태 확인 후 적절한 페이지로 리다이렉트
+    const checkProfileAndRedirect = async () => {
+      if (!user) return;
+
+      setCheckingProfile(true);
+      try {
+        const { profile } = await getProfile(user.id);
+
+        if (!profile) {
+          // 프로필이 없으면 프로필 설정 페이지로
+          router.push("/profile/setup");
+        } else {
+          // 프로필이 있으면 홈페이지로
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Profile check error:", error);
+        // 에러가 발생하면 프로필 설정으로 안내
+        router.push("/profile/setup");
+      } finally {
+        setCheckingProfile(false);
+      }
+    };
+
     if (user) {
-      router.push("/");
+      checkProfileAndRedirect();
     }
   }, [user, router]);
 
@@ -41,6 +66,18 @@ export default function LoginContent() {
   };
 
   const displayError = error || localError;
+
+  // 프로필 확인 중이면 로딩 표시
+  if (checkingProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">프로필 확인 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">

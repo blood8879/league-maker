@@ -26,14 +26,14 @@ const calculateCompletionPercentage = (
   nicknameAvailable: boolean | null
 ): number => {
   let completed = 0;
-  const requiredFields = 3; // name, nickname, position
+  const requiredFields = 4; // name, nickname, position, phone (필수로 변경)
 
   if (formData.name.trim()) completed += 1;
   if (formData.nickname.trim() && nicknameAvailable === true) completed += 1;
   if (formData.position) completed += 1;
-  if (formData.phone?.trim()) completed += 0.5; // 선택사항이므로 부분 점수
+  if (formData.phone.trim()) completed += 1; // 필수값으로 변경
 
-  return Math.round((completed / (requiredFields + 0.5)) * 100);
+  return Math.round((completed / requiredFields) * 100);
 };
 
 // 진행률 표시기 컴포넌트
@@ -90,7 +90,7 @@ export default function ProfileSetupForm({
     name: "",
     nickname: "",
     phone: "",
-    position: "MF",
+    position: "any", // 기본값을 "any"로 변경
   });
   const [errors, setErrors] = useState<ProfileValidationErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -289,8 +289,8 @@ export default function ProfileSetupForm({
           >
             전화번호
             <FieldStatus
-              isCompleted={!!formData.phone?.trim()}
-              isOptional={true}
+              isCompleted={!!formData.phone.trim()}
+              isOptional={false}
             />
           </label>
           <input
@@ -302,12 +302,13 @@ export default function ProfileSetupForm({
               errors.phone ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="010-1234-5678"
+            required
           />
           {errors.phone && (
             <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
           )}
           <p className="text-xs text-gray-500 mt-1">
-            팀원들과의 연락을 위해 입력하시면 좋습니다
+            팀원들과의 연락을 위해 필요합니다
           </p>
         </div>
 

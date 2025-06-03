@@ -13,11 +13,9 @@ export const getProfileCompleteness = (
   completionPercentage: number;
   missingFields: string[];
 } => {
-  const requiredFields = ["name", "nickname", "position"];
-  const optionalFields = ["phone"];
+  const requiredFields = ["name", "nickname", "position", "phone"];
   const missingFields: string[] = [];
   let completedRequired = 0;
-  let completedOptional = 0;
 
   // 필수 필드 확인
   requiredFields.forEach((field) => {
@@ -29,20 +27,9 @@ export const getProfileCompleteness = (
     }
   });
 
-  // 선택 필드 확인
-  optionalFields.forEach((field) => {
-    const value = profile[field as keyof typeof profile];
-    if (value && typeof value === "string" && value.trim()) {
-      completedOptional++;
-    }
-  });
-
   const totalRequired = requiredFields.length;
-  const totalOptional = optionalFields.length;
   const completionPercentage = Math.round(
-    ((completedRequired + completedOptional * 0.5) /
-      (totalRequired + totalOptional * 0.5)) *
-      100
+    (completedRequired / totalRequired) * 100
   );
 
   return {
@@ -61,9 +48,10 @@ export const createProfile = async (
 ): Promise<{ profile: UserProfile | null; error: string | null }> => {
   try {
     const { data, error } = await supabase
-      .from("profiles")
+      .from("users")
       .insert({
-        user_id: userId,
+        id: userId,
+        email: profileData.email || "",
         ...profileData,
       })
       .select()
@@ -93,9 +81,9 @@ export const getProfile = async (
 ): Promise<{ profile: UserProfile | null; error: string | null }> => {
   try {
     const { data, error } = await supabase
-      .from("profiles")
+      .from("users")
       .select("*")
-      .eq("user_id", userId)
+      .eq("id", userId)
       .single();
 
     if (error) {
@@ -127,12 +115,12 @@ export const updateProfile = async (
 ): Promise<{ profile: UserProfile | null; error: string | null }> => {
   try {
     const { data, error } = await supabase
-      .from("profiles")
+      .from("users")
       .update({
         ...profileData,
         updated_at: new Date().toISOString(),
       })
-      .eq("user_id", userId)
+      .eq("id", userId)
       .select()
       .single();
 
@@ -160,20 +148,32 @@ export const checkNicknameAvailability = async (
   excludeUserId?: string
 ): Promise<{ available: boolean; error: string | null }> => {
   try {
-    let query = supabase.from("profiles").select("id").eq("nickname", nickname);
+    console.log(
+      "🔍 닉네임 중복 검사 시작:",
+      nickname,
+      "excludeUserId:",
+      excludeUserId
+    );
 
-    if (excludeUserId) {
-      query = query.neq("user_id", excludeUserId);
-    }
+    // PostgreSQL 함수를 사용하여 안전하게 닉네임 중복 검사
+    const { data, error } = await supabase.rpc("check_nickname_availability", {
+      nickname_to_check: nickname,
+      exclude_user_id: excludeUserId || null,
+    });
 
-    const { data, error } = await query;
+    console.log("📊 함수 호출 결과:", { data, error });
 
     if (error) {
+      console.error("❌ 함수 호출 에러:", error);
       return { available: false, error: error.message };
     }
 
-    return { available: data.length === 0, error: null };
+    const available = data === true;
+    console.log("✅ 닉네임 사용 가능 여부:", available);
+
+    return { available, error: null };
   } catch (error) {
+    console.error("💥 닉네임 검사 중 예외 발생:", error);
     return {
       available: false,
       error:
