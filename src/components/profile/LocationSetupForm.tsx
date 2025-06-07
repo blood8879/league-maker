@@ -113,8 +113,8 @@ export default function LocationSetupForm({
 
     try {
       const { error } = await updateProfile(user.id, {
-        city: formData.city,
-        district: formData.district,
+        city: formData.city || undefined,
+        district: formData.district || undefined,
       });
 
       if (error) {
