@@ -87,7 +87,11 @@ export default function Home() {
   */
 
   const handleSignOut = async () => {
-    await signOut();
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("로그아웃 오류:", error);
+    }
   };
 
   // 프로필 확인 중이면 로딩 표시 (임시 비활성화)

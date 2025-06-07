@@ -369,8 +369,8 @@
           "title": "Develop Basic Form Components",
           "description": "Implement reusable Button, Input, and Select components with consistent styling and API.",
           "dependencies": [],
-          "details": "Ensure these components support common props, validation states, and theming.",
-          "status": "pending"
+          "details": "Ensure these components support common props, validation states, and theming.\n<info added on 2025-06-07T07:23:31.854Z>\n기본 폼 컴포넌트 구현이 완료되어 Layout 컴포넌트 개발을 시작할 수 있습니다.\n\n완료된 폼 컴포넌트들:\n- Button: 5가지 variant, 3가지 size, loading 상태, 접근성 지원\n- Input: variant/size 시스템, 아이콘 슬롯, 자동 ID 생성, TypeScript 타입 최적화\n- Select: Input과 일관된 디자인 시스템, 커스텀 드롭다운, 완전한 접근성\n\n유틸리티 인프라도 구축 완료 (cn 함수, clsx/tailwind-merge, 통합 export).\n\n이제 Card, Modal, Navigation 등 Layout 컴포넌트들을 동일한 디자인 시스템과 접근성 표준으로 구현해야 합니다.\n</info added on 2025-06-07T07:23:31.854Z>",
+          "status": "done"
         },
         {
           "id": 2,
@@ -379,8 +379,8 @@
           "dependencies": [
             1
           ],
-          "details": "Focus on flexible composition, slot support, and responsive behavior.",
-          "status": "pending"
+          "details": "Focus on flexible composition, slot support, and responsive behavior.\n<info added on 2025-06-07T07:25:50.342Z>\nLayout 컴포넌트 구현 완료:\n\n**구현된 컴포넌트들:**\n\n1. **Card 컴포넌트** (src/components/ui/Card.tsx):\n   - 4가지 variant: default, outlined, elevated, flat\n   - 3가지 size: sm, md, lg\n   - 유연한 composition을 위한 서브 컴포넌트들: CardHeader, CardContent, CardFooter, CardTitle, CardDescription\n   - hover 효과 지원\n   - 커스터마이즈 가능한 padding 시스템\n\n2. **Modal 컴포넌트** (src/components/ui/Modal.tsx):\n   - 완전한 접근성 지원 (focus 관리, ESC 키, ARIA)\n   - 5가지 size: sm, md, lg, xl, full\n   - Portal을 사용한 올바른 DOM 렌더링\n   - 스크롤 잠금 및 오버레이 클릭 처리\n   - 서브 컴포넌트: ModalHeader, ModalContent, ModalFooter, ModalTitle, ModalDescription\n\n3. **Navigation 컴포넌트** (src/components/ui/Navigation.tsx):\n   - 다양한 네비게이션 패턴 지원: Navigation (horizontal, vertical, mobile variants), HeaderNavigation, MobileNavigation (햄버거 메뉴와 사이드 드로어), BottomNavigation (모바일 하단 탭)\n   - NavigationItem 인터페이스로 일관된 아이템 구조\n   - 아이콘과 라벨 표시 옵션\n   - 활성 상태 및 비활성화 상태 지원\n\n**주요 특징:**\n- 모든 컴포넌트가 mobile-first 반응형 디자인\n- 일관된 디자인 시스템 (색상, 간격, 둥근 모서리 등)\n- forwardRef를 통한 ref 전달 지원\n- TypeScript로 강타입 지원\n- 접근성 best practices 적용\n</info added on 2025-06-07T07:25:50.342Z>",
+          "status": "done"
         },
         {
           "id": 3,

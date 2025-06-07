@@ -47,8 +47,31 @@ export const getCurrentUser = async (): Promise<AuthResponse> => {
  * 로그아웃을 수행합니다.
  */
 export const signOut = async (): Promise<{ error: AuthError | null }> => {
-  const { error } = await supabase.auth.signOut();
-  return { error };
+  try {
+    // 모든 세션을 완전히 제거
+    const { error } = await supabase.auth.signOut({ scope: "global" });
+
+    // 추가적으로 localStorage에서 supabase 관련 데이터 정리
+    if (typeof window !== "undefined") {
+      // Supabase가 사용하는 localStorage 키들을 정리
+      const keys = Object.keys(localStorage);
+      keys.forEach((key) => {
+        if (key.startsWith("sb-") || key.includes("supabase")) {
+          localStorage.removeItem(key);
+        }
+      });
+    }
+
+    return { error };
+  } catch (error) {
+    console.error("로그아웃 처리 중 오류:", error);
+    return {
+      error:
+        error instanceof Error
+          ? ({ message: error.message } as AuthError)
+          : ({ message: "로그아웃 처리 중 오류가 발생했습니다." } as AuthError),
+    };
+  }
 };
 
 /**

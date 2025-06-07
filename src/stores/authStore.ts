@@ -63,7 +63,31 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           if (error) {
             set({ error: error.message, isLoading: false });
           } else {
-            set({ user: null, isLoading: false });
+            // 로그아웃 성공 시 상태 초기화
+            set({
+              user: null,
+              isLoading: false,
+              error: null,
+            });
+
+            // localStorage에서 사용자 데이터 삭제
+            if (typeof window !== "undefined") {
+              const authStoreData = localStorage.getItem("auth-store");
+              if (authStoreData) {
+                try {
+                  const parsedData = JSON.parse(authStoreData);
+                  // user 정보만 삭제하고 다른 설정은 유지
+                  parsedData.state.user = null;
+                  localStorage.setItem(
+                    "auth-store",
+                    JSON.stringify(parsedData)
+                  );
+                } catch {
+                  // JSON 파싱 실패 시 전체 삭제
+                  localStorage.removeItem("auth-store");
+                }
+              }
+            }
           }
         } catch (error) {
           set({
@@ -80,25 +104,38 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         try {
           set({ isLoading: true });
 
-          // 현재 사용자 확인
-          getCurrentUser().then(({ user }) => {
-            set({ user });
-          });
-
-          // 인증 상태 변경 리스너 설정
+          // 인증 상태 변경 리스너를 먼저 설정
           const {
             data: { subscription },
           } = onAuthStateChange((user) => {
+            console.log(
+              "Auth state changed:",
+              user ? "logged in" : "logged out"
+            );
             set({ user, isLoading: false });
           });
 
+          // 현재 사용자 확인
+          getCurrentUser()
+            .then(({ user }) => {
+              console.log(
+                "Current user:",
+                user ? "logged in" : "not logged in"
+              );
+              set({ user, isLoading: false });
+            })
+            .catch((error) => {
+              console.error("getCurrentUser error:", error);
+              set({ user: null, isLoading: false });
+            });
+
           set({
-            isLoading: false,
             isInitialized: true,
           });
 
           return () => subscription?.unsubscribe();
         } catch (error) {
+          console.error("Initialize error:", error);
           set({
             error:
               error instanceof Error

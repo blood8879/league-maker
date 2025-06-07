@@ -47,8 +47,17 @@ export default function DashboardPage() {
   }, [user, router]);
 
   const handleSignOut = async () => {
-    await signOut();
-    router.push("/");
+    try {
+      await signOut();
+      // 로그아웃 상태가 실제로 반영될 때까지 잠시 기다림
+      setTimeout(() => {
+        router.push("/");
+      }, 100);
+    } catch (error) {
+      console.error("로그아웃 오류:", error);
+      // 오류가 발생해도 홈으로 이동
+      router.push("/");
+    }
   };
 
   // 로딩 중
