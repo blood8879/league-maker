@@ -11,27 +11,33 @@ Create TeamCreation component with fields: team name, description, region, activ
 Test team creation flow, verify 구단주 role assignment, validate team data persistence, test team dashboard access, and handle creation errors.
 
 # Subtasks:
-## 1. Team Creation Form and Validation [pending]
+## 1. Create TeamCreation Component UI [pending]
 ### Dependencies: None
-### Description: Design and implement a user interface form for creating a new team, including input fields for team name, description, and initial members. Implement validation logic to ensure all required fields are correctly filled and data integrity is maintained.
+### Description: Design and implement the TeamCreation component with required fields and validation
 ### Details:
-This subtask covers both the frontend form and backend validation logic to prevent invalid or incomplete team creation requests.
+Develop a responsive form component with fields for team name, description, region, and activity_info. Implement client-side validation for required fields. Ensure mobile optimization with responsive design principles. Include a submit button that triggers the team creation process.
 
-## 2. Automatic Role Assignment Logic [pending]
+## 2. Implement RBAC System with 구단주 Role Assignment [pending]
 ### Dependencies: 7.1
-### Description: Develop logic to automatically assign roles (e.g., team leader, member) to users upon team creation based on predefined rules or input from the creation form.
+### Description: Create the role-based access control system with automatic 구단주 role assignment to team creators
 ### Details:
-This includes implementing backend logic to ensure each team member receives the correct role and permissions upon team creation.
+Define the role hierarchy (구단주 > 운영진 > 주장 > 일반멤버) in the database schema. Implement the logic to automatically assign the 구단주 role to the user who creates a team. Create the necessary database tables and relationships for role management. Ensure proper permission checks are implemented for team management functions.
 
-## 3. Team Dashboard Interface [pending]
-### Dependencies: 7.1, 7.2
-### Description: Create a dashboard interface for teams, displaying relevant information such as team members, roles, recent activity, and management options.
+## 3. Develop Team Creation Backend Logic [pending]
+### Dependencies: 7.1
+### Description: Implement server-side validation and team creation logic with database operations
 ### Details:
-The dashboard should provide an overview of the team and allow for basic interactions such as viewing member details and accessing team management features.
+Create API endpoints for team creation with server-side validation. Implement database operations to store team information (name, description, region, activity_info). Set up error handling for duplicate team names or validation failures. Create the team_members relationship in the database linking users to teams with their assigned roles.
 
-## 4. Team Data Management Operations [pending]
-### Dependencies: 7.1, 7.2, 7.3
-### Description: Implement backend operations for managing team data, including creating, updating, deleting teams, and modifying team membership and roles.
+## 4. Create Basic Team Dashboard View [pending]
+### Dependencies: 7.2, 7.3
+### Description: Design and implement the team dashboard interface with role-specific features
 ### Details:
-This subtask ensures robust CRUD operations for teams and supports ongoing team management through the dashboard.
+Develop a responsive team dashboard that displays team information, member list with roles, and team statistics. Implement role-based UI elements that show different options based on user role (e.g., management options for 구단주). Include navigation to team management features. Ensure mobile optimization with appropriate layout adjustments for smaller screens.
+
+## 5. Implement Team Members Relationship Management [pending]
+### Dependencies: 7.2, 7.4
+### Description: Create functionality for managing team member relationships and permissions
+### Details:
+Develop API endpoints for adding, removing, and updating team members. Implement permission checks to ensure only authorized roles can modify team membership. Create UI components for team owners to manage members and assign roles. Implement the approval-based member management system where new join requests require approval from team administrators.
 

@@ -11,27 +11,33 @@ Create TeamSearch component with region-based filtering. Implement team discover
 Test team search functionality, verify filtering works, test join request flow, validate approval/rejection process, and test notification delivery.
 
 # Subtasks:
-## 1. Team Discovery and Search Interface [pending]
+## 1. Develop Team Search Component with Region-Based Filtering and Pagination [pending]
 ### Dependencies: None
-### Description: Design and implement a user-friendly search interface for discovering teams
+### Description: Implement a frontend component that allows users to search for teams, filter results by region, and navigate through paginated results.
 ### Details:
-Create an intuitive search interface with faceted navigation, autocomplete functionality, and relevance ranking. Include filters for team categories, availability, and other relevant parameters. Implement exploratory search features to help users discover teams they might not have specifically searched for.
+The component should support responsive design for mobile devices and provide real-time search and filtering based on user-selected regions. Pagination controls must be intuitive and accessible.
 
-## 2. Join Request Submission System [pending]
+## 2. Implement Team Listing with Basic Information Display [pending]
 ### Dependencies: 10.1
-### Description: Develop a system for users to submit requests to join teams
+### Description: Display a list of teams with essential information such as team name, home stadium, region, and current member count.
 ### Details:
-Create a streamlined submission form accessible from team profile pages. Include fields for user information, reason for joining, and relevant qualifications. Implement validation to ensure complete submissions and prevent duplicate requests.
+Ensure that each team entry shows required fields and is visually optimized for both desktop and mobile views. Home stadium registration must be enforced for all teams.
 
-## 3. Request Approval/Rejection Workflow [pending]
+## 3. Build Join Request System with Approval/Rejection Workflow [pending]
 ### Dependencies: 10.2
-### Description: Build a workflow system for team administrators to review and process join requests
+### Description: Enable users to request to join a team, and implement a workflow for team admins to approve or reject requests based on role-based permissions.
 ### Details:
-Develop an admin dashboard showing pending requests with sorting and filtering options. Create interfaces for reviewing applicant details, approving or rejecting requests with reason codes, and managing request queues. Implement status tracking throughout the approval process.
+Integrate a hierarchical permission system (구단주 > 운영진 > 주장 > 일반멤버) to control who can approve or reject join requests. Ensure that only authorized roles can manage requests.
 
-## 4. Notification System for Join Requests [pending]
-### Dependencies: 10.2, 10.3
-### Description: Implement a notification system to keep users informed about request status
+## 4. Integrate Notification System for Join Requests [pending]
+### Dependencies: 10.3
+### Description: Set up a notification system to alert team admins of new join requests and notify users of approval or rejection outcomes.
 ### Details:
-Create notification mechanisms for both requesters and team administrators. Send alerts for new requests, status changes, approvals, and rejections. Implement multiple notification channels (in-app, email, etc.) with user preference settings.
+Notifications should be delivered in real-time and be accessible on both desktop and mobile platforms. Ensure that notification content is clear and actionable.
+
+## 5. Support External and Unregistered Team Handling [pending]
+### Dependencies: 10.2
+### Description: Allow the system to manage and display teams that are not yet registered in the platform, with clear distinction and restricted join functionality.
+### Details:
+External teams should be listed with limited information and a prompt for registration. Prevent join requests to unregistered teams and provide guidance for team registration.
 

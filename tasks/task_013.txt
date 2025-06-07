@@ -9,3 +9,35 @@ Create MatchCreation component with home stadium selection (mandatory), opponent
 
 # Test Strategy:
 Test match creation flow, verify home stadium requirement, test opponent selection for both registered and external teams, validate date/time handling.
+
+# Subtasks:
+## 1. Implement Stadium Selection Component [pending]
+### Dependencies: None
+### Description: Create a component for selecting home stadium with validation to ensure it's mandatory
+### Details:
+Develop a reusable stadium selection component that integrates with the stadium management system. Include validation logic to ensure a home stadium is always selected before match creation can proceed. Implement stadium availability checking based on selected date/time.
+
+## 2. Build Opponent Configuration System [pending]
+### Dependencies: None
+### Description: Create opponent selection functionality with support for both registered teams and external teams
+### Details:
+Implement a dual-mode opponent selection system that allows users to either select from registered teams in the platform or create temporary external team profiles. For external teams, capture essential information like team name, contact person, and logo. Apply appropriate RBAC permissions to determine who can create matches with different opponent types.
+
+## 3. Develop Match Creation Form [pending]
+### Dependencies: 13.1, 13.2
+### Description: Create a comprehensive match creation form with date/time picker and match type selection
+### Details:
+Build a mobile-responsive match creation form that integrates the stadium selection and opponent configuration components. Include a date/time picker with validation for future dates only. Implement match type differentiation (friendly, league, tournament) with appropriate fields for each type. Apply RBAC to restrict match creation to appropriate roles (구단주, 운영진).
+
+## 4. Implement Match Listing View [pending]
+### Dependencies: 13.3
+### Description: Create a filterable, sortable match listing view with appropriate RBAC controls
+### Details:
+Develop a match listing component that displays upcoming and past matches with filtering options (by date range, opponent, match type). Implement sorting capabilities and pagination for better mobile experience. Apply RBAC to show appropriate action buttons (edit, cancel, delete) based on user role. Include attendance tracking status indicators.
+
+## 5. Create Match Detail View [pending]
+### Dependencies: 13.4
+### Description: Implement a comprehensive match detail view with attendance tracking and management features
+### Details:
+Build a detailed match view showing all match information including stadium details, opponent information, date/time, and match type. Implement attendance tracking functionality allowing members to indicate their availability. Add match management controls (edit, cancel) with appropriate RBAC restrictions. Ensure mobile optimization with responsive design for all interactive elements.
+

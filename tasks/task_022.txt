@@ -11,39 +11,33 @@ Focus on essential mobile compatibility for MVP release. Implement basic respons
 Test basic responsive layouts on various mobile devices and screen sizes, verify touch interactions work properly, and validate mobile compatibility across different browsers.
 
 # Subtasks:
-## 1. Basic Responsive Component Implementation [pending]
+## 1. Implement Fluid Layouts for Mobile Screens [pending]
 ### Dependencies: None
-### Description: Implement fundamental responsive design for all UI components to ensure basic mobile compatibility and usability.
+### Description: Create responsive grid layouts that adapt to different mobile screen sizes for the MVP
 ### Details:
-Implement essential breakpoints for mobile, tablet, and desktop views. Ensure components scale appropriately and maintain basic functionality across different screen sizes. Focus on core responsive behavior rather than advanced optimizations.
+Develop a fluid layout system using CSS that automatically adjusts content based on screen width. Focus on implementing 3-4 key breakpoints (mobile, tablet, desktop) using min-width media queries following mobile-first approach. Ensure all critical UI components maintain usability across screen sizes.
 
-## 2. Touch-Friendly Interaction Implementation [pending]
+## 2. Optimize Touch-Friendly Navigation [pending]
 ### Dependencies: 22.1
-### Description: Design and implement UI elements that are easily accessible and operable via touch input, minimizing accidental taps and improving user experience.
+### Description: Redesign navigation elements to be easily accessible and usable on touch devices
 ### Details:
-Increase button sizes, provide adequate spacing between interactive elements, and ensure all controls are reachable with a thumb. Avoid small or closely packed touch targets.
+Increase tap target sizes for all interactive elements to minimum 44x44px. Implement hamburger menu for mobile views. Ensure adequate spacing between clickable elements to prevent accidental taps. Focus on making critical functions (match creation, attendance tracking, member management) easily accessible on mobile.
 
-## 3. Basic Mobile Navigation Setup [pending]
+## 3. Implement Responsive Images and Media [pending]
+### Dependencies: 22.1
+### Description: Optimize image loading and display for mobile devices to improve performance
+### Details:
+Implement responsive image techniques using srcset and sizes attributes. Create multiple image sizes for different viewport widths. Optimize image file sizes for mobile data connections. Ensure stadium images, team logos, and profile pictures scale appropriately on mobile devices.
+
+## 4. Create Mobile-Optimized Forms [pending]
 ### Dependencies: 22.1, 22.2
-### Description: Implement simple mobile navigation patterns to ensure core functionality is accessible on mobile devices.
+### Description: Redesign critical forms for mobile input, focusing on member management and match creation
 ### Details:
-Implement basic mobile-friendly navigation (e.g., simple hamburger menu or responsive navigation bar). Focus on essential navigation functionality rather than advanced mobile patterns.
+Simplify form layouts for mobile screens. Use appropriate HTML5 input types for mobile keyboards (email, tel, date). Implement step-by-step form progression for complex tasks like match creation. Ensure form validation provides clear mobile-friendly error messages.
 
-## 7. Deferred: Advanced Performance Optimization [deferred]
-### Dependencies: None
-### Description: Advanced mobile performance optimization features to be implemented in post-MVP phase.
+## 5. Implement Role-Based Mobile Views [pending]
+### Dependencies: 22.1, 22.2, 22.4
+### Description: Optimize mobile UI based on user roles (team owner, staff, captain, regular member)
 ### Details:
-This includes image compression, lazy loading, advanced caching strategies, and network optimization. Will be implemented after MVP release.
-
-## 8. Deferred: Offline Functionality Implementation [deferred]
-### Dependencies: None
-### Description: Offline-first features and service worker implementation to be added in post-MVP phase.
-### Details:
-Implementation of service workers, offline caching, and offline-first functionality will be handled in future iterations after MVP release.
-
-## 9. Deferred: Advanced Mobile Gestures [deferred]
-### Dependencies: None
-### Description: Advanced mobile-specific gesture integration to be implemented in post-MVP phase.
-### Details:
-Advanced gestures like swipe, pinch, tap-and-hold will be implemented in future iterations. MVP will focus on basic touch interactions only.
+Create simplified mobile dashboards tailored to each user role's permissions and common tasks. Ensure role-specific actions (approval workflows, stadium management) are accessible on mobile. Hide or simplify advanced features that aren't essential for mobile use while maintaining the role hierarchy (team owner > staff > captain > regular member).
 

@@ -366,62 +366,57 @@
       "subtasks": [
         {
           "id": 1,
-          "title": "Develop Basic Form Components",
-          "description": "Implement reusable Button, Input, and Select components with consistent styling and API.",
+          "title": "Set Up TailwindCSS and Project Structure",
+          "description": "Initialize the project with TailwindCSS, configure the mobile-first responsive design system, and establish a consistent styling foundation for all UI components.",
           "dependencies": [],
-          "details": "Ensure these components support common props, validation states, and theming.\n<info added on 2025-06-07T07:23:31.854Z>\n기본 폼 컴포넌트 구현이 완료되어 Layout 컴포넌트 개발을 시작할 수 있습니다.\n\n완료된 폼 컴포넌트들:\n- Button: 5가지 variant, 3가지 size, loading 상태, 접근성 지원\n- Input: variant/size 시스템, 아이콘 슬롯, 자동 ID 생성, TypeScript 타입 최적화\n- Select: Input과 일관된 디자인 시스템, 커스텀 드롭다운, 완전한 접근성\n\n유틸리티 인프라도 구축 완료 (cn 함수, clsx/tailwind-merge, 통합 export).\n\n이제 Card, Modal, Navigation 등 Layout 컴포넌트들을 동일한 디자인 시스템과 접근성 표준으로 구현해야 합니다.\n</info added on 2025-06-07T07:23:31.854Z>",
-          "status": "done"
+          "details": "Install TailwindCSS, configure breakpoints for mobile-first design, and set up a global style guide to ensure consistency across all components. Prepare the folder structure for scalable component development.",
+          "status": "pending",
+          "testStrategy": "Verify TailwindCSS is correctly installed and responsive utility classes work as expected on different screen sizes."
         },
         {
           "id": 2,
-          "title": "Create Layout Components",
-          "description": "Build Card, Modal, and Navigation components to structure application layouts.",
+          "title": "Develop Core UI Components with Variants and TypeScript Interfaces",
+          "description": "Implement essential reusable UI components (Button, Input, Modal, Card, Loading, Toast, Navigation, Header, Footer) with support for variants and strong TypeScript interfaces.",
           "dependencies": [
             1
           ],
-          "details": "Focus on flexible composition, slot support, and responsive behavior.\n<info added on 2025-06-07T07:25:50.342Z>\nLayout 컴포넌트 구현 완료:\n\n**구현된 컴포넌트들:**\n\n1. **Card 컴포넌트** (src/components/ui/Card.tsx):\n   - 4가지 variant: default, outlined, elevated, flat\n   - 3가지 size: sm, md, lg\n   - 유연한 composition을 위한 서브 컴포넌트들: CardHeader, CardContent, CardFooter, CardTitle, CardDescription\n   - hover 효과 지원\n   - 커스터마이즈 가능한 padding 시스템\n\n2. **Modal 컴포넌트** (src/components/ui/Modal.tsx):\n   - 완전한 접근성 지원 (focus 관리, ESC 키, ARIA)\n   - 5가지 size: sm, md, lg, xl, full\n   - Portal을 사용한 올바른 DOM 렌더링\n   - 스크롤 잠금 및 오버레이 클릭 처리\n   - 서브 컴포넌트: ModalHeader, ModalContent, ModalFooter, ModalTitle, ModalDescription\n\n3. **Navigation 컴포넌트** (src/components/ui/Navigation.tsx):\n   - 다양한 네비게이션 패턴 지원: Navigation (horizontal, vertical, mobile variants), HeaderNavigation, MobileNavigation (햄버거 메뉴와 사이드 드로어), BottomNavigation (모바일 하단 탭)\n   - NavigationItem 인터페이스로 일관된 아이템 구조\n   - 아이콘과 라벨 표시 옵션\n   - 활성 상태 및 비활성화 상태 지원\n\n**주요 특징:**\n- 모든 컴포넌트가 mobile-first 반응형 디자인\n- 일관된 디자인 시스템 (색상, 간격, 둥근 모서리 등)\n- forwardRef를 통한 ref 전달 지원\n- TypeScript로 강타입 지원\n- 접근성 best practices 적용\n</info added on 2025-06-07T07:25:50.342Z>",
-          "status": "done"
+          "details": "Each component should be built as a functional TypeScript component, supporting multiple variants (e.g., primary/secondary buttons), and exposing clear props interfaces for type safety and reusability.",
+          "status": "pending",
+          "testStrategy": "Unit test each component for correct rendering, variant switching, and prop validation using a component testing library."
         },
         {
           "id": 3,
-          "title": "Implement Feedback Components",
-          "description": "Develop Toast, Loading (Spinner/Skeleton), and Alert components for user feedback.",
+          "title": "Integrate Accessibility Features Across Components",
+          "description": "Ensure all UI components are accessible, including keyboard navigation, ARIA attributes, and screen reader support.",
           "dependencies": [
-            1
+            2
           ],
-          "details": "Ensure accessibility, animation, and easy integration with application state.",
-          "status": "pending"
+          "details": "Audit each component for accessibility compliance, add necessary ARIA roles, labels, and keyboard interactions, and document accessibility features for future reference.",
+          "status": "pending",
+          "testStrategy": "Use accessibility testing tools (e.g., axe, Lighthouse) and manual keyboard navigation to validate compliance."
         },
         {
           "id": 4,
-          "title": "Integrate Responsive Design System",
-          "description": "Establish a responsive design system to ensure all components adapt to various screen sizes.",
+          "title": "Implement Mobile-First Responsive Patterns and UX",
+          "description": "Apply mobile-first responsive design patterns to all components, optimizing layouts and interactions for mobile devices and progressively enhancing for larger screens.",
           "dependencies": [
-            2,
-            3
+            2
           ],
-          "details": "Define breakpoints, spacing, and responsive utilities for consistent layouts.",
-          "status": "pending"
+          "details": "Utilize TailwindCSS responsive utility classes and breakpoints to ensure components adapt seamlessly from mobile to desktop. Prioritize touch-friendly interactions and mobile UX best practices.",
+          "status": "pending",
+          "testStrategy": "Test all components on various device emulators and real devices, ensuring usability and visual consistency across breakpoints."
         },
         {
           "id": 5,
-          "title": "Add Accessibility Features",
-          "description": "Integrate accessibility best practices across all components.",
+          "title": "Establish Component Documentation and Usage Guidelines",
+          "description": "Create comprehensive documentation for each component, including usage examples, props, variants, accessibility notes, and responsive behavior.",
           "dependencies": [
+            3,
             4
           ],
-          "details": "Implement ARIA roles, keyboard navigation, and color contrast compliance.",
-          "status": "pending"
-        },
-        {
-          "id": 6,
-          "title": "Document and Test Components",
-          "description": "Create comprehensive documentation and automated tests for all components.",
-          "dependencies": [
-            5
-          ],
-          "details": "Provide usage examples, API references, and ensure high test coverage.",
-          "status": "pending"
+          "details": "Document each component in a centralized system (e.g., Storybook or MDX files), providing clear guidance for developers on implementation, customization, and best practices.",
+          "status": "pending",
+          "testStrategy": "Review documentation for completeness and clarity; conduct peer reviews to ensure guidelines are understandable and actionable."
         }
       ]
     },
@@ -440,44 +435,58 @@
       "subtasks": [
         {
           "id": 1,
-          "title": "Team Creation Form and Validation",
-          "description": "Design and implement a user interface form for creating a new team, including input fields for team name, description, and initial members. Implement validation logic to ensure all required fields are correctly filled and data integrity is maintained.",
+          "title": "Create TeamCreation Component UI",
+          "description": "Design and implement the TeamCreation component with required fields and validation",
           "dependencies": [],
-          "details": "This subtask covers both the frontend form and backend validation logic to prevent invalid or incomplete team creation requests.",
-          "status": "pending"
+          "details": "Develop a responsive form component with fields for team name, description, region, and activity_info. Implement client-side validation for required fields. Ensure mobile optimization with responsive design principles. Include a submit button that triggers the team creation process.",
+          "status": "pending",
+          "testStrategy": "Verify form validation for required fields and test responsive behavior across different screen sizes"
         },
         {
           "id": 2,
-          "title": "Automatic Role Assignment Logic",
-          "description": "Develop logic to automatically assign roles (e.g., team leader, member) to users upon team creation based on predefined rules or input from the creation form.",
+          "title": "Implement RBAC System with 구단주 Role Assignment",
+          "description": "Create the role-based access control system with automatic 구단주 role assignment to team creators",
           "dependencies": [
             1
           ],
-          "details": "This includes implementing backend logic to ensure each team member receives the correct role and permissions upon team creation.",
-          "status": "pending"
+          "details": "Define the role hierarchy (구단주 > 운영진 > 주장 > 일반멤버) in the database schema. Implement the logic to automatically assign the 구단주 role to the user who creates a team. Create the necessary database tables and relationships for role management. Ensure proper permission checks are implemented for team management functions.",
+          "status": "pending",
+          "testStrategy": "Test automatic role assignment when a team is created and verify permission levels for different roles"
         },
         {
           "id": 3,
-          "title": "Team Dashboard Interface",
-          "description": "Create a dashboard interface for teams, displaying relevant information such as team members, roles, recent activity, and management options.",
+          "title": "Develop Team Creation Backend Logic",
+          "description": "Implement server-side validation and team creation logic with database operations",
           "dependencies": [
-            1,
-            2
+            1
           ],
-          "details": "The dashboard should provide an overview of the team and allow for basic interactions such as viewing member details and accessing team management features.",
-          "status": "pending"
+          "details": "Create API endpoints for team creation with server-side validation. Implement database operations to store team information (name, description, region, activity_info). Set up error handling for duplicate team names or validation failures. Create the team_members relationship in the database linking users to teams with their assigned roles.",
+          "status": "pending",
+          "testStrategy": "Test API endpoints with valid and invalid data, verify database entries are created correctly"
         },
         {
           "id": 4,
-          "title": "Team Data Management Operations",
-          "description": "Implement backend operations for managing team data, including creating, updating, deleting teams, and modifying team membership and roles.",
+          "title": "Create Basic Team Dashboard View",
+          "description": "Design and implement the team dashboard interface with role-specific features",
           "dependencies": [
-            1,
             2,
             3
           ],
-          "details": "This subtask ensures robust CRUD operations for teams and supports ongoing team management through the dashboard.",
-          "status": "pending"
+          "details": "Develop a responsive team dashboard that displays team information, member list with roles, and team statistics. Implement role-based UI elements that show different options based on user role (e.g., management options for 구단주). Include navigation to team management features. Ensure mobile optimization with appropriate layout adjustments for smaller screens.",
+          "status": "pending",
+          "testStrategy": "Test dashboard rendering with different user roles and verify correct display of role-specific features"
+        },
+        {
+          "id": 5,
+          "title": "Implement Team Members Relationship Management",
+          "description": "Create functionality for managing team member relationships and permissions",
+          "dependencies": [
+            2,
+            4
+          ],
+          "details": "Develop API endpoints for adding, removing, and updating team members. Implement permission checks to ensure only authorized roles can modify team membership. Create UI components for team owners to manage members and assign roles. Implement the approval-based member management system where new join requests require approval from team administrators.",
+          "status": "pending",
+          "testStrategy": "Test member addition, removal, and role changes with different user permissions to verify RBAC enforcement"
         }
       ]
     },
@@ -492,7 +501,62 @@
         7
       ],
       "status": "pending",
-      "subtasks": []
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Define Role Hierarchy and Permission Matrix",
+          "description": "Create a comprehensive role hierarchy and permission matrix for the four roles: 구단주 (Owner), 운영진 (Staff), 주장 (Captain), and 일반멤버 (Regular Member).",
+          "dependencies": [],
+          "details": "Document the hierarchical relationship between roles with specific permissions for each role. Create a detailed matrix mapping each role to specific actions they can perform across all platform features. Include access levels for team management, match creation, member approval, and stadium management.",
+          "status": "pending",
+          "testStrategy": "Verify the permission matrix covers all system features and clearly defines what each role can and cannot do."
+        },
+        {
+          "id": 2,
+          "title": "Implement Role Management Database Schema and API",
+          "description": "Design and implement the database schema and API endpoints for role management.",
+          "dependencies": [
+            1
+          ],
+          "details": "Create database tables for roles, permissions, and role assignments. Develop API endpoints for assigning roles, modifying roles, and checking permissions. Implement data validation to ensure role hierarchy integrity is maintained when changes are made.",
+          "status": "pending",
+          "testStrategy": "Test API endpoints with various role assignment scenarios to ensure proper validation and error handling."
+        },
+        {
+          "id": 3,
+          "title": "Develop Role-Based UI Components and Hooks",
+          "description": "Create reusable UI components and React hooks for permission-based rendering and access control.",
+          "dependencies": [
+            2
+          ],
+          "details": "Develop a PermissionGuard component that conditionally renders UI elements based on user roles. Create usePermission and useRole hooks to easily check permissions throughout the application. Implement role-based navigation that dynamically adjusts based on the user's role.",
+          "status": "pending",
+          "testStrategy": "Test components with users of different roles to verify proper conditional rendering."
+        },
+        {
+          "id": 4,
+          "title": "Implement Permission Checking for API Calls",
+          "description": "Add middleware for server-side permission validation on all API endpoints.",
+          "dependencies": [
+            2
+          ],
+          "details": "Create middleware that validates user permissions before processing API requests. Implement role-based access control for all sensitive operations. Ensure proper error responses when permission checks fail. Add logging for permission-related activities for security auditing.",
+          "status": "pending",
+          "testStrategy": "Test API endpoints with users of different roles to verify proper access control and error handling."
+        },
+        {
+          "id": 5,
+          "title": "Create Role Assignment and Management Interface",
+          "description": "Develop UI for authorized users to assign and modify roles within their teams.",
+          "dependencies": [
+            3,
+            4
+          ],
+          "details": "Build interfaces for 구단주 (Owner) to manage all roles, for 운영진 (Staff) to manage 주장 (Captain) and 일반멤버 (Regular Member) roles, and for 주장 (Captain) to view team members. Implement confirmation workflows for role changes. Add audit logging for all role modifications.",
+          "status": "pending",
+          "testStrategy": "Perform end-to-end testing of role assignment workflows with different user roles to verify proper functionality and permission enforcement."
+        }
+      ]
     },
     {
       "id": 9,
@@ -505,7 +569,64 @@
         8
       ],
       "status": "pending",
-      "subtasks": []
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Create StadiumRegistration Component",
+          "description": "Develop a React component for stadium registration with required fields and form validation",
+          "dependencies": [],
+          "details": "Implement a StadiumRegistration React component with fields for name, address, and coordinates. Include form validation to ensure all required fields are completed. Design the component to be responsive for mobile optimization. Use React Bootstrap or MDB React UI components for consistent styling.",
+          "status": "pending",
+          "testStrategy": "Test form validation for required fields and edge cases. Verify responsive design on different screen sizes."
+        },
+        {
+          "id": 2,
+          "title": "Implement Map Integration",
+          "description": "Integrate a map service for stadium location selection and coordinate generation",
+          "dependencies": [
+            1
+          ],
+          "details": "Add a map component that allows users to select stadium location by clicking on the map. Automatically populate coordinate fields based on map selection. Implement reverse geocoding to fill address fields when coordinates are selected. Consider using Google Maps API or an open-source alternative like Leaflet.",
+          "status": "pending",
+          "testStrategy": "Test coordinate generation accuracy and address lookup functionality. Verify map interaction on both desktop and mobile devices."
+        },
+        {
+          "id": 3,
+          "title": "Create Stadium Management Interface",
+          "description": "Develop an interface for adding, editing, and deleting stadiums with appropriate permissions",
+          "dependencies": [
+            1,
+            2
+          ],
+          "details": "Build a stadium management dashboard that lists all registered stadiums. Implement CRUD operations with appropriate role-based permissions (only team owners and admins can modify). Include search and filter functionality for stadium list. Design with responsive layout for mobile optimization.",
+          "status": "pending",
+          "testStrategy": "Test CRUD operations with different user roles. Verify permission restrictions work correctly."
+        },
+        {
+          "id": 4,
+          "title": "Implement Mandatory Stadium Registration Flow",
+          "description": "Create a workflow that requires stadium registration before team activation",
+          "dependencies": [
+            1,
+            2,
+            3
+          ],
+          "details": "Modify the team creation/activation process to require at least one registered stadium. Implement validation checks that prevent team activation without a stadium. Add clear UI indicators and guidance for users to complete stadium registration. Create appropriate error messages and redirects.",
+          "status": "pending",
+          "testStrategy": "Test team activation with and without registered stadiums. Verify error handling and user guidance."
+        },
+        {
+          "id": 5,
+          "title": "Implement Favorite Stadiums Functionality",
+          "description": "Add feature for users to mark and manage favorite stadiums",
+          "dependencies": [
+            3
+          ],
+          "details": "Create UI elements for marking stadiums as favorites. Implement backend storage for user favorite preferences. Add a filtered view to quickly access favorite stadiums. Design the feature to work within the role-based permission system, allowing all user levels to have favorites but with appropriate access restrictions.",
+          "status": "pending",
+          "testStrategy": "Test favorite marking, unmarking, and persistence across sessions. Verify favorites display correctly for different user roles."
+        }
+      ]
     },
     {
       "id": 10,
@@ -521,42 +642,56 @@
       "subtasks": [
         {
           "id": 1,
-          "title": "Team Discovery and Search Interface",
-          "description": "Design and implement a user-friendly search interface for discovering teams",
+          "title": "Develop Team Search Component with Region-Based Filtering and Pagination",
+          "description": "Implement a frontend component that allows users to search for teams, filter results by region, and navigate through paginated results.",
           "dependencies": [],
-          "details": "Create an intuitive search interface with faceted navigation, autocomplete functionality, and relevance ranking. Include filters for team categories, availability, and other relevant parameters. Implement exploratory search features to help users discover teams they might not have specifically searched for.",
-          "status": "pending"
+          "details": "The component should support responsive design for mobile devices and provide real-time search and filtering based on user-selected regions. Pagination controls must be intuitive and accessible.",
+          "status": "pending",
+          "testStrategy": "Verify that searching, filtering, and pagination work correctly across desktop and mobile devices using a variety of test cases and regions."
         },
         {
           "id": 2,
-          "title": "Join Request Submission System",
-          "description": "Develop a system for users to submit requests to join teams",
+          "title": "Implement Team Listing with Basic Information Display",
+          "description": "Display a list of teams with essential information such as team name, home stadium, region, and current member count.",
           "dependencies": [
             1
           ],
-          "details": "Create a streamlined submission form accessible from team profile pages. Include fields for user information, reason for joining, and relevant qualifications. Implement validation to ensure complete submissions and prevent duplicate requests.",
-          "status": "pending"
+          "details": "Ensure that each team entry shows required fields and is visually optimized for both desktop and mobile views. Home stadium registration must be enforced for all teams.",
+          "status": "pending",
+          "testStrategy": "Check that all required team information is displayed and formatted correctly, and that teams without a registered home stadium are flagged or excluded."
         },
         {
           "id": 3,
-          "title": "Request Approval/Rejection Workflow",
-          "description": "Build a workflow system for team administrators to review and process join requests",
+          "title": "Build Join Request System with Approval/Rejection Workflow",
+          "description": "Enable users to request to join a team, and implement a workflow for team admins to approve or reject requests based on role-based permissions.",
           "dependencies": [
             2
           ],
-          "details": "Develop an admin dashboard showing pending requests with sorting and filtering options. Create interfaces for reviewing applicant details, approving or rejecting requests with reason codes, and managing request queues. Implement status tracking throughout the approval process.",
-          "status": "pending"
+          "details": "Integrate a hierarchical permission system (구단주 > 운영진 > 주장 > 일반멤버) to control who can approve or reject join requests. Ensure that only authorized roles can manage requests.",
+          "status": "pending",
+          "testStrategy": "Simulate join requests from various user roles and verify that only users with appropriate permissions can approve or reject requests."
         },
         {
           "id": 4,
-          "title": "Notification System for Join Requests",
-          "description": "Implement a notification system to keep users informed about request status",
+          "title": "Integrate Notification System for Join Requests",
+          "description": "Set up a notification system to alert team admins of new join requests and notify users of approval or rejection outcomes.",
           "dependencies": [
-            2,
             3
           ],
-          "details": "Create notification mechanisms for both requesters and team administrators. Send alerts for new requests, status changes, approvals, and rejections. Implement multiple notification channels (in-app, email, etc.) with user preference settings.",
-          "status": "pending"
+          "details": "Notifications should be delivered in real-time and be accessible on both desktop and mobile platforms. Ensure that notification content is clear and actionable.",
+          "status": "pending",
+          "testStrategy": "Trigger join requests and workflow actions, confirming that notifications are sent to the correct users and displayed properly on all devices."
+        },
+        {
+          "id": 5,
+          "title": "Support External and Unregistered Team Handling",
+          "description": "Allow the system to manage and display teams that are not yet registered in the platform, with clear distinction and restricted join functionality.",
+          "dependencies": [
+            2
+          ],
+          "details": "External teams should be listed with limited information and a prompt for registration. Prevent join requests to unregistered teams and provide guidance for team registration.",
+          "status": "pending",
+          "testStrategy": "Attempt to search for, view, and join both registered and external teams, ensuring correct restrictions and messaging are enforced."
         }
       ]
     },
@@ -571,7 +706,61 @@
         10
       ],
       "status": "pending",
-      "subtasks": []
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Member Dashboard UI Implementation",
+          "description": "Create the MemberManagement dashboard interface with role indicators and management actions",
+          "dependencies": [],
+          "details": "Develop a responsive dashboard UI that displays member information with clear role indicators (구단주, 운영진, 주장, 일반멤버) and includes management action buttons. Ensure mobile optimization with responsive design principles for various screen sizes.",
+          "status": "pending",
+          "testStrategy": "Verify UI rendering across different devices and screen sizes. Test role indicator visibility and management action button functionality."
+        },
+        {
+          "id": 2,
+          "title": "Member Approval/Rejection System",
+          "description": "Implement functionality for team administrators to approve or reject new member applications",
+          "dependencies": [
+            1
+          ],
+          "details": "Create an approval queue interface showing pending member applications with applicant details. Implement approve/reject buttons with confirmation dialogs. Add notification system to alert applicants of their status. Ensure proper permission checks based on the role hierarchy.",
+          "status": "pending",
+          "testStrategy": "Test approval/rejection workflows with different administrator roles. Verify notifications are sent correctly and member status updates appropriately."
+        },
+        {
+          "id": 3,
+          "title": "Role Assignment Interface",
+          "description": "Develop interface for assigning and modifying member roles within the hierarchical structure",
+          "dependencies": [
+            1
+          ],
+          "details": "Create a role management interface that allows higher-ranked members to assign roles based on the hierarchy (구단주 > 운영진 > 주장 > 일반멤버). Implement permission validation to ensure only authorized users can modify roles. Include role change history tracking and confirmation workflows.",
+          "status": "pending",
+          "testStrategy": "Test role assignment permissions across different user types. Verify hierarchy enforcement and role change history recording."
+        },
+        {
+          "id": 4,
+          "title": "Member Removal Functionality",
+          "description": "Implement system for removing/kicking members with appropriate permissions and confirmations",
+          "dependencies": [
+            1
+          ],
+          "details": "Develop member removal functionality with proper permission checks based on role hierarchy. Create confirmation workflows to prevent accidental removals. Implement reason documentation for removals and notification system for removed members. Add archiving of removed member data for historical reference.",
+          "status": "pending",
+          "testStrategy": "Test removal permissions across different roles. Verify confirmation workflows, notifications, and proper data archiving."
+        },
+        {
+          "id": 5,
+          "title": "Member List with Filtering and Search",
+          "description": "Create comprehensive member listing with filtering, search, and sorting capabilities",
+          "dependencies": [
+            1
+          ],
+          "details": "Implement a filterable and searchable member list showing role indicators, join dates, and activity status. Add sorting options by name, role, join date, and activity. Include pagination for performance optimization on mobile devices. Develop export functionality for administrative purposes.",
+          "status": "pending",
+          "testStrategy": "Test search, filter, and sort functionality with various data sets. Verify pagination works correctly on mobile devices and export functionality produces correct data."
+        }
+      ]
     },
     {
       "id": 12,
@@ -587,43 +776,58 @@
       "subtasks": [
         {
           "id": 1,
-          "title": "External Team Registration and Profile Creation",
-          "description": "Design and implement the process for registering new external teams and creating their profiles, including capturing essential team information and member details.",
+          "title": "Create ExternalTeam Data Model",
+          "description": "Design and implement the database schema for external teams with required fields and relationships",
           "dependencies": [],
-          "details": "This includes UI/UX for registration forms, backend logic for storing team profiles, and validation of input data.",
-          "status": "pending"
+          "details": "Create a database model for ExternalTeam with fields: name, region, contact info (email, phone), team logo (optional), team description, creation date, and owning team reference. Implement validation rules for required fields. Set up relationships with registered teams to track which team manages which external teams.",
+          "status": "pending",
+          "testStrategy": "Verify database schema creation with test data insertion. Test validation rules for required fields and relationship constraints."
         },
         {
           "id": 2,
-          "title": "External Team CRUD Operations",
-          "description": "Develop Create, Read, Update, and Delete (CRUD) functionalities for managing external teams and their profiles.",
+          "title": "Implement ExternalTeam Registration Component",
+          "description": "Develop UI component for registering external teams with all required fields",
           "dependencies": [
             1
           ],
-          "details": "Ensure that teams can be edited, updated, or deleted as needed, and that all changes are reflected in the system.",
-          "status": "pending"
+          "details": "Create a responsive form component with fields for team name, region selection dropdown, contact information fields (email, phone), optional logo upload with preview, and team description. Implement client-side validation for required fields. Ensure mobile optimization with appropriate input types and responsive layout. Add permission checks to ensure only authorized users (구단주/운영진) can access this functionality.",
+          "status": "pending",
+          "testStrategy": "Test form submission with valid and invalid data. Verify mobile responsiveness across different screen sizes. Test permission restrictions for different user roles."
         },
         {
           "id": 3,
-          "title": "External Team Search and Listing",
-          "description": "Implement search and listing features to allow users to find and view external teams based on various criteria.",
+          "title": "Implement ExternalTeam CRUD Operations",
+          "description": "Develop backend API endpoints and services for creating, reading, updating, and deleting external team records",
           "dependencies": [
-            2
+            1
           ],
-          "details": "This includes building efficient search algorithms, filters, and paginated listings for external teams.",
-          "status": "pending"
+          "details": "Create RESTful API endpoints for: POST /api/external-teams (create), GET /api/external-teams/:id (read), PUT /api/external-teams/:id (update), DELETE /api/external-teams/:id (delete). Implement service layer with business logic for CRUD operations. Add permission checks to ensure only the team that created an external team record can modify it. Implement proper error handling and validation.",
+          "status": "pending",
+          "testStrategy": "Test each API endpoint with valid and invalid requests. Verify permission checks work correctly. Test error handling for edge cases."
         },
         {
           "id": 4,
-          "title": "Team-Specific External Team Data Isolation",
-          "description": "Ensure that each external team only has access to its own data and cannot view or modify data belonging to other teams.",
+          "title": "Develop ExternalTeam Listing and Search",
+          "description": "Create UI components for listing, filtering, and searching external teams",
           "dependencies": [
-            1,
             2,
             3
           ],
-          "details": "Implement access control mechanisms and data partitioning strategies to enforce strict data isolation between teams.",
-          "status": "pending"
+          "details": "Implement a responsive grid/list view of external teams with pagination. Add search functionality by team name and region. Implement filters for sorting (alphabetical, recently added). Create a team-specific view that shows only external teams managed by the current team. Ensure mobile optimization with appropriate layouts for different screen sizes. Add permission checks to control visibility based on user roles.",
+          "status": "pending",
+          "testStrategy": "Test search and filter functionality with various criteria. Verify pagination works correctly. Test responsive layout on different devices. Verify permission-based visibility."
+        },
+        {
+          "id": 5,
+          "title": "Create ExternalTeam Profile Pages",
+          "description": "Develop detailed profile pages for external teams with all relevant information",
+          "dependencies": [
+            3,
+            4
+          ],
+          "details": "Create a responsive profile page template for external teams displaying: team name, logo, region, contact information, description, and match history (if available). Implement edit functionality for team owners with appropriate permission checks. Add options to schedule matches with external teams, linking to the match creation system. Ensure mobile optimization with appropriate layouts. Implement breadcrumb navigation for easy return to team listings.",
+          "status": "pending",
+          "testStrategy": "Test profile page rendering with various team data. Verify edit functionality works for authorized users only. Test mobile responsiveness of profile pages. Verify navigation between listings and profile pages."
         }
       ]
     },
@@ -639,7 +843,60 @@
         "12"
       ],
       "status": "pending",
-      "subtasks": []
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Implement Stadium Selection Component",
+          "description": "Create a component for selecting home stadium with validation to ensure it's mandatory",
+          "dependencies": [],
+          "details": "Develop a reusable stadium selection component that integrates with the stadium management system. Include validation logic to ensure a home stadium is always selected before match creation can proceed. Implement stadium availability checking based on selected date/time.",
+          "status": "pending",
+          "testStrategy": "Test stadium selection validation, availability checking, and error handling for invalid selections"
+        },
+        {
+          "id": 2,
+          "title": "Build Opponent Configuration System",
+          "description": "Create opponent selection functionality with support for both registered teams and external teams",
+          "dependencies": [],
+          "details": "Implement a dual-mode opponent selection system that allows users to either select from registered teams in the platform or create temporary external team profiles. For external teams, capture essential information like team name, contact person, and logo. Apply appropriate RBAC permissions to determine who can create matches with different opponent types.",
+          "status": "pending",
+          "testStrategy": "Test both registered and external team selection flows, validation of required fields, and RBAC enforcement"
+        },
+        {
+          "id": 3,
+          "title": "Develop Match Creation Form",
+          "description": "Create a comprehensive match creation form with date/time picker and match type selection",
+          "dependencies": [
+            1,
+            2
+          ],
+          "details": "Build a mobile-responsive match creation form that integrates the stadium selection and opponent configuration components. Include a date/time picker with validation for future dates only. Implement match type differentiation (friendly, league, tournament) with appropriate fields for each type. Apply RBAC to restrict match creation to appropriate roles (구단주, 운영진).",
+          "status": "pending",
+          "testStrategy": "Test form validation, mobile responsiveness, and role-based access restrictions"
+        },
+        {
+          "id": 4,
+          "title": "Implement Match Listing View",
+          "description": "Create a filterable, sortable match listing view with appropriate RBAC controls",
+          "dependencies": [
+            3
+          ],
+          "details": "Develop a match listing component that displays upcoming and past matches with filtering options (by date range, opponent, match type). Implement sorting capabilities and pagination for better mobile experience. Apply RBAC to show appropriate action buttons (edit, cancel, delete) based on user role. Include attendance tracking status indicators.",
+          "status": "pending",
+          "testStrategy": "Test filtering, sorting, pagination, and role-based UI element visibility"
+        },
+        {
+          "id": 5,
+          "title": "Create Match Detail View",
+          "description": "Implement a comprehensive match detail view with attendance tracking and management features",
+          "dependencies": [
+            4
+          ],
+          "details": "Build a detailed match view showing all match information including stadium details, opponent information, date/time, and match type. Implement attendance tracking functionality allowing members to indicate their availability. Add match management controls (edit, cancel) with appropriate RBAC restrictions. Ensure mobile optimization with responsive design for all interactive elements.",
+          "status": "pending",
+          "testStrategy": "Test attendance tracking functionality, RBAC for management controls, and mobile responsiveness of all interactive elements"
+        }
+      ]
     },
     {
       "id": 14,
@@ -652,7 +909,63 @@
         13
       ],
       "status": "pending",
-      "subtasks": []
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Create AttendanceManagement Component with Role-Based Permissions",
+          "description": "Develop the core AttendanceManagement component with role-based access controls for match organizers, captains, and regular members",
+          "dependencies": [],
+          "details": "Implement a responsive component that displays attendance information with different editing capabilities based on user roles (구단주 > 운영진 > 주장 > 일반멤버). Include attendance status indicators, filtering options, and ensure mobile optimization with appropriate touch targets and responsive design",
+          "status": "pending",
+          "testStrategy": "Test component rendering and permission controls across different user roles and device sizes"
+        },
+        {
+          "id": 2,
+          "title": "Implement Member Attendance Status Tracking System",
+          "description": "Create functionality for tracking and updating member attendance status (attending/not attending/maybe) with real-time synchronization",
+          "dependencies": [
+            1
+          ],
+          "details": "Build a status selection interface with toggle buttons for attendance states. Implement real-time database updates using WebSockets or similar technology. Include timestamp tracking for status changes and notification triggers for status updates",
+          "status": "pending",
+          "testStrategy": "Verify real-time updates across multiple clients and test synchronization under various network conditions"
+        },
+        {
+          "id": 3,
+          "title": "Develop Mercenary Addition Functionality",
+          "description": "Create a system to add and manage non-registered players (mercenaries) for matches with appropriate tracking",
+          "dependencies": [
+            1
+          ],
+          "details": "Implement a form to add temporary players with essential information (name, position, contact). Create a separate section in the attendance list for mercenaries with visual distinction from regular members. Include functionality to convert recurring mercenaries to permanent members",
+          "status": "pending",
+          "testStrategy": "Test mercenary addition process and verify proper display in attendance lists"
+        },
+        {
+          "id": 4,
+          "title": "Build Real-Time Attendance Counter and Analytics",
+          "description": "Implement a dynamic counter showing current attendance statistics with visual indicators for match viability",
+          "dependencies": [
+            2,
+            3
+          ],
+          "details": "Create a dashboard element showing confirmed attendees count, maybe count, and declined count with appropriate visual indicators. Add threshold warnings when attendance is below required levels. Include position-based attendance tracking to highlight imbalances (e.g., too many forwards, not enough defenders)",
+          "status": "pending",
+          "testStrategy": "Test counter accuracy with various attendance scenarios and verify threshold warning triggers"
+        },
+        {
+          "id": 5,
+          "title": "Implement Attendance Notification System",
+          "description": "Create an automated notification system for attendance status changes and reminders",
+          "dependencies": [
+            2,
+            4
+          ],
+          "details": "Develop push notifications for captains and organizers when attendance changes. Implement configurable reminder schedules for upcoming matches. Create attendance summary reports that can be shared via messaging platforms. Ensure all notifications are optimized for mobile delivery",
+          "status": "pending",
+          "testStrategy": "Test notification delivery across different devices and verify reminder scheduling functionality"
+        }
+      ]
     },
     {
       "id": 15,
@@ -891,56 +1204,59 @@
       "subtasks": [
         {
           "id": 1,
-          "title": "Basic Responsive Component Implementation",
-          "description": "Implement fundamental responsive design for all UI components to ensure basic mobile compatibility and usability.",
+          "title": "Implement Fluid Layouts for Mobile Screens",
+          "description": "Create responsive grid layouts that adapt to different mobile screen sizes for the MVP",
           "dependencies": [],
-          "details": "Implement essential breakpoints for mobile, tablet, and desktop views. Ensure components scale appropriately and maintain basic functionality across different screen sizes. Focus on core responsive behavior rather than advanced optimizations.",
-          "status": "pending"
+          "details": "Develop a fluid layout system using CSS that automatically adjusts content based on screen width. Focus on implementing 3-4 key breakpoints (mobile, tablet, desktop) using min-width media queries following mobile-first approach. Ensure all critical UI components maintain usability across screen sizes.",
+          "status": "pending",
+          "testStrategy": "Test layouts on multiple device sizes (320px, 768px, 1024px, 1440px) to verify proper content scaling and readability"
         },
         {
           "id": 2,
-          "title": "Touch-Friendly Interaction Implementation",
-          "description": "Design and implement UI elements that are easily accessible and operable via touch input, minimizing accidental taps and improving user experience.",
+          "title": "Optimize Touch-Friendly Navigation",
+          "description": "Redesign navigation elements to be easily accessible and usable on touch devices",
           "dependencies": [
             1
           ],
-          "details": "Increase button sizes, provide adequate spacing between interactive elements, and ensure all controls are reachable with a thumb. Avoid small or closely packed touch targets.",
-          "status": "pending"
+          "details": "Increase tap target sizes for all interactive elements to minimum 44x44px. Implement hamburger menu for mobile views. Ensure adequate spacing between clickable elements to prevent accidental taps. Focus on making critical functions (match creation, attendance tracking, member management) easily accessible on mobile.",
+          "status": "pending",
+          "testStrategy": "Conduct touch-based usability testing on actual mobile devices to verify navigation comfort and accuracy"
         },
         {
           "id": 3,
-          "title": "Basic Mobile Navigation Setup",
-          "description": "Implement simple mobile navigation patterns to ensure core functionality is accessible on mobile devices.",
+          "title": "Implement Responsive Images and Media",
+          "description": "Optimize image loading and display for mobile devices to improve performance",
+          "dependencies": [
+            1
+          ],
+          "details": "Implement responsive image techniques using srcset and sizes attributes. Create multiple image sizes for different viewport widths. Optimize image file sizes for mobile data connections. Ensure stadium images, team logos, and profile pictures scale appropriately on mobile devices.",
+          "status": "pending",
+          "testStrategy": "Test image loading times on various connection speeds and verify proper scaling on different device sizes"
+        },
+        {
+          "id": 4,
+          "title": "Create Mobile-Optimized Forms",
+          "description": "Redesign critical forms for mobile input, focusing on member management and match creation",
           "dependencies": [
             1,
             2
           ],
-          "details": "Implement basic mobile-friendly navigation (e.g., simple hamburger menu or responsive navigation bar). Focus on essential navigation functionality rather than advanced mobile patterns.",
-          "status": "pending"
+          "details": "Simplify form layouts for mobile screens. Use appropriate HTML5 input types for mobile keyboards (email, tel, date). Implement step-by-step form progression for complex tasks like match creation. Ensure form validation provides clear mobile-friendly error messages.",
+          "status": "pending",
+          "testStrategy": "Test form completion on mobile devices with different screen sizes and input methods"
         },
         {
-          "id": 7,
-          "title": "Deferred: Advanced Performance Optimization",
-          "description": "Advanced mobile performance optimization features to be implemented in post-MVP phase.",
-          "dependencies": [],
-          "details": "This includes image compression, lazy loading, advanced caching strategies, and network optimization. Will be implemented after MVP release.",
-          "status": "deferred"
-        },
-        {
-          "id": 8,
-          "title": "Deferred: Offline Functionality Implementation",
-          "description": "Offline-first features and service worker implementation to be added in post-MVP phase.",
-          "dependencies": [],
-          "details": "Implementation of service workers, offline caching, and offline-first functionality will be handled in future iterations after MVP release.",
-          "status": "deferred"
-        },
-        {
-          "id": 9,
-          "title": "Deferred: Advanced Mobile Gestures",
-          "description": "Advanced mobile-specific gesture integration to be implemented in post-MVP phase.",
-          "dependencies": [],
-          "details": "Advanced gestures like swipe, pinch, tap-and-hold will be implemented in future iterations. MVP will focus on basic touch interactions only.",
-          "status": "deferred"
+          "id": 5,
+          "title": "Implement Role-Based Mobile Views",
+          "description": "Optimize mobile UI based on user roles (team owner, staff, captain, regular member)",
+          "dependencies": [
+            1,
+            2,
+            4
+          ],
+          "details": "Create simplified mobile dashboards tailored to each user role's permissions and common tasks. Ensure role-specific actions (approval workflows, stadium management) are accessible on mobile. Hide or simplify advanced features that aren't essential for mobile use while maintaining the role hierarchy (team owner > staff > captain > regular member).",
+          "status": "pending",
+          "testStrategy": "Test user journeys for each role on mobile devices to verify appropriate access and functionality"
         }
       ]
     },
@@ -1039,73 +1355,57 @@
       "subtasks": [
         {
           "id": 1,
-          "title": "Develop Team Matching Algorithm",
-          "description": "Design and implement an algorithm to match external teams with newly registered teams using fuzzy matching on team names, region, and contact information.",
+          "title": "Design External Team Data Matching Engine",
+          "description": "Create a fuzzy matching algorithm to associate external team records with newly registered teams based on team names and metadata",
           "dependencies": [],
-          "details": "The algorithm should leverage similarity metrics and metadata to suggest potential matches between external and registered teams, minimizing false positives and negatives.",
+          "details": "Develop a matching engine that uses fuzzy string matching algorithms to identify potential matches between external teams and newly registered teams. Implement scoring mechanisms based on team name similarity, player roster overlap, and historical metadata. Include configurable threshold settings for match confidence levels. The engine should generate match suggestions for admin review and handle edge cases like team name changes or mergers.",
           "status": "pending",
-          "testStrategy": "Test with a dataset of known team variations to ensure accurate matching and low error rates."
+          "testStrategy": "Test with various team name variations, including misspellings and abbreviations. Validate matching accuracy against a pre-classified dataset of known team relationships."
         },
         {
           "id": 2,
-          "title": "Implement Data Succession Process",
-          "description": "Build the workflow to transfer historical match data, statistics, and player records from matched external teams to the newly registered teams.",
+          "title": "Build Admin Approval Interface for Team Data Succession",
+          "description": "Develop an interface for administrators to review, approve, or reject suggested matches between external and newly registered teams",
           "dependencies": [
             1
           ],
-          "details": "Ensure all relevant data types are included and mapped correctly, supporting extensibility for future data types.",
+          "details": "Create a responsive admin dashboard that displays potential team matches identified by the matching engine. Include detailed comparison views showing team metadata, match history, and player overlap. Implement approval workflows with options to approve, reject, or manually adjust matches. Design the interface to be mobile-optimized following the platform's responsive design principles. Ensure the interface respects the role-based permission system, limiting access to administrators with appropriate privileges.",
           "status": "pending",
-          "testStrategy": "Verify data transfer completeness and correctness using sample data and edge cases."
+          "testStrategy": "Conduct usability testing with admin users to ensure the interface is intuitive. Test across different devices to verify mobile responsiveness."
         },
         {
           "id": 3,
-          "title": "Create Admin Approval Workflow",
-          "description": "Develop an interface and process for administrators to review, approve, or reject proposed team matches and data succession actions.",
+          "title": "Implement Data Transfer and Integration System",
+          "description": "Create the core system to transfer match records, statistics, and opponent histories from external teams to newly registered teams upon approval",
           "dependencies": [
-            1,
             2
           ],
-          "details": "Admins should be able to view suggested matches, inspect data to be transferred, and approve or deny each succession request.",
+          "details": "Develop a data migration service that transfers all relevant historical data from external team records to the newly registered team upon admin approval. Implement data transformation logic to ensure compatibility with the existing database schema. Create validation checks to prevent duplicate entries and maintain data integrity. Design the system to handle various data types including match results, player statistics, home stadium information, and opponent records. Ensure proper linking of transferred data with the new team's profile.",
           "status": "pending",
-          "testStrategy": "Simulate admin review scenarios to ensure all actions are logged and only approved matches proceed."
+          "testStrategy": "Create test scenarios with sample data sets to verify complete and accurate data transfer. Test edge cases like partial transfers and handling of conflicting data."
         },
         {
           "id": 4,
-          "title": "Integrate Data Integrity Validation",
-          "description": "Implement validation checks to prevent erroneous or duplicate data transfers during the succession process.",
+          "title": "Develop Audit Logging and Rollback Mechanism",
+          "description": "Create comprehensive logging for all succession actions and implement a system to revert changes if necessary",
           "dependencies": [
-            2
+            3
           ],
-          "details": "Checks should include duplicate detection, data consistency, and referential integrity across all transferred records.",
+          "details": "Implement detailed audit logging that records all data succession activities, including user actions, timestamps, and affected records. Design a rollback mechanism that can revert specific succession events without affecting other system data. Create snapshots of team data before succession to enable clean rollbacks. Develop an admin interface for viewing the audit log and initiating rollback procedures. Ensure the rollback system maintains referential integrity across all affected database tables.",
           "status": "pending",
-          "testStrategy": "Run automated tests with intentionally malformed and duplicate data to confirm validation effectiveness."
+          "testStrategy": "Test rollback functionality with various scenarios including partial and complete reversions. Verify audit logs capture all relevant details for compliance and troubleshooting."
         },
         {
           "id": 5,
-          "title": "Implement Audit Logging and Rollback Mechanism",
-          "description": "Build a system to log all succession actions and provide a rollback feature to revert data transfers if necessary.",
+          "title": "Create Succession Workflow Integration with Existing Modules",
+          "description": "Integrate the data succession system with existing team registration, match management, and member management modules",
           "dependencies": [
-            2,
             3,
             4
           ],
-          "details": "Ensure every action is auditable and that rollbacks restore the system to its previous state without data loss.",
+          "details": "Develop integration points between the new succession system and existing platform modules. Create event triggers that initiate the succession workflow upon completion of team registration. Implement notifications to alert administrators about pending succession approvals. Ensure the system respects existing role-based permissions and integrates with the member management system. Update the match system to properly display transferred match history. Optimize all interfaces for mobile devices following the platform's responsive design guidelines.",
           "status": "pending",
-          "testStrategy": "Perform succession and rollback operations in test environments to confirm full reversibility and audit trail accuracy."
-        },
-        {
-          "id": 6,
-          "title": "Develop User Interface for Succession Management",
-          "description": "Design and implement user interfaces for submitting succession requests, admin approvals, and viewing succession history.",
-          "dependencies": [
-            1,
-            2,
-            3,
-            5
-          ],
-          "details": "Interfaces should be intuitive for both admins and users, supporting all workflow steps and displaying relevant status and history.",
-          "status": "pending",
-          "testStrategy": "Conduct usability testing with target users and verify all UI elements trigger the correct backend processes."
+          "testStrategy": "Perform end-to-end testing of the complete workflow from team registration through succession approval and data transfer. Test integration points with all connected modules to ensure seamless operation."
         }
       ]
     },
@@ -1124,94 +1424,56 @@
       "subtasks": [
         {
           "id": 1,
-          "title": "Design QR Code Authentication Architecture",
-          "description": "Create a comprehensive architecture design for the QR code authentication system that aligns with security best practices and supports external team integration.",
+          "title": "Develop Secure Matching Code and QR Generation Service",
+          "description": "Implement a backend service that generates cryptographically secure matching codes for external teams and mercenaries, encodes them as QR codes, and stores them in a secure mapping table with expiration timestamps.",
           "dependencies": [],
-          "details": "Define the overall system architecture including authentication flow, security protocols, and data storage requirements. Specify PIN length (8-20 digits) and QR code lifetime (recommended 200-365 days). Include components for QR code generation, verification, and secure communication channels between primary and secondary devices. Consider implementing the five-state SQRAP protocol: awaiting login request, login pending, QR code displayed, QR code payload verified, and login complete.",
+          "details": "Use established cryptographic libraries to generate unique codes. Integrate a QR code generation library (e.g., qrcode.js) to create scannable codes. Store each code with metadata (team/mercenary ID, expiration, usage status) in the database. Ensure codes are single-use and expire after a configurable period.",
           "status": "pending",
-          "testStrategy": "Conduct architecture review sessions with security experts to validate the design against industry standards and potential vulnerabilities."
+          "testStrategy": "Unit test code generation for uniqueness and expiration logic. Validate QR code output for scannability and correct payload. Test database mapping for correct associations and expiry enforcement."
         },
         {
           "id": 2,
-          "title": "Implement Secure QR Code Generation Service",
-          "description": "Develop the service responsible for generating cryptographically secure QR codes with appropriate expiration policies and secure storage mechanisms.",
+          "title": "Build Integration Request Interface with Real-Time Validation",
+          "description": "Create a responsive web/mobile interface for new registrants to input or scan matching codes, with real-time validation and user feedback on code authenticity and expiration.",
           "dependencies": [
             1
           ],
-          "details": "Build a service using qrcode.js that generates unique, cryptographically secure QR codes for external teams and mercenaries. Implement secure storage in a mapping table with expiration timestamps. Ensure QR codes contain necessary authentication data while maintaining security. Include functionality to replace lost or stolen QR codes. Implement configurable PIN length and QR code lifetime settings as defined in the architecture.",
+          "details": "Design a user-friendly form supporting both manual code entry and QR scanning. Implement frontend logic to validate code format and backend API to check code validity and expiration. Provide immediate feedback (success, invalid, expired) and guide users through the next steps.",
           "status": "pending",
-          "testStrategy": "Test QR code generation with various parameters, verify cryptographic strength, and validate proper expiration handling."
+          "testStrategy": "Perform UI/UX testing on multiple devices. Simulate valid, invalid, and expired codes to verify feedback accuracy. Test QR scanning functionality across browsers and mobile devices."
         },
         {
           "id": 3,
-          "title": "Develop Integration Request Interface",
-          "description": "Create a user-friendly interface for new registrants to input matching codes or scan QR codes with real-time validation feedback.",
+          "title": "Implement Bidirectional Authentication and Approval Workflow",
+          "description": "Develop a two-step authentication process where original team administrators approve integration requests, including notification and secure token-based approval mechanisms.",
           "dependencies": [
             2
           ],
-          "details": "Build a responsive web interface that allows users to either manually input matching codes or scan QR codes using device cameras. Implement client-side and server-side validation to verify code authenticity and check expiration status. Provide real-time feedback on validation status and clear error messages. Ensure the interface works across different devices and browsers. Include accessibility features for users with disabilities.",
+          "details": "Set up a notification system to alert team admins of pending requests. Build an approval interface for admins, secured with token-based authentication. Ensure only authorized admins can approve or reject requests, and log all actions for auditability.",
           "status": "pending",
-          "testStrategy": "Conduct usability testing with representative users, test across multiple devices and browsers, and verify validation logic with valid and invalid codes."
+          "testStrategy": "Test notification delivery and admin interface usability. Attempt unauthorized approvals to verify access controls. Confirm that approval/rejection updates request status and triggers appropriate user feedback."
         },
         {
           "id": 4,
-          "title": "Create Bidirectional Authentication System",
-          "description": "Implement a secure two-step approval process requiring administrator verification for integration requests with appropriate notifications.",
+          "title": "Design and Implement Data Integration and Conflict Resolution Engine",
+          "description": "Create backend logic to migrate historical match records, statistics, attendance, and performance data from external profiles to registered user accounts, with algorithms to resolve data conflicts.",
           "dependencies": [
             3
           ],
-          "details": "Develop a system where team administrators must approve integration requests from external teams and mercenaries. Create a notification system using email, SMS, or in-app alerts to inform administrators of pending requests. Implement secure token-based authentication for the approval process. Design the system to prevent unauthorized approvals and include timeout mechanisms for pending requests. Apply conditional access policies as an additional security layer, such as requiring phishing-resistant authentication for administrators approving requests from outside trusted networks.",
+          "details": "Map external data structures to platform schemas. Implement transactional data migration with rollback on failure. Develop conflict resolution rules for overlapping periods (e.g., duplicate matches, attendance). Ensure atomicity and data integrity throughout the process.",
           "status": "pending",
-          "testStrategy": "Test the complete approval workflow, verify notification delivery, and conduct security testing to ensure the approval process cannot be bypassed."
+          "testStrategy": "Run migration tests with varied data sets, including overlapping and conflicting records. Verify correct mapping and resolution. Simulate failures to test rollback and data consistency."
         },
         {
           "id": 5,
-          "title": "Build Data Integration Engine",
-          "description": "Develop the core data migration logic to transfer external records to registered user accounts with conflict resolution capabilities.",
+          "title": "Establish Audit Logging, Rollback, and Data Integrity Verification",
+          "description": "Implement comprehensive logging for all integration operations, enable rollback to pre-integration state, and develop automated checks for post-integration data integrity and reconciliation.",
           "dependencies": [
             4
           ],
-          "details": "Implement a robust data migration engine that transfers match records, statistics, attendance data, and performance metrics from external/mercenary profiles to registered user accounts. Create conflict resolution algorithms to handle overlapping data periods. Use database transactions for atomic operations to ensure data integrity. Implement data mapping rules to handle different data formats from external sources. Include progress tracking for long-running integrations and support for partial migrations.",
+          "details": "Log all integration actions with timestamps, user IDs, and approval chains. Store backup snapshots before each integration. Provide rollback functionality to restore previous state if issues arise. Run automated scripts to verify statistical consistency and detect anomalies (e.g., duplicate players in matches). Generate reconciliation reports for administrators.",
           "status": "pending",
-          "testStrategy": "Test with various data scenarios including edge cases, verify transaction integrity, and validate that all data is correctly transferred without corruption."
-        },
-        {
-          "id": 6,
-          "title": "Implement Audit and Rollback System",
-          "description": "Create a comprehensive logging and rollback mechanism for all integration operations with backup snapshots.",
-          "dependencies": [
-            5
-          ],
-          "details": "Develop detailed logging for all integration operations including timestamps, data transferred, and approval chains. Store logs in a tamper-evident format. Implement rollback functionality that can safely reverse integrations if issues are discovered. Create backup snapshots before each integration operation. Design the system to maintain GDPR compliance for all data transfers and storage. Include mechanisms to purge sensitive data from logs according to retention policies.",
-          "status": "pending",
-          "testStrategy": "Test rollback functionality with various integration scenarios, verify log integrity, and validate that backups can be successfully restored."
-        },
-        {
-          "id": 7,
-          "title": "Develop Data Integrity Verification System",
-          "description": "Create validation checks and conflict detection mechanisms to ensure statistical consistency after integration.",
-          "dependencies": [
-            5
-          ],
-          "details": "Implement validation checks to ensure statistical consistency after integration (total goals, match counts, etc.). Develop automated conflict detection for impossible scenarios such as the same player appearing in multiple matches simultaneously. Create data reconciliation reports for administrators to review integration results. Implement a quarantine mechanism for suspicious data that requires manual review. Design the system to handle edge cases such as partial match data or incomplete statistics.",
-          "status": "pending",
-          "testStrategy": "Test with intentionally conflicting data sets, verify detection of statistical anomalies, and validate reconciliation report accuracy."
-        },
-        {
-          "id": 8,
-          "title": "Deploy and Optimize QR Code Integration System",
-          "description": "Finalize system deployment with security hardening, performance optimization, and comprehensive documentation.",
-          "dependencies": [
-            2,
-            3,
-            4,
-            5,
-            6,
-            7
-          ],
-          "details": "Deploy the complete QR code integration system with appropriate security hardening. Implement rate limiting for integration requests to prevent abuse. Create secure API endpoints with proper authentication. Optimize performance for high-volume periods. Develop comprehensive documentation for system administrators and end users. Conduct security audits and penetration testing. Implement monitoring and alerting for system health and security events. Ensure the system meets all GDPR compliance requirements for data transfers and storage.",
-          "status": "pending",
-          "testStrategy": "Conduct load testing to verify system performance under stress, perform security penetration testing, and validate the system against compliance requirements."
+          "testStrategy": "Review logs for completeness and accuracy. Test rollback by performing and reversing integrations. Validate integrity checks by introducing intentional data errors and confirming detection and reporting."
         }
       ]
     }

@@ -9,3 +9,35 @@ Define role hierarchy and permissions matrix. Create role management utilities a
 
 # Test Strategy:
 Test role hierarchy enforcement, verify permission checks work correctly, test role assignment/modification, validate UI elements show/hide based on roles.
+
+# Subtasks:
+## 1. Define Role Hierarchy and Permission Matrix [pending]
+### Dependencies: None
+### Description: Create a comprehensive role hierarchy and permission matrix for the four roles: 구단주 (Owner), 운영진 (Staff), 주장 (Captain), and 일반멤버 (Regular Member).
+### Details:
+Document the hierarchical relationship between roles with specific permissions for each role. Create a detailed matrix mapping each role to specific actions they can perform across all platform features. Include access levels for team management, match creation, member approval, and stadium management.
+
+## 2. Implement Role Management Database Schema and API [pending]
+### Dependencies: 8.1
+### Description: Design and implement the database schema and API endpoints for role management.
+### Details:
+Create database tables for roles, permissions, and role assignments. Develop API endpoints for assigning roles, modifying roles, and checking permissions. Implement data validation to ensure role hierarchy integrity is maintained when changes are made.
+
+## 3. Develop Role-Based UI Components and Hooks [pending]
+### Dependencies: 8.2
+### Description: Create reusable UI components and React hooks for permission-based rendering and access control.
+### Details:
+Develop a PermissionGuard component that conditionally renders UI elements based on user roles. Create usePermission and useRole hooks to easily check permissions throughout the application. Implement role-based navigation that dynamically adjusts based on the user's role.
+
+## 4. Implement Permission Checking for API Calls [pending]
+### Dependencies: 8.2
+### Description: Add middleware for server-side permission validation on all API endpoints.
+### Details:
+Create middleware that validates user permissions before processing API requests. Implement role-based access control for all sensitive operations. Ensure proper error responses when permission checks fail. Add logging for permission-related activities for security auditing.
+
+## 5. Create Role Assignment and Management Interface [pending]
+### Dependencies: 8.3, 8.4
+### Description: Develop UI for authorized users to assign and modify roles within their teams.
+### Details:
+Build interfaces for 구단주 (Owner) to manage all roles, for 운영진 (Staff) to manage 주장 (Captain) and 일반멤버 (Regular Member) roles, and for 주장 (Captain) to view team members. Implement confirmation workflows for role changes. Add audit logging for all role modifications.
+

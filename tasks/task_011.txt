@@ -9,3 +9,35 @@ Create MemberManagement dashboard for team administrators. Implement member appr
 
 # Test Strategy:
 Test member approval/rejection flow, verify role assignment works, test member removal functionality, validate permission checks for management actions.
+
+# Subtasks:
+## 1. Member Dashboard UI Implementation [pending]
+### Dependencies: None
+### Description: Create the MemberManagement dashboard interface with role indicators and management actions
+### Details:
+Develop a responsive dashboard UI that displays member information with clear role indicators (구단주, 운영진, 주장, 일반멤버) and includes management action buttons. Ensure mobile optimization with responsive design principles for various screen sizes.
+
+## 2. Member Approval/Rejection System [pending]
+### Dependencies: 11.1
+### Description: Implement functionality for team administrators to approve or reject new member applications
+### Details:
+Create an approval queue interface showing pending member applications with applicant details. Implement approve/reject buttons with confirmation dialogs. Add notification system to alert applicants of their status. Ensure proper permission checks based on the role hierarchy.
+
+## 3. Role Assignment Interface [pending]
+### Dependencies: 11.1
+### Description: Develop interface for assigning and modifying member roles within the hierarchical structure
+### Details:
+Create a role management interface that allows higher-ranked members to assign roles based on the hierarchy (구단주 > 운영진 > 주장 > 일반멤버). Implement permission validation to ensure only authorized users can modify roles. Include role change history tracking and confirmation workflows.
+
+## 4. Member Removal Functionality [pending]
+### Dependencies: 11.1
+### Description: Implement system for removing/kicking members with appropriate permissions and confirmations
+### Details:
+Develop member removal functionality with proper permission checks based on role hierarchy. Create confirmation workflows to prevent accidental removals. Implement reason documentation for removals and notification system for removed members. Add archiving of removed member data for historical reference.
+
+## 5. Member List with Filtering and Search [pending]
+### Dependencies: 11.1
+### Description: Create comprehensive member listing with filtering, search, and sorting capabilities
+### Details:
+Implement a filterable and searchable member list showing role indicators, join dates, and activity status. Add sorting options by name, role, join date, and activity. Include pagination for performance optimization on mobile devices. Develop export functionality for administrative purposes.
+

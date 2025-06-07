@@ -11,39 +11,33 @@ Design and implement a data succession workflow triggered when an external team 
 1. Create test cases for various external team registration scenarios, including similar and ambiguous team names. 2. Verify that, upon admin approval, all historical match data, statistics, and opponent records are correctly transferred and linked to the new team without duplication. 3. Test the admin approval workflow, ensuring incorrect matches can be rejected and only approved matches trigger data transfer. 4. Validate the audit log records all actions and that the rollback feature restores the previous state accurately. 5. Perform data integrity checks post-succession to ensure no orphaned or duplicated records exist. 6. Conduct regression testing to confirm no impact on existing team and match management functionalities.
 
 # Subtasks:
-## 1. Develop Team Matching Algorithm [pending]
+## 1. Design External Team Data Matching Engine [pending]
 ### Dependencies: None
-### Description: Design and implement an algorithm to match external teams with newly registered teams using fuzzy matching on team names, region, and contact information.
+### Description: Create a fuzzy matching algorithm to associate external team records with newly registered teams based on team names and metadata
 ### Details:
-The algorithm should leverage similarity metrics and metadata to suggest potential matches between external and registered teams, minimizing false positives and negatives.
+Develop a matching engine that uses fuzzy string matching algorithms to identify potential matches between external teams and newly registered teams. Implement scoring mechanisms based on team name similarity, player roster overlap, and historical metadata. Include configurable threshold settings for match confidence levels. The engine should generate match suggestions for admin review and handle edge cases like team name changes or mergers.
 
-## 2. Implement Data Succession Process [pending]
+## 2. Build Admin Approval Interface for Team Data Succession [pending]
 ### Dependencies: 26.1
-### Description: Build the workflow to transfer historical match data, statistics, and player records from matched external teams to the newly registered teams.
+### Description: Develop an interface for administrators to review, approve, or reject suggested matches between external and newly registered teams
 ### Details:
-Ensure all relevant data types are included and mapped correctly, supporting extensibility for future data types.
+Create a responsive admin dashboard that displays potential team matches identified by the matching engine. Include detailed comparison views showing team metadata, match history, and player overlap. Implement approval workflows with options to approve, reject, or manually adjust matches. Design the interface to be mobile-optimized following the platform's responsive design principles. Ensure the interface respects the role-based permission system, limiting access to administrators with appropriate privileges.
 
-## 3. Create Admin Approval Workflow [pending]
-### Dependencies: 26.1, 26.2
-### Description: Develop an interface and process for administrators to review, approve, or reject proposed team matches and data succession actions.
-### Details:
-Admins should be able to view suggested matches, inspect data to be transferred, and approve or deny each succession request.
-
-## 4. Integrate Data Integrity Validation [pending]
+## 3. Implement Data Transfer and Integration System [pending]
 ### Dependencies: 26.2
-### Description: Implement validation checks to prevent erroneous or duplicate data transfers during the succession process.
+### Description: Create the core system to transfer match records, statistics, and opponent histories from external teams to newly registered teams upon approval
 ### Details:
-Checks should include duplicate detection, data consistency, and referential integrity across all transferred records.
+Develop a data migration service that transfers all relevant historical data from external team records to the newly registered team upon admin approval. Implement data transformation logic to ensure compatibility with the existing database schema. Create validation checks to prevent duplicate entries and maintain data integrity. Design the system to handle various data types including match results, player statistics, home stadium information, and opponent records. Ensure proper linking of transferred data with the new team's profile.
 
-## 5. Implement Audit Logging and Rollback Mechanism [pending]
-### Dependencies: 26.2, 26.3, 26.4
-### Description: Build a system to log all succession actions and provide a rollback feature to revert data transfers if necessary.
+## 4. Develop Audit Logging and Rollback Mechanism [pending]
+### Dependencies: 26.3
+### Description: Create comprehensive logging for all succession actions and implement a system to revert changes if necessary
 ### Details:
-Ensure every action is auditable and that rollbacks restore the system to its previous state without data loss.
+Implement detailed audit logging that records all data succession activities, including user actions, timestamps, and affected records. Design a rollback mechanism that can revert specific succession events without affecting other system data. Create snapshots of team data before succession to enable clean rollbacks. Develop an admin interface for viewing the audit log and initiating rollback procedures. Ensure the rollback system maintains referential integrity across all affected database tables.
 
-## 6. Develop User Interface for Succession Management [pending]
-### Dependencies: 26.1, 26.2, 26.3, 26.5
-### Description: Design and implement user interfaces for submitting succession requests, admin approvals, and viewing succession history.
+## 5. Create Succession Workflow Integration with Existing Modules [pending]
+### Dependencies: 26.3, 26.4
+### Description: Integrate the data succession system with existing team registration, match management, and member management modules
 ### Details:
-Interfaces should be intuitive for both admins and users, supporting all workflow steps and displaying relevant status and history.
+Develop integration points between the new succession system and existing platform modules. Create event triggers that initiate the succession workflow upon completion of team registration. Implement notifications to alert administrators about pending succession approvals. Ensure the system respects existing role-based permissions and integrates with the member management system. Update the match system to properly display transferred match history. Optimize all interfaces for mobile devices following the platform's responsive design guidelines.
 

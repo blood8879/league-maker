@@ -9,3 +9,35 @@ Create AttendanceManagement component for match organizers. Implement member att
 
 # Test Strategy:
 Test attendance status updates, verify real-time synchronization, test mercenary addition, validate attendance counting, and test status change notifications.
+
+# Subtasks:
+## 1. Create AttendanceManagement Component with Role-Based Permissions [pending]
+### Dependencies: None
+### Description: Develop the core AttendanceManagement component with role-based access controls for match organizers, captains, and regular members
+### Details:
+Implement a responsive component that displays attendance information with different editing capabilities based on user roles (구단주 > 운영진 > 주장 > 일반멤버). Include attendance status indicators, filtering options, and ensure mobile optimization with appropriate touch targets and responsive design
+
+## 2. Implement Member Attendance Status Tracking System [pending]
+### Dependencies: 14.1
+### Description: Create functionality for tracking and updating member attendance status (attending/not attending/maybe) with real-time synchronization
+### Details:
+Build a status selection interface with toggle buttons for attendance states. Implement real-time database updates using WebSockets or similar technology. Include timestamp tracking for status changes and notification triggers for status updates
+
+## 3. Develop Mercenary Addition Functionality [pending]
+### Dependencies: 14.1
+### Description: Create a system to add and manage non-registered players (mercenaries) for matches with appropriate tracking
+### Details:
+Implement a form to add temporary players with essential information (name, position, contact). Create a separate section in the attendance list for mercenaries with visual distinction from regular members. Include functionality to convert recurring mercenaries to permanent members
+
+## 4. Build Real-Time Attendance Counter and Analytics [pending]
+### Dependencies: 14.2, 14.3
+### Description: Implement a dynamic counter showing current attendance statistics with visual indicators for match viability
+### Details:
+Create a dashboard element showing confirmed attendees count, maybe count, and declined count with appropriate visual indicators. Add threshold warnings when attendance is below required levels. Include position-based attendance tracking to highlight imbalances (e.g., too many forwards, not enough defenders)
+
+## 5. Implement Attendance Notification System [pending]
+### Dependencies: 14.2, 14.4
+### Description: Create an automated notification system for attendance status changes and reminders
+### Details:
+Develop push notifications for captains and organizers when attendance changes. Implement configurable reminder schedules for upcoming matches. Create attendance summary reports that can be shared via messaging platforms. Ensure all notifications are optimized for mobile delivery
+

@@ -11,27 +11,33 @@ Create ExternalTeam registration component with fields: name, region, contact in
 Test external team registration, verify CRUD operations, test team-specific data isolation, validate external team profiles, and test search functionality.
 
 # Subtasks:
-## 1. External Team Registration and Profile Creation [pending]
+## 1. Create ExternalTeam Data Model [pending]
 ### Dependencies: None
-### Description: Design and implement the process for registering new external teams and creating their profiles, including capturing essential team information and member details.
+### Description: Design and implement the database schema for external teams with required fields and relationships
 ### Details:
-This includes UI/UX for registration forms, backend logic for storing team profiles, and validation of input data.
+Create a database model for ExternalTeam with fields: name, region, contact info (email, phone), team logo (optional), team description, creation date, and owning team reference. Implement validation rules for required fields. Set up relationships with registered teams to track which team manages which external teams.
 
-## 2. External Team CRUD Operations [pending]
+## 2. Implement ExternalTeam Registration Component [pending]
 ### Dependencies: 12.1
-### Description: Develop Create, Read, Update, and Delete (CRUD) functionalities for managing external teams and their profiles.
+### Description: Develop UI component for registering external teams with all required fields
 ### Details:
-Ensure that teams can be edited, updated, or deleted as needed, and that all changes are reflected in the system.
+Create a responsive form component with fields for team name, region selection dropdown, contact information fields (email, phone), optional logo upload with preview, and team description. Implement client-side validation for required fields. Ensure mobile optimization with appropriate input types and responsive layout. Add permission checks to ensure only authorized users (구단주/운영진) can access this functionality.
 
-## 3. External Team Search and Listing [pending]
-### Dependencies: 12.2
-### Description: Implement search and listing features to allow users to find and view external teams based on various criteria.
+## 3. Implement ExternalTeam CRUD Operations [pending]
+### Dependencies: 12.1
+### Description: Develop backend API endpoints and services for creating, reading, updating, and deleting external team records
 ### Details:
-This includes building efficient search algorithms, filters, and paginated listings for external teams.
+Create RESTful API endpoints for: POST /api/external-teams (create), GET /api/external-teams/:id (read), PUT /api/external-teams/:id (update), DELETE /api/external-teams/:id (delete). Implement service layer with business logic for CRUD operations. Add permission checks to ensure only the team that created an external team record can modify it. Implement proper error handling and validation.
 
-## 4. Team-Specific External Team Data Isolation [pending]
-### Dependencies: 12.1, 12.2, 12.3
-### Description: Ensure that each external team only has access to its own data and cannot view or modify data belonging to other teams.
+## 4. Develop ExternalTeam Listing and Search [pending]
+### Dependencies: 12.2, 12.3
+### Description: Create UI components for listing, filtering, and searching external teams
 ### Details:
-Implement access control mechanisms and data partitioning strategies to enforce strict data isolation between teams.
+Implement a responsive grid/list view of external teams with pagination. Add search functionality by team name and region. Implement filters for sorting (alphabetical, recently added). Create a team-specific view that shows only external teams managed by the current team. Ensure mobile optimization with appropriate layouts for different screen sizes. Add permission checks to control visibility based on user roles.
+
+## 5. Create ExternalTeam Profile Pages [pending]
+### Dependencies: 12.3, 12.4
+### Description: Develop detailed profile pages for external teams with all relevant information
+### Details:
+Create a responsive profile page template for external teams displaying: team name, logo, region, contact information, description, and match history (if available). Implement edit functionality for team owners with appropriate permission checks. Add options to schedule matches with external teams, linking to the match creation system. Ensure mobile optimization with appropriate layouts. Implement breadcrumb navigation for easy return to team listings.
 

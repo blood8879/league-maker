@@ -1,0 +1,391 @@
+/* ===============================
+   Screen Reader Only 스타일
+   =============================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* ===============================
+   포커스 스타일
+   =============================== */
+
+:root {
+  --focus-outline-width: 2px;
+  --focus-outline-style: solid;
+  --focus-outline-color: #2563eb;
+  --focus-outline-offset: 2px;
+}
+
+/* 기본 포커스 스타일 */
+*:focus {
+  outline: var(--focus-outline-width) var(--focus-outline-style)
+    var(--focus-outline-color);
+  outline-offset: var(--focus-outline-offset);
+}
+
+/* 포커스 스타일 향상 */
+.focus-enhanced:focus {
+  outline: 3px solid var(--focus-outline-color);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 1px white, 0 0 0 4px var(--focus-outline-color);
+}
+
+/* 포커스 표시 비활성화 옵션 */
+.no-focus-outline:focus {
+  outline: none;
+}
+
+/* ===============================
+   고대비 모드
+   =============================== */
+
+.high-contrast {
+  --text-primary: #000000;
+  --text-secondary: #000000;
+  --background-primary: #ffffff;
+  --background-secondary: #f5f5f5;
+  --border-color: #000000;
+  --link-color: #0000ff;
+  --link-hover-color: #ff0000;
+  --button-background: #ffffff;
+  --button-border: #000000;
+  --button-text: #000000;
+}
+
+.high-contrast * {
+  background-image: none !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.high-contrast img {
+  filter: contrast(1.2) brightness(1.1);
+}
+
+.high-contrast button,
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+  border: 2px solid var(--border-color) !important;
+  background: var(--button-background) !important;
+  color: var(--button-text) !important;
+}
+
+.high-contrast a {
+  color: var(--link-color) !important;
+  text-decoration: underline !important;
+}
+
+.high-contrast a:hover,
+.high-contrast a:focus {
+  color: var(--link-hover-color) !important;
+  background-color: yellow !important;
+}
+
+/* ===============================
+   모션 감소
+   =============================== */
+
+:root {
+  --motion-duration: 200ms;
+  --motion-easing: ease-in-out;
+}
+
+/* 사용자가 모션 감소를 선호하는 경우 */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 모션 감소 클래스 */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ===============================
+   투명도 감소
+   =============================== */
+
+.reduce-transparency * {
+  backdrop-filter: none !important;
+  opacity: 1 !important;
+}
+
+.reduce-transparency *[style*="opacity"] {
+  opacity: 1 !important;
+}
+
+/* ===============================
+   폰트 크기 조정
+   =============================== */
+
+:root {
+  --base-font-size: 16px;
+}
+
+.font-size-small {
+  font-size: calc(var(--base-font-size) * 0.875);
+}
+
+.font-size-medium {
+  font-size: var(--base-font-size);
+}
+
+.font-size-large {
+  font-size: calc(var(--base-font-size) * 1.125);
+}
+
+.font-size-extra-large {
+  font-size: calc(var(--base-font-size) * 1.25);
+}
+
+/* ===============================
+   키보드 네비게이션 지원
+   =============================== */
+
+/* Skip links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--focus-outline-color);
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 9999;
+  transition: top var(--motion-duration) var(--motion-easing);
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* 키보드 전용 네비게이션 힌트 */
+.keyboard-only {
+  display: none;
+}
+
+body:not(.mouse-user) .keyboard-only {
+  display: inline;
+}
+
+/* 키보드 네비게이션 활성화 표시 */
+.keyboard-navigation-active {
+  outline: 2px dashed var(--focus-outline-color);
+  outline-offset: 2px;
+}
+
+/* ===============================
+   스크린 리더 향상
+   =============================== */
+
+/* 라이브 지역 */
+.live-region {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* 상태 표시 */
+.status-message {
+  position: relative;
+}
+
+.status-message::before {
+  content: attr(data-status);
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ===============================
+   접근성 도구
+   =============================== */
+
+/* 접근성 설정 패널 */
+.accessibility-panel {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  max-width: 300px;
+}
+
+.accessibility-panel h3 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.accessibility-panel .setting-group {
+  margin-bottom: 12px;
+}
+
+.accessibility-panel .setting-group:last-child {
+  margin-bottom: 0;
+}
+
+.accessibility-panel label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.accessibility-panel input[type="checkbox"],
+.accessibility-panel input[type="radio"] {
+  margin: 0;
+}
+
+/* ===============================
+   색상 및 대비 향상
+   =============================== */
+
+/* 링크 대비 향상 */
+a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a:hover,
+a:focus {
+  text-decoration-thickness: 2px;
+}
+
+/* 버튼 대비 향상 */
+button {
+  border: 1px solid currentColor;
+  position: relative;
+}
+
+button:focus {
+  box-shadow: inset 0 0 0 2px currentColor;
+}
+
+/* 입력 필드 대비 향상 */
+input,
+textarea,
+select {
+  border: 1px solid #666;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--focus-outline-color);
+  box-shadow: 0 0 0 1px var(--focus-outline-color);
+}
+
+/* ===============================
+   반응형 접근성
+   =============================== */
+
+/* 터치 대상 크기 확보 */
+@media (pointer: coarse) {
+  button,
+  input,
+  select,
+  textarea,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ===============================
+   다크 모드 접근성
+   =============================== */
+
+[data-theme="dark"] {
+  --focus-outline-color: #60a5fa;
+}
+
+[data-theme="dark"] .high-contrast {
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --background-primary: #000000;
+  --background-secondary: #1a1a1a;
+  --border-color: #ffffff;
+  --link-color: #99ccff;
+  --link-hover-color: #ffff00;
+  --button-background: #000000;
+  --button-border: #ffffff;
+  --button-text: #ffffff;
+}
+
+/* ===============================
+   유틸리티 클래스
+   =============================== */
+
+.visually-hidden {
+  @apply sr-only;
+}
+
+.focus-visible-only:not(:focus-visible) {
+  outline: none;
+}
+
+.reduced-motion {
+  animation: none !important;
+  transition: none !important;
+}
+
+.enhanced-contrast {
+  filter: contrast(1.2);
+}
+
+.large-text {
+  font-size: 1.2em;
+  line-height: 1.5;
+}
+
+.accessible-spacing {
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+}
