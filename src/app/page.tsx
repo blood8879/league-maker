@@ -2,17 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation"; // 임시 비활성화
 import { useAuthStore } from "@/stores/authStore";
 import { createClient } from "@/utils/supabase/client";
-import { getProfile } from "@/lib/profile";
+// import { getProfile } from "@/lib/profile"; // 임시 비활성화
 import Image from "next/image";
 
 export default function Home() {
-  const router = useRouter();
+  // const router = useRouter(); // 임시 비활성화
   const [connectionStatus, setConnectionStatus] =
     useState<string>("연결 확인 중...");
-  const [checkingProfile, setCheckingProfile] = useState(false);
+  // const [checkingProfile, setCheckingProfile] = useState(false); // 임시 비활성화
   const { user, isLoading, initialize, signOut } = useAuthStore();
 
   useEffect(() => {
@@ -38,15 +38,24 @@ export default function Home() {
     testConnection();
   }, [initialize]);
 
-  // 로그인 후 프로필 상태 확인 및 리다이렉트
+  // 임시로 프로필 체크 비활성화 - 무한 루프 디버깅용
+  /*
   useEffect(() => {
+    let isMounted = true;
+
     const checkProfileAndRedirect = async () => {
       // 로그인되지 않았거나 로딩 중이면 체크하지 않음
-      if (!user || isLoading || checkingProfile) return;
+      if (!user || isLoading) return;
+
+      // 이미 체크 중이면 중복 실행 방지
+      if (checkingProfile) return;
 
       setCheckingProfile(true);
       try {
         const { profile } = await getProfile(user.id);
+
+        // 컴포넌트가 언마운트되었으면 상태 업데이트 안함
+        if (!isMounted) return;
 
         // 프로필이 없으면 프로필 설정 페이지로 리다이렉트
         if (!profile) {
@@ -59,20 +68,30 @@ export default function Home() {
       } catch (error) {
         console.error("Profile check error:", error);
         // 에러가 발생해도 프로필 설정으로 안내
-        router.push("/profile/setup");
+        if (isMounted) {
+          router.push("/profile/setup");
+        }
       } finally {
-        setCheckingProfile(false);
+        if (isMounted) {
+          setCheckingProfile(false);
+        }
       }
     };
 
     checkProfileAndRedirect();
-  }, [user, isLoading, router, checkingProfile]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user, isLoading, router]);
+  */
 
   const handleSignOut = async () => {
     await signOut();
   };
 
-  // 프로필 확인 중이면 로딩 표시
+  // 프로필 확인 중이면 로딩 표시 (임시 비활성화)
+  /*
   if (checkingProfile) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -83,6 +102,7 @@ export default function Home() {
       </div>
     );
   }
+  */
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -112,7 +132,7 @@ export default function Home() {
           </div>
 
           {/* 사용자 정보 */}
-          {user && !checkingProfile && (
+          {user && (
             <div className="bg-blue-50 p-4 rounded-lg mt-4">
               <h3 className="text-lg font-semibold mb-2">환영합니다!</h3>
               <p className="text-gray-700">이메일: {user.email}</p>

@@ -52,8 +52,7 @@ export default function ProfileEditPage() {
     }
   };
 
-  const handleProfileUpdate = (updatedProfile: UserProfile) => {
-    setProfile(updatedProfile);
+  const handleProfileUpdate = () => {
     // 프로필 업데이트 후 홈으로 이동하거나 이전 페이지로 이동
     router.push("/");
   };
@@ -111,7 +110,7 @@ export default function ProfileEditPage() {
       <div className="container mx-auto px-4">
         <ProfileEditForm
           profile={profile}
-          onUpdate={handleProfileUpdate}
+          onSuccess={handleProfileUpdate}
           onCancel={handleCancel}
         />
       </div>

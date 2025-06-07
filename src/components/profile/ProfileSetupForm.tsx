@@ -297,7 +297,6 @@ export default function ProfileSetupForm({
             }`}
             placeholder="010-1234-5678"
             inputMode="numeric"
-            pattern="010-[0-9]{4}-[0-9]{4}"
             maxLength={13}
             required
           />

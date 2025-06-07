@@ -5,7 +5,12 @@ import { updateProfile } from "@/lib/profile";
 import {
   validateProfileForm,
   hasValidationErrors,
-  formatPhoneNumber,
+  preventNonNumericInput,
+  handlePhonePaste,
+  handlePhoneInputEvent,
+  formatPhoneInput,
+  normalizePhoneNumber,
+  formatPhoneForDisplay,
 } from "@/utils/validation";
 import type {
   ProfileFormData,
@@ -32,7 +37,7 @@ export default function ProfileEditForm({
 }: ProfileEditFormProps) {
   const [formData, setFormData] = useState<ProfileFormData>({
     name: profile.name,
-    phone: profile.phone,
+    phone: formatPhoneForDisplay(profile.phone), // DB에서 가져온 전화번호를 표시용으로 포맷팅
     position: profile.position,
   });
   const [errors, setErrors] = useState<ProfileValidationErrors>({});
@@ -52,11 +57,17 @@ export default function ProfileEditForm({
 
     // 전화번호 자동 포맷팅
     if (field === "phone" && value) {
-      const formatted = formatPhoneNumber(value);
+      const formatted = formatPhoneInput(value);
       if (formatted !== value) {
         setFormData((prev) => ({ ...prev, phone: formatted }));
       }
     }
+  };
+
+  // 전화번호 전용 핸들러
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatPhoneInput(e.target.value);
+    handleInputChange("phone", formattedValue);
   };
 
   // 포지션 선택 핸들러
@@ -125,9 +136,15 @@ export default function ProfileEditForm({
     setIsSubmitting(true);
 
     try {
+      // DB 저장용으로 전화번호 정규화
+      const normalizedFormData = {
+        ...formData,
+        phone: normalizePhoneNumber(formData.phone),
+      };
+
       const { profile: updatedProfile, error } = await updateProfile(
         profile.id,
-        formData
+        normalizedFormData
       );
 
       if (error) {
@@ -187,14 +204,27 @@ export default function ProfileEditForm({
             전화번호 *
           </label>
           <input
-            type="tel"
+            type="text"
             id="phone"
             value={formData.phone}
-            onChange={(e) => handleInputChange("phone", e.target.value)}
+            onChange={handlePhoneChange}
+            onKeyDown={preventNonNumericInput}
+            onPaste={(e) =>
+              handlePhonePaste(e, formData.phone, (value) =>
+                handleInputChange("phone", value)
+              )
+            }
+            onInput={(e) =>
+              handlePhoneInputEvent(e, (value) =>
+                handleInputChange("phone", value)
+              )
+            }
             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               errors.phone ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="010-1234-5678"
+            inputMode="numeric"
+            maxLength={13}
             required
           />
           {errors.phone && (
