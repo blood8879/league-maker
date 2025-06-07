@@ -1108,6 +1108,112 @@
           "testStrategy": "Conduct usability testing with target users and verify all UI elements trigger the correct backend processes."
         }
       ]
+    },
+    {
+      "id": 27,
+      "title": "QR Code Integration System for External Teams and Mercenaries",
+      "description": "Implement a comprehensive QR code-based authentication system that allows external teams and mercenaries to integrate their historical records when joining the platform as registered users.",
+      "details": "Create a multi-component integration system with the following key implementations:\n\n1. **Matching Code Generation Service**: Develop a unique code generator that creates cryptographically secure matching codes for external teams and mercenaries. Implement QR code generation using libraries like qrcode.js, storing codes in a secure mapping table with expiration timestamps.\n\n2. **Integration Request Interface**: Build a user-friendly form where new registrants can input matching codes or scan QR codes. Create validation logic to verify code authenticity and check expiration status. Implement real-time feedback for code validation.\n\n3. **Bidirectional Authentication System**: Develop a two-step approval process where the original team administrator must approve the integration request. Create notification system to alert administrators of pending integration requests. Implement secure token-based authentication for the approval process.\n\n4. **Data Integration Engine**: Build comprehensive data migration logic that safely transfers match records, statistics, attendance data, and performance metrics from external/mercenary profiles to registered user accounts. Implement conflict resolution algorithms for overlapping data periods.\n\n5. **Audit and Rollback System**: Create detailed logging for all integration operations including timestamps, data transferred, and approval chains. Implement rollback functionality that can safely reverse integrations if issues are discovered. Store backup snapshots before each integration.\n\n6. **Data Integrity Verification**: Develop validation checks to ensure statistical consistency after integration (total goals, match counts, etc.). Implement automated conflict detection for impossible scenarios (same player in multiple matches simultaneously). Create data reconciliation reports for administrators.\n\nTechnical considerations: Use database transactions for atomic operations, implement rate limiting for integration requests, create secure API endpoints with proper authentication, and ensure GDPR compliance for data transfers.",
+      "testStrategy": "Verify QR code generation produces valid, scannable codes that correctly link to matching records. Test the complete integration workflow from code generation through final data merge, ensuring all historical records transfer accurately. Validate the bidirectional authentication by testing approval/rejection scenarios and confirming proper notification delivery. Test data integrity by creating scenarios with conflicting records and verifying resolution mechanisms work correctly. Verify rollback functionality by performing integrations and successfully reversing them without data loss. Test edge cases including expired codes, duplicate integration attempts, and concurrent approval requests. Perform load testing on the integration system with multiple simultaneous requests. Validate audit logs capture all required information and can be used for compliance reporting.",
+      "status": "pending",
+      "dependencies": [
+        12,
+        19
+      ],
+      "priority": "medium",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Design QR Code Authentication Architecture",
+          "description": "Create a comprehensive architecture design for the QR code authentication system that aligns with security best practices and supports external team integration.",
+          "dependencies": [],
+          "details": "Define the overall system architecture including authentication flow, security protocols, and data storage requirements. Specify PIN length (8-20 digits) and QR code lifetime (recommended 200-365 days). Include components for QR code generation, verification, and secure communication channels between primary and secondary devices. Consider implementing the five-state SQRAP protocol: awaiting login request, login pending, QR code displayed, QR code payload verified, and login complete.",
+          "status": "pending",
+          "testStrategy": "Conduct architecture review sessions with security experts to validate the design against industry standards and potential vulnerabilities."
+        },
+        {
+          "id": 2,
+          "title": "Implement Secure QR Code Generation Service",
+          "description": "Develop the service responsible for generating cryptographically secure QR codes with appropriate expiration policies and secure storage mechanisms.",
+          "dependencies": [
+            1
+          ],
+          "details": "Build a service using qrcode.js that generates unique, cryptographically secure QR codes for external teams and mercenaries. Implement secure storage in a mapping table with expiration timestamps. Ensure QR codes contain necessary authentication data while maintaining security. Include functionality to replace lost or stolen QR codes. Implement configurable PIN length and QR code lifetime settings as defined in the architecture.",
+          "status": "pending",
+          "testStrategy": "Test QR code generation with various parameters, verify cryptographic strength, and validate proper expiration handling."
+        },
+        {
+          "id": 3,
+          "title": "Develop Integration Request Interface",
+          "description": "Create a user-friendly interface for new registrants to input matching codes or scan QR codes with real-time validation feedback.",
+          "dependencies": [
+            2
+          ],
+          "details": "Build a responsive web interface that allows users to either manually input matching codes or scan QR codes using device cameras. Implement client-side and server-side validation to verify code authenticity and check expiration status. Provide real-time feedback on validation status and clear error messages. Ensure the interface works across different devices and browsers. Include accessibility features for users with disabilities.",
+          "status": "pending",
+          "testStrategy": "Conduct usability testing with representative users, test across multiple devices and browsers, and verify validation logic with valid and invalid codes."
+        },
+        {
+          "id": 4,
+          "title": "Create Bidirectional Authentication System",
+          "description": "Implement a secure two-step approval process requiring administrator verification for integration requests with appropriate notifications.",
+          "dependencies": [
+            3
+          ],
+          "details": "Develop a system where team administrators must approve integration requests from external teams and mercenaries. Create a notification system using email, SMS, or in-app alerts to inform administrators of pending requests. Implement secure token-based authentication for the approval process. Design the system to prevent unauthorized approvals and include timeout mechanisms for pending requests. Apply conditional access policies as an additional security layer, such as requiring phishing-resistant authentication for administrators approving requests from outside trusted networks.",
+          "status": "pending",
+          "testStrategy": "Test the complete approval workflow, verify notification delivery, and conduct security testing to ensure the approval process cannot be bypassed."
+        },
+        {
+          "id": 5,
+          "title": "Build Data Integration Engine",
+          "description": "Develop the core data migration logic to transfer external records to registered user accounts with conflict resolution capabilities.",
+          "dependencies": [
+            4
+          ],
+          "details": "Implement a robust data migration engine that transfers match records, statistics, attendance data, and performance metrics from external/mercenary profiles to registered user accounts. Create conflict resolution algorithms to handle overlapping data periods. Use database transactions for atomic operations to ensure data integrity. Implement data mapping rules to handle different data formats from external sources. Include progress tracking for long-running integrations and support for partial migrations.",
+          "status": "pending",
+          "testStrategy": "Test with various data scenarios including edge cases, verify transaction integrity, and validate that all data is correctly transferred without corruption."
+        },
+        {
+          "id": 6,
+          "title": "Implement Audit and Rollback System",
+          "description": "Create a comprehensive logging and rollback mechanism for all integration operations with backup snapshots.",
+          "dependencies": [
+            5
+          ],
+          "details": "Develop detailed logging for all integration operations including timestamps, data transferred, and approval chains. Store logs in a tamper-evident format. Implement rollback functionality that can safely reverse integrations if issues are discovered. Create backup snapshots before each integration operation. Design the system to maintain GDPR compliance for all data transfers and storage. Include mechanisms to purge sensitive data from logs according to retention policies.",
+          "status": "pending",
+          "testStrategy": "Test rollback functionality with various integration scenarios, verify log integrity, and validate that backups can be successfully restored."
+        },
+        {
+          "id": 7,
+          "title": "Develop Data Integrity Verification System",
+          "description": "Create validation checks and conflict detection mechanisms to ensure statistical consistency after integration.",
+          "dependencies": [
+            5
+          ],
+          "details": "Implement validation checks to ensure statistical consistency after integration (total goals, match counts, etc.). Develop automated conflict detection for impossible scenarios such as the same player appearing in multiple matches simultaneously. Create data reconciliation reports for administrators to review integration results. Implement a quarantine mechanism for suspicious data that requires manual review. Design the system to handle edge cases such as partial match data or incomplete statistics.",
+          "status": "pending",
+          "testStrategy": "Test with intentionally conflicting data sets, verify detection of statistical anomalies, and validate reconciliation report accuracy."
+        },
+        {
+          "id": 8,
+          "title": "Deploy and Optimize QR Code Integration System",
+          "description": "Finalize system deployment with security hardening, performance optimization, and comprehensive documentation.",
+          "dependencies": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "details": "Deploy the complete QR code integration system with appropriate security hardening. Implement rate limiting for integration requests to prevent abuse. Create secure API endpoints with proper authentication. Optimize performance for high-volume periods. Develop comprehensive documentation for system administrators and end users. Conduct security audits and penetration testing. Implement monitoring and alerting for system health and security events. Ensure the system meets all GDPR compliance requirements for data transfers and storage.",
+          "status": "pending",
+          "testStrategy": "Conduct load testing to verify system performance under stress, perform security penetration testing, and validate the system against compliance requirements."
+        }
+      ]
     }
   ]
 }

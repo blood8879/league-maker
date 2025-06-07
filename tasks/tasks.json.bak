@@ -308,8 +308,49 @@
       "dependencies": [
         4
       ],
-      "status": "pending",
-      "subtasks": []
+      "status": "done",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Profile Creation Form and Validation",
+          "description": "Develop the initial profile creation form with comprehensive field validation, including required fields, data format checks, and real-time validation feedback for new user registration.",
+          "dependencies": [],
+          "details": "Create form components with input fields for basic profile information (name, email, phone, etc.), implement client-side and server-side validation rules, add error handling and user feedback mechanisms, and ensure accessibility compliance.",
+          "status": "done"
+        },
+        {
+          "id": 2,
+          "title": "Profile Editing Interface",
+          "description": "Build the profile editing interface that allows existing users to modify their profile information with intuitive UI/UX design and proper validation controls.",
+          "dependencies": [
+            1
+          ],
+          "details": "Design editable profile forms with pre-populated data, implement field-level editing capabilities, add save/cancel functionality, include confirmation dialogs for critical changes, and ensure consistent validation with creation form.",
+          "status": "done"
+        },
+        {
+          "id": 3,
+          "title": "Profile Data Persistence and Updates",
+          "description": "Implement backend data persistence layer for profile information including database operations, API endpoints, and data synchronization mechanisms.",
+          "dependencies": [
+            1
+          ],
+          "details": "Create database schema for profile data, develop CRUD API endpoints, implement data validation at database level, add transaction handling for data integrity, and create data migration scripts if needed.\n<info added on 2025-06-01T08:06:35.481Z>\n✅ 프로필 데이터 지속성 기능 구현 완료\n\n구현된 기능들:\n- createProfile: 새 사용자 프로필 생성 함수\n- getProfile: 사용자 프로필 조회 함수  \n- updateProfile: 프로필 업데이트 함수\n- checkNicknameAvailability: 닉네임 중복 확인 함수\n\n모든 함수들이 적절한 에러 핸들링과 함께 구현되었으며, Supabase와 연동되어 데이터베이스 CRUD 작업을 수행합니다. 트랜잭션 무결성도 Supabase의 PostgreSQL 기본 기능으로 보장됩니다.\n</info added on 2025-06-01T08:06:35.481Z>",
+          "status": "done"
+        },
+        {
+          "id": 4,
+          "title": "Profile Completion Workflow for New Users",
+          "description": "Design and implement a guided profile completion workflow that helps new users through the profile setup process with progress tracking and completion incentives.",
+          "dependencies": [
+            1,
+            2,
+            3
+          ],
+          "details": "Create multi-step profile completion wizard, implement progress indicators and completion tracking, add optional vs required field guidance, design completion rewards/notifications, and integrate with onboarding flow.\n<info added on 2025-06-01T08:09:55.426Z>\n✅ Profile completion workflow implementation completed\n\nImplemented features:\n1. **Progress Indicator**: Real-time progress bar displaying profile completion percentage\n2. **Field Status Display**: Visual completion status for each input field (✓, *, (optional))\n3. **Onboarding Component**: 4-step welcome guide for new users\n   - League Maker introduction\n   - Team features explanation  \n   - Match management guide\n   - Profile setup initiation\n4. **Smart Workflow**: \n   - Onboarding state saved to localStorage for direct profile form access on return visits\n   - Dynamic button text and activation state based on completion level\n   - Step-by-step guidance messages\n5. **Completion Tracking Function**: Utility to calculate profile completion and identify missing fields\n6. **User Experience Improvements**:\n   - Congratulatory message and next steps guidance upon completion\n   - Field-specific help text\n   - Smooth animations and visual feedback\n\nNew users now experience a complete workflow: onboarding → profile setup → completion celebration.\n</info added on 2025-06-01T08:09:55.426Z>",
+          "status": "done"
+        }
+      ]
     },
     {
       "id": 6,
@@ -1067,6 +1108,20 @@
           "testStrategy": "Conduct usability testing with target users and verify all UI elements trigger the correct backend processes."
         }
       ]
+    },
+    {
+      "id": 27,
+      "title": "QR Code Integration System for External Teams and Mercenaries",
+      "description": "Implement a comprehensive QR code-based authentication system that allows external teams and mercenaries to integrate their historical records when joining the platform as registered users.",
+      "details": "Create a multi-component integration system with the following key implementations:\n\n1. **Matching Code Generation Service**: Develop a unique code generator that creates cryptographically secure matching codes for external teams and mercenaries. Implement QR code generation using libraries like qrcode.js, storing codes in a secure mapping table with expiration timestamps.\n\n2. **Integration Request Interface**: Build a user-friendly form where new registrants can input matching codes or scan QR codes. Create validation logic to verify code authenticity and check expiration status. Implement real-time feedback for code validation.\n\n3. **Bidirectional Authentication System**: Develop a two-step approval process where the original team administrator must approve the integration request. Create notification system to alert administrators of pending integration requests. Implement secure token-based authentication for the approval process.\n\n4. **Data Integration Engine**: Build comprehensive data migration logic that safely transfers match records, statistics, attendance data, and performance metrics from external/mercenary profiles to registered user accounts. Implement conflict resolution algorithms for overlapping data periods.\n\n5. **Audit and Rollback System**: Create detailed logging for all integration operations including timestamps, data transferred, and approval chains. Implement rollback functionality that can safely reverse integrations if issues are discovered. Store backup snapshots before each integration.\n\n6. **Data Integrity Verification**: Develop validation checks to ensure statistical consistency after integration (total goals, match counts, etc.). Implement automated conflict detection for impossible scenarios (same player in multiple matches simultaneously). Create data reconciliation reports for administrators.\n\nTechnical considerations: Use database transactions for atomic operations, implement rate limiting for integration requests, create secure API endpoints with proper authentication, and ensure GDPR compliance for data transfers.",
+      "testStrategy": "Verify QR code generation produces valid, scannable codes that correctly link to matching records. Test the complete integration workflow from code generation through final data merge, ensuring all historical records transfer accurately. Validate the bidirectional authentication by testing approval/rejection scenarios and confirming proper notification delivery. Test data integrity by creating scenarios with conflicting records and verifying resolution mechanisms work correctly. Verify rollback functionality by performing integrations and successfully reversing them without data loss. Test edge cases including expired codes, duplicate integration attempts, and concurrent approval requests. Perform load testing on the integration system with multiple simultaneous requests. Validate audit logs capture all required information and can be used for compliance reporting.",
+      "status": "pending",
+      "dependencies": [
+        12,
+        19
+      ],
+      "priority": "medium",
+      "subtasks": []
     }
   ]
 }

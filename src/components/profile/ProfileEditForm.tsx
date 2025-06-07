@@ -1,15 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useAuthStore } from "@/stores/authStore";
-import { updateProfile, checkNicknameAvailability } from "@/lib/profile";
+import { useState } from "react";
+import { updateProfile } from "@/lib/profile";
 import {
   validateProfileForm,
   hasValidationErrors,
   formatPhoneNumber,
 } from "@/utils/validation";
 import type {
-  UserProfile,
   ProfileFormData,
   ProfileValidationErrors,
   Position,
@@ -17,71 +15,28 @@ import type {
 import { POSITIONS } from "@/types/profile";
 
 interface ProfileEditFormProps {
-  profile: UserProfile;
-  onUpdate?: (updatedProfile: UserProfile) => void;
-  onCancel?: () => void;
+  profile: {
+    id: string;
+    name: string;
+    phone: string;
+    position: Position[];
+  };
+  onSuccess: () => void;
+  onCancel: () => void;
 }
 
 export default function ProfileEditForm({
   profile,
-  onUpdate,
+  onSuccess,
   onCancel,
 }: ProfileEditFormProps) {
-  const { user } = useAuthStore();
   const [formData, setFormData] = useState<ProfileFormData>({
     name: profile.name,
-    nickname: profile.nickname,
-    phone: profile.phone || "",
-    position: profile.position,
-  });
-  const [originalData] = useState<ProfileFormData>({
-    name: profile.name,
-    nickname: profile.nickname,
-    phone: profile.phone || "",
+    phone: profile.phone,
     position: profile.position,
   });
   const [errors, setErrors] = useState<ProfileValidationErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [nicknameChecking, setNicknameChecking] = useState(false);
-  const [nicknameAvailable, setNicknameAvailable] = useState<boolean | null>(
-    null
-  );
-  const [hasChanges, setHasChanges] = useState(false);
-
-  // 변경사항 확인
-  useEffect(() => {
-    const changed = Object.keys(formData).some(
-      (key) =>
-        formData[key as keyof ProfileFormData] !==
-        originalData[key as keyof ProfileFormData]
-    );
-    setHasChanges(changed);
-  }, [formData, originalData]);
-
-  // 닉네임 중복 확인 (닉네임이 변경된 경우에만)
-  useEffect(() => {
-    if (formData.nickname === originalData.nickname) {
-      setNicknameAvailable(null);
-      return;
-    }
-
-    if (!formData.nickname.trim() || formData.nickname.length < 2) {
-      setNicknameAvailable(null);
-      return;
-    }
-
-    const timeoutId = setTimeout(async () => {
-      setNicknameChecking(true);
-      const { available } = await checkNicknameAvailability(
-        formData.nickname,
-        user?.id
-      );
-      setNicknameAvailable(available);
-      setNicknameChecking(false);
-    }, 500);
-
-    return () => clearTimeout(timeoutId);
-  }, [formData.nickname, originalData.nickname, user?.id]);
 
   const handleInputChange = (field: keyof ProfileFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -104,29 +59,63 @@ export default function ProfileEditForm({
     }
   };
 
+  // 포지션 선택 핸들러
+  const handlePositionChange = (position: Position) => {
+    setFormData((prev) => {
+      const currentPositions = prev.position;
+      const isSelected = currentPositions.includes(position);
+
+      let newPositions: Position[];
+      if (isSelected) {
+        // 선택 해제
+        newPositions = currentPositions.filter((p) => p !== position);
+      } else {
+        // 선택 추가 (제한 없음)
+        newPositions = [...currentPositions, position];
+      }
+
+      return { ...prev, position: newPositions };
+    });
+
+    // 포지션 관련 오류 제거
+    if (errors.position) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors.position;
+        return newErrors;
+      });
+    }
+  };
+
+  // 전체선택/전체해제 핸들러
+  const handleSelectAllPositions = () => {
+    setFormData((prev) => {
+      const allPositions = POSITIONS.map((p) => p.value);
+      const isAllSelected = allPositions.every((pos) =>
+        prev.position.includes(pos)
+      );
+
+      return {
+        ...prev,
+        position: isAllSelected ? [] : allPositions,
+      };
+    });
+
+    // 포지션 관련 오류 제거
+    if (errors.position) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors.position;
+        return newErrors;
+      });
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!user) {
-      alert("로그인이 필요합니다.");
-      return;
-    }
-
-    if (!hasChanges) {
-      alert("변경된 내용이 없습니다.");
-      return;
-    }
-
     // 유효성 검사
     const validationErrors = validateProfileForm(formData);
-
-    // 닉네임 중복 확인 (닉네임이 변경된 경우)
-    if (
-      formData.nickname !== originalData.nickname &&
-      nicknameAvailable === false
-    ) {
-      validationErrors.nickname = "이미 사용 중인 닉네임입니다.";
-    }
 
     if (hasValidationErrors(validationErrors)) {
       setErrors(validationErrors);
@@ -136,66 +125,33 @@ export default function ProfileEditForm({
     setIsSubmitting(true);
 
     try {
-      // 변경된 필드만 업데이트
-      const changedFields: Partial<ProfileFormData> = {};
-      if (formData.name !== originalData.name) {
-        changedFields.name = formData.name;
-      }
-      if (formData.nickname !== originalData.nickname) {
-        changedFields.nickname = formData.nickname;
-      }
-      if (formData.phone !== originalData.phone) {
-        changedFields.phone = formData.phone;
-      }
-      if (formData.position !== originalData.position) {
-        changedFields.position = formData.position;
-      }
-
       const { profile: updatedProfile, error } = await updateProfile(
-        user.id,
-        changedFields
+        profile.id,
+        formData
       );
 
       if (error) {
-        alert(`프로필 업데이트 실패: ${error}`);
+        alert(`프로필 수정 실패: ${error}`);
         return;
       }
 
       if (updatedProfile) {
-        alert("프로필이 성공적으로 업데이트되었습니다!");
-        if (onUpdate) {
-          onUpdate(updatedProfile);
-        }
+        alert("프로필이 성공적으로 수정되었습니다!");
+        onSuccess();
       }
     } catch (error) {
-      alert("프로필 업데이트 중 오류가 발생했습니다.");
+      alert("프로필 수정 중 오류가 발생했습니다.");
       console.error("Profile update error:", error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleCancel = () => {
-    if (hasChanges) {
-      if (confirm("변경사항이 저장되지 않습니다. 정말 취소하시겠습니까?")) {
-        setFormData(originalData);
-        setErrors({});
-        if (onCancel) {
-          onCancel();
-        }
-      }
-    } else {
-      if (onCancel) {
-        onCancel();
-      }
-    }
-  };
-
   return (
-    <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">프로필 편집</h2>
-        <p className="text-gray-600 mt-2">프로필 정보를 수정할 수 있습니다</p>
+        <h2 className="text-2xl font-bold text-gray-900">프로필 수정</h2>
+        <p className="text-gray-600 mt-2">프로필 정보를 수정하세요</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -222,63 +178,13 @@ export default function ProfileEditForm({
           )}
         </div>
 
-        {/* 닉네임 */}
-        <div>
-          <label
-            htmlFor="nickname"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            닉네임 *
-          </label>
-          <div className="relative">
-            <input
-              type="text"
-              id="nickname"
-              value={formData.nickname}
-              onChange={(e) => handleInputChange("nickname", e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.nickname
-                  ? "border-red-500"
-                  : nicknameAvailable === false
-                  ? "border-red-500"
-                  : nicknameAvailable === true
-                  ? "border-green-500"
-                  : "border-gray-300"
-              }`}
-              placeholder="게임에서 사용할 닉네임"
-            />
-            {nicknameChecking && (
-              <div className="absolute right-3 top-2.5">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-              </div>
-            )}
-          </div>
-          {errors.nickname && (
-            <p className="text-red-500 text-sm mt-1">{errors.nickname}</p>
-          )}
-          {formData.nickname !== originalData.nickname &&
-            nicknameAvailable === true &&
-            !errors.nickname && (
-              <p className="text-green-500 text-sm mt-1">
-                사용 가능한 닉네임입니다
-              </p>
-            )}
-          {formData.nickname !== originalData.nickname &&
-            nicknameAvailable === false &&
-            !errors.nickname && (
-              <p className="text-red-500 text-sm mt-1">
-                이미 사용 중인 닉네임입니다
-              </p>
-            )}
-        </div>
-
         {/* 전화번호 */}
         <div>
           <label
             htmlFor="phone"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            전화번호 (선택사항)
+            전화번호 *
           </label>
           <input
             type="tel"
@@ -289,6 +195,7 @@ export default function ProfileEditForm({
               errors.phone ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="010-1234-5678"
+            required
           />
           {errors.phone && (
             <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
@@ -297,54 +204,82 @@ export default function ProfileEditForm({
 
         {/* 포지션 */}
         <div>
-          <label
-            htmlFor="position"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             선호 포지션 *
           </label>
-          <select
-            id="position"
-            value={formData.position}
-            onChange={(e) =>
-              handleInputChange("position", e.target.value as Position)
-            }
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          <div
+            className={`border rounded-md p-3 ${
               errors.position ? "border-red-500" : "border-gray-300"
             }`}
           >
-            {POSITIONS.map((position) => (
-              <option key={position.value} value={position.value}>
-                {position.label}
-              </option>
-            ))}
-          </select>
+            {/* 전체선택 버튼 */}
+            <div className="mb-3 pb-2 border-b border-gray-200">
+              <button
+                type="button"
+                onClick={handleSelectAllPositions}
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                {POSITIONS.every((pos) => formData.position.includes(pos.value))
+                  ? "전체 해제"
+                  : "전체 선택"}
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {POSITIONS.map((position) => (
+                <label
+                  key={position.value}
+                  className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded"
+                >
+                  <input
+                    type="checkbox"
+                    checked={formData.position.includes(position.value)}
+                    onChange={() => handlePositionChange(position.value)}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <span className="text-sm text-gray-700">
+                    {position.label}
+                  </span>
+                </label>
+              ))}
+            </div>
+            {formData.position.length > 0 && (
+              <div className="mt-2 pt-2 border-t border-gray-200">
+                <p className="text-xs text-gray-600">
+                  선택된 포지션: {formData.position.length}개
+                </p>
+              </div>
+            )}
+          </div>
           {errors.position && (
             <p className="text-red-500 text-sm mt-1">{errors.position}</p>
           )}
+          <p className="text-xs text-gray-500 mt-1">
+            플레이 가능한 포지션을 선택해주세요 (최소 1개 이상)
+          </p>
         </div>
 
-        {/* 버튼들 */}
+        {/* 버튼 */}
         <div className="flex space-x-3 pt-4">
           <button
             type="button"
-            onClick={handleCancel}
-            className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            onClick={onCancel}
+            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             취소
           </button>
           <button
             type="submit"
-            disabled={
-              isSubmitting ||
-              !hasChanges ||
-              nicknameChecking ||
-              (formData.nickname !== originalData.nickname &&
-                nicknameAvailable === false)
-            }
+            disabled={isSubmitting}
             className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? "저장 중..." : "저장"}
+            {isSubmitting ? (
+              <span className="flex items-center justify-center">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                수정 중...
+              </span>
+            ) : (
+              "수정하기"
+            )}
           </button>
         </div>
       </form>

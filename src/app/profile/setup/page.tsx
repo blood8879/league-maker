@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 import { getProfile } from "@/lib/profile";
-import ProfileSetupForm from "@/components/profile/ProfileSetupForm";
+import ProfileSetupContainer from "@/components/profile/ProfileSetupContainer";
 import WelcomeOnboarding from "@/components/profile/WelcomeOnboarding";
 
 export default function ProfileSetupPage() {
@@ -100,7 +100,7 @@ export default function ProfileSetupPage() {
       {showOnboarding ? (
         <WelcomeOnboarding onStart={handleOnboardingComplete} />
       ) : (
-        <ProfileSetupForm onComplete={handleProfileComplete} />
+        <ProfileSetupContainer onComplete={handleProfileComplete} />
       )}
     </div>
   );

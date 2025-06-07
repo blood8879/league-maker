@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 import { getProfile } from "@/lib/profile";
 import type { UserProfile } from "@/types/profile";
+import { POSITIONS } from "@/types/profile";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -88,7 +89,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-gray-700">
-                안녕하세요, {profile.name || profile.nickname}님!
+                안녕하세요, {profile.name}님!
               </span>
               <button
                 onClick={handleSignOut}
@@ -121,12 +122,16 @@ export default function DashboardPage() {
                     <span className="font-medium">이름:</span> {profile.name}
                   </p>
                   <p>
-                    <span className="font-medium">닉네임:</span>{" "}
-                    {profile.nickname}
-                  </p>
-                  <p>
                     <span className="font-medium">포지션:</span>{" "}
-                    {profile.position}
+                    {profile.position.length > 0
+                      ? profile.position
+                          .map(
+                            (pos) =>
+                              POSITIONS.find((p) => p.value === pos)?.label ||
+                              pos
+                          )
+                          .join(", ")
+                      : "설정되지 않음"}
                   </p>
                   {profile.phone && (
                     <p>

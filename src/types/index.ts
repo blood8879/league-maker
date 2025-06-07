@@ -1,9 +1,12 @@
+// Position type from profile module
+import type { Position } from "@/types/profile";
+
 // User related types
 export interface User {
   id: string;
   email: string;
   name?: string;
-  position?: Position;
+  position?: Position[]; // 선택적이지만 배열일 때는 null이 아님
   avatar_url?: string;
   created_at: string;
   updated_at: string;
@@ -53,12 +56,6 @@ export interface MatchAttendance {
 }
 
 // Enums
-export enum Position {
-  GOALKEEPER = "goalkeeper",
-  DEFENDER = "defender",
-  MIDFIELDER = "midfielder",
-  FORWARD = "forward",
-}
 
 export enum TeamRole {
   OWNER = "owner", // 구단주

@@ -1,13 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
-import { createProfile, checkNicknameAvailability } from "@/lib/profile";
+import { createProfile } from "@/lib/profile";
 import {
   validateProfileForm,
   hasValidationErrors,
-  formatPhoneNumber,
+  preventNonNumericInput,
+  handlePhonePaste,
+  handlePhoneInputEvent,
+  formatPhoneInput,
+  normalizePhoneNumber,
 } from "@/utils/validation";
 import type {
   ProfileFormData,
@@ -21,17 +25,13 @@ interface ProfileSetupFormProps {
 }
 
 // 프로필 완성도 계산 함수
-const calculateCompletionPercentage = (
-  formData: ProfileFormData,
-  nicknameAvailable: boolean | null
-): number => {
+const calculateCompletionPercentage = (formData: ProfileFormData): number => {
   let completed = 0;
-  const requiredFields = 4; // name, nickname, position, phone (필수로 변경)
+  const requiredFields = 3; // name, position, phone
 
   if (formData.name.trim()) completed += 1;
-  if (formData.nickname.trim() && nicknameAvailable === true) completed += 1;
-  if (formData.position) completed += 1;
-  if (formData.phone.trim()) completed += 1; // 필수값으로 변경
+  if (formData.position && formData.position.length > 0) completed += 1;
+  if (formData.phone.trim()) completed += 1;
 
   return Math.round((completed / requiredFields) * 100);
 };
@@ -88,39 +88,14 @@ export default function ProfileSetupForm({
   const { user } = useAuthStore();
   const [formData, setFormData] = useState<ProfileFormData>({
     name: "",
-    nickname: "",
     phone: "",
-    position: "any", // 기본값을 "any"로 변경
+    position: [], // 빈 배열로 초기화
   });
   const [errors, setErrors] = useState<ProfileValidationErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [nicknameChecking, setNicknameChecking] = useState(false);
-  const [nicknameAvailable, setNicknameAvailable] = useState<boolean | null>(
-    null
-  );
 
   // 완성도 계산
-  const completionPercentage = calculateCompletionPercentage(
-    formData,
-    nicknameAvailable
-  );
-
-  // 닉네임 중복 확인 디바운스
-  useEffect(() => {
-    if (!formData.nickname.trim() || formData.nickname.length < 2) {
-      setNicknameAvailable(null);
-      return;
-    }
-
-    const timeoutId = setTimeout(async () => {
-      setNicknameChecking(true);
-      const { available } = await checkNicknameAvailability(formData.nickname);
-      setNicknameAvailable(available);
-      setNicknameChecking(false);
-    }, 500);
-
-    return () => clearTimeout(timeoutId);
-  }, [formData.nickname]);
+  const completionPercentage = calculateCompletionPercentage(formData);
 
   const handleInputChange = (field: keyof ProfileFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -136,10 +111,68 @@ export default function ProfileSetupForm({
 
     // 전화번호 자동 포맷팅
     if (field === "phone" && value) {
-      const formatted = formatPhoneNumber(value);
+      const formatted = formatPhoneInput(value); // 더 강력한 포맷팅 함수 사용
       if (formatted !== value) {
         setFormData((prev) => ({ ...prev, phone: formatted }));
       }
+    }
+  };
+
+  // 전화번호 전용 핸들러
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatPhoneInput(e.target.value);
+    handleInputChange("phone", formattedValue);
+  };
+
+  // 포지션 선택 핸들러
+  const handlePositionChange = (position: Position) => {
+    setFormData((prev) => {
+      const currentPositions = prev.position;
+      const isSelected = currentPositions.includes(position);
+
+      let newPositions: Position[];
+      if (isSelected) {
+        // 선택 해제
+        newPositions = currentPositions.filter((p) => p !== position);
+      } else {
+        // 선택 추가 (제한 없음)
+        newPositions = [...currentPositions, position];
+      }
+
+      return { ...prev, position: newPositions };
+    });
+
+    // 포지션 관련 오류 제거
+    if (errors.position) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors.position;
+        return newErrors;
+      });
+    }
+  };
+
+  // 전체선택/전체해제 핸들러
+  const handleSelectAllPositions = () => {
+    setFormData((prev) => {
+      const allPositions = POSITIONS.map((p) => p.value);
+      const isAllSelected = allPositions.every((pos) =>
+        prev.position.includes(pos)
+      );
+
+      return {
+        ...prev,
+        position: isAllSelected ? [] : allPositions,
+      };
+    });
+
+    // 포지션 관련 오류 제거
+    if (errors.position) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors.position;
+        return newErrors;
+      });
     }
   };
 
@@ -154,11 +187,6 @@ export default function ProfileSetupForm({
     // 유효성 검사
     const validationErrors = validateProfileForm(formData);
 
-    // 닉네임 중복 확인
-    if (nicknameAvailable === false) {
-      validationErrors.nickname = "이미 사용 중인 닉네임입니다.";
-    }
-
     if (hasValidationErrors(validationErrors)) {
       setErrors(validationErrors);
       return;
@@ -167,7 +195,16 @@ export default function ProfileSetupForm({
     setIsSubmitting(true);
 
     try {
-      const { profile, error } = await createProfile(user.id, formData);
+      // DB 저장용으로 전화번호 정규화
+      const normalizedFormData = {
+        ...formData,
+        phone: normalizePhoneNumber(formData.phone),
+      };
+
+      const { profile, error } = await createProfile(
+        user.id,
+        normalizedFormData
+      );
 
       if (error) {
         alert(`프로필 생성 실패: ${error}`);
@@ -175,10 +212,7 @@ export default function ProfileSetupForm({
       }
 
       if (profile) {
-        // 성공 메시지와 함께 완성 축하
-        alert(
-          "🎉 환영합니다! 프로필이 성공적으로 생성되었습니다.\n이제 League Maker의 모든 기능을 이용하실 수 있습니다!"
-        );
+        // 프로필 생성 완료 - 다음 단계로 진행
         if (onComplete) {
           onComplete();
         } else {
@@ -230,57 +264,6 @@ export default function ProfileSetupForm({
           )}
         </div>
 
-        {/* 닉네임 */}
-        <div>
-          <label
-            htmlFor="nickname"
-            className="block text-sm font-medium text-gray-700 mb-1 flex items-center"
-          >
-            닉네임
-            <FieldStatus
-              isCompleted={
-                !!formData.nickname.trim() && nicknameAvailable === true
-              }
-            />
-          </label>
-          <div className="relative">
-            <input
-              type="text"
-              id="nickname"
-              value={formData.nickname}
-              onChange={(e) => handleInputChange("nickname", e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.nickname
-                  ? "border-red-500"
-                  : nicknameAvailable === false
-                  ? "border-red-500"
-                  : nicknameAvailable === true
-                  ? "border-green-500"
-                  : "border-gray-300"
-              }`}
-              placeholder="게임에서 사용할 닉네임"
-            />
-            {nicknameChecking && (
-              <div className="absolute right-3 top-2.5">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-              </div>
-            )}
-          </div>
-          {errors.nickname && (
-            <p className="text-red-500 text-sm mt-1">{errors.nickname}</p>
-          )}
-          {nicknameAvailable === true && !errors.nickname && (
-            <p className="text-green-500 text-sm mt-1">
-              사용 가능한 닉네임입니다
-            </p>
-          )}
-          {nicknameAvailable === false && !errors.nickname && (
-            <p className="text-red-500 text-sm mt-1">
-              이미 사용 중인 닉네임입니다
-            </p>
-          )}
-        </div>
-
         {/* 전화번호 */}
         <div>
           <label
@@ -294,14 +277,28 @@ export default function ProfileSetupForm({
             />
           </label>
           <input
-            type="tel"
+            type="text"
             id="phone"
             value={formData.phone}
-            onChange={(e) => handleInputChange("phone", e.target.value)}
+            onChange={handlePhoneChange}
+            onKeyDown={preventNonNumericInput}
+            onPaste={(e) =>
+              handlePhonePaste(e, formData.phone, (value) =>
+                handleInputChange("phone", value)
+              )
+            }
+            onInput={(e) =>
+              handlePhoneInputEvent(e, (value) =>
+                handleInputChange("phone", value)
+              )
+            }
             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               errors.phone ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="010-1234-5678"
+            inputMode="numeric"
+            pattern="010-[0-9]{4}-[0-9]{4}"
+            maxLength={13}
             required
           />
           {errors.phone && (
@@ -314,34 +311,58 @@ export default function ProfileSetupForm({
 
         {/* 포지션 */}
         <div>
-          <label
-            htmlFor="position"
-            className="block text-sm font-medium text-gray-700 mb-1 flex items-center"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
             선호 포지션
-            <FieldStatus isCompleted={!!formData.position} />
+            <FieldStatus isCompleted={formData.position.length > 0} />
           </label>
-          <select
-            id="position"
-            value={formData.position}
-            onChange={(e) =>
-              handleInputChange("position", e.target.value as Position)
-            }
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          <div
+            className={`border rounded-md p-3 ${
               errors.position ? "border-red-500" : "border-gray-300"
             }`}
           >
-            {POSITIONS.map((position) => (
-              <option key={position.value} value={position.value}>
-                {position.label}
-              </option>
-            ))}
-          </select>
+            {/* 전체선택 버튼 */}
+            <div className="mb-3 pb-2 border-b border-gray-200">
+              <button
+                type="button"
+                onClick={handleSelectAllPositions}
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                {POSITIONS.every((pos) => formData.position.includes(pos.value))
+                  ? "전체 해제"
+                  : "전체 선택"}
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {POSITIONS.map((position) => (
+                <label
+                  key={position.value}
+                  className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded"
+                >
+                  <input
+                    type="checkbox"
+                    checked={formData.position.includes(position.value)}
+                    onChange={() => handlePositionChange(position.value)}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <span className="text-sm text-gray-700">
+                    {position.label}
+                  </span>
+                </label>
+              ))}
+            </div>
+            {formData.position.length > 0 && (
+              <div className="mt-2 pt-2 border-t border-gray-200">
+                <p className="text-xs text-gray-600">
+                  선택된 포지션: {formData.position.length}개
+                </p>
+              </div>
+            )}
+          </div>
           {errors.position && (
             <p className="text-red-500 text-sm mt-1">{errors.position}</p>
           )}
           <p className="text-xs text-gray-500 mt-1">
-            주로 플레이하는 포지션을 선택해주세요
+            플레이 가능한 포지션을 선택해주세요 (최소 1개 이상)
           </p>
         </div>
 
@@ -364,8 +385,8 @@ export default function ProfileSetupForm({
               </div>
               <div className="ml-2">
                 <p className="text-sm text-blue-700">
-                  {completionPercentage < 75
-                    ? "필수 정보(이름, 닉네임, 포지션)를 모두 입력해주세요."
+                  {completionPercentage < 100
+                    ? "필수 정보(이름, 전화번호, 포지션)를 모두 입력해주세요."
                     : "거의 다 완성되었습니다! 확인 후 제출해주세요."}
                 </p>
               </div>
@@ -376,12 +397,7 @@ export default function ProfileSetupForm({
         {/* 제출 버튼 */}
         <button
           type="submit"
-          disabled={
-            isSubmitting ||
-            nicknameChecking ||
-            nicknameAvailable === false ||
-            completionPercentage < 75
-          }
+          disabled={isSubmitting || completionPercentage < 100}
           className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isSubmitting ? (
@@ -389,7 +405,7 @@ export default function ProfileSetupForm({
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
               프로필 생성 중...
             </span>
-          ) : completionPercentage < 75 ? (
+          ) : completionPercentage < 100 ? (
             "필수 정보를 모두 입력해주세요"
           ) : (
             "League Maker 시작하기!"

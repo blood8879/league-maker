@@ -13,14 +13,22 @@ export const getProfileCompleteness = (
   completionPercentage: number;
   missingFields: string[];
 } => {
-  const requiredFields = ["name", "nickname", "position", "phone"];
+  const requiredFields = ["name", "position", "phone"];
   const missingFields: string[] = [];
   let completedRequired = 0;
 
   // 필수 필드 확인
   requiredFields.forEach((field) => {
     const value = profile[field as keyof typeof profile];
-    if (value && typeof value === "string" && value.trim()) {
+
+    // 포지션은 배열이므로 별도 처리
+    if (field === "position") {
+      if (Array.isArray(value) && value.length > 0) {
+        completedRequired++;
+      } else {
+        missingFields.push(field);
+      }
+    } else if (value && typeof value === "string" && value.trim()) {
       completedRequired++;
     } else {
       missingFields.push(field);
@@ -136,50 +144,6 @@ export const updateProfile = async (
         error instanceof Error
           ? error.message
           : "프로필 업데이트 중 오류가 발생했습니다.",
-    };
-  }
-};
-
-/**
- * 닉네임 중복을 확인합니다.
- */
-export const checkNicknameAvailability = async (
-  nickname: string,
-  excludeUserId?: string
-): Promise<{ available: boolean; error: string | null }> => {
-  try {
-    console.log(
-      "🔍 닉네임 중복 검사 시작:",
-      nickname,
-      "excludeUserId:",
-      excludeUserId
-    );
-
-    // PostgreSQL 함수를 사용하여 안전하게 닉네임 중복 검사
-    const { data, error } = await supabase.rpc("check_nickname_availability", {
-      nickname_to_check: nickname,
-      exclude_user_id: excludeUserId || null,
-    });
-
-    console.log("📊 함수 호출 결과:", { data, error });
-
-    if (error) {
-      console.error("❌ 함수 호출 에러:", error);
-      return { available: false, error: error.message };
-    }
-
-    const available = data === true;
-    console.log("✅ 닉네임 사용 가능 여부:", available);
-
-    return { available, error: null };
-  } catch (error) {
-    console.error("💥 닉네임 검사 중 예외 발생:", error);
-    return {
-      available: false,
-      error:
-        error instanceof Error
-          ? error.message
-          : "닉네임 확인 중 오류가 발생했습니다.",
     };
   }
 };
