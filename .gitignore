@@ -28,10 +28,24 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
 # Build outputs
 dist/
 build/
 *.log
+
+# Testing
+/coverage
+/playwright-report/
+/test-results/
+
+# Vercel
+.vercel
 
 # Temporary files
 sill
