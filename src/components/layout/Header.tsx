@@ -64,7 +64,7 @@ export function Header() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={userProfile?.avatar} alt={userProfile?.nickname} />
+                      <AvatarImage src={userProfile?.avatar_url || undefined} alt={userProfile?.nickname} />
                       <AvatarFallback>{userProfile?.nickname?.slice(0, 2) || 'U'}</AvatarFallback>
                     </Avatar>
                   </Button>
@@ -157,7 +157,7 @@ export function Header() {
                     <>
                       <div className="flex items-center gap-3 mb-4 p-2 bg-muted rounded-lg">
                         <Avatar>
-                          <AvatarImage src={userProfile?.avatar} />
+                          <AvatarImage src={userProfile?.avatar_url || undefined} />
                           <AvatarFallback>{userProfile?.nickname?.slice(0, 2) || 'U'}</AvatarFallback>
                         </Avatar>
                         <div>
