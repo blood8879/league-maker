@@ -27,7 +27,7 @@ import { useState } from 'react';
 export const dynamic = 'force-dynamic';
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
   const [upcomingMatches, setUpcomingMatches] = useState(mockUpcomingMatches);
   const [pendingMatches, setPendingMatches] = useState(mockPendingMatches);
 
@@ -62,7 +62,7 @@ export default function DashboardPage() {
       {/* 환영 메시지 */}
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">
-          안녕하세요, {user?.nickname || '사용자'}님! 👋
+          안녕하세요, {userProfile?.nickname || '사용자'}님! 👋
         </h1>
         <p className="text-muted-foreground">
           오늘도 즐거운 축구 하세요!
