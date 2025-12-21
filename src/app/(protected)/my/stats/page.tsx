@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { mockUserStats, mockSeasonStats, mockTeamStats } from '@/data/dashboard-mock';
 import { Trophy, TrendingUp, Target, Users, AlertTriangle, Award } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default function MyStatsPage() {
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8 space-y-6">

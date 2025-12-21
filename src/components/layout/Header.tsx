@@ -109,14 +109,16 @@ export function Header() {
             </>
           ) : (
             <>
-              <Link href="/login">
-                <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/login">
                   로그인
-                </Button>
-              </Link>
-              <Link href="/signup">
-                <Button size="sm">회원가입</Button>
-              </Link>
+                </Link>
+              </Button>
+              <Button size="sm" asChild>
+                <Link href="/signup">
+                  회원가입
+                </Link>
+              </Button>
             </>
           )}
         </div>
@@ -163,25 +165,27 @@ export function Header() {
                           <p className="text-xs text-muted-foreground">{user.email}</p>
                         </div>
                       </div>
-                      <Link href={`/profile/${user.id}`} onClick={() => setIsOpen(false)}>
-                        <Button variant="outline" className="w-full justify-start">
+                      <Button variant="outline" className="w-full justify-start" asChild>
+                        <Link href={`/profile/${user.id}`} onClick={() => setIsOpen(false)}>
                           <User className="mr-2 h-4 w-4" /> 내 프로필
-                        </Button>
-                      </Link>
+                        </Link>
+                      </Button>
                       <Button variant="ghost" className="w-full justify-start text-destructive" onClick={() => { logout(); setIsOpen(false); }}>
                         <LogOut className="mr-2 h-4 w-4" /> 로그아웃
                       </Button>
                     </>
                   ) : (
                     <>
-                      <Link href="/login" onClick={() => setIsOpen(false)}>
-                        <Button variant="outline" className="w-full">
+                      <Button variant="outline" className="w-full" asChild>
+                        <Link href="/login" onClick={() => setIsOpen(false)}>
                           로그인
-                        </Button>
-                      </Link>
-                      <Link href="/signup" onClick={() => setIsOpen(false)}>
-                        <Button className="w-full">회원가입</Button>
-                      </Link>
+                        </Link>
+                      </Button>
+                      <Button className="w-full" asChild>
+                        <Link href="/signup" onClick={() => setIsOpen(false)}>
+                          회원가입
+                        </Link>
+                      </Button>
                     </>
                   )}
                 </div>

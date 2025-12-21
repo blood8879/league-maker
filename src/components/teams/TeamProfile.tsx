@@ -1,3 +1,5 @@
+"use client"
+
 import { Team } from "@/types/team";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
