@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@/context/auth-context';
+import { useAuth } from '@/contexts/AuthContext';
 import { StatCard } from '@/components/dashboard/stat-card';
 import { MatchCard } from '@/components/dashboard/match-card';
 import { TeamCard } from '@/components/dashboard/team-card';
