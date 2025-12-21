@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-export default function NewPostPage() {
+function NewPostForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get('category') || 'free';
@@ -96,5 +96,13 @@ export default function NewPostPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function NewPostPage() {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-8 max-w-3xl">Loading...</div>}>
+      <NewPostForm />
+    </Suspense>
   );
 }

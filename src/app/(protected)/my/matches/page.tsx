@@ -14,6 +14,8 @@ import { mockAllMyMatches } from '@/data/dashboard-mock';
 import { Calendar } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
+export const dynamic = 'force-dynamic';
+
 type StatusFilter = 'all' | 'scheduled' | 'finished';
 type AttendanceFilter = 'all' | 'attending' | 'absent' | 'pending';
 

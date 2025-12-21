@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Menu, LogOut, User, Settings, Shield, Calendar } from "lucide-react";
+import { Menu, LogOut, User, Settings, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/context/auth-context";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,19 +14,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SearchBar } from "./search-bar";
 import { NotificationDropdown } from "./notification-dropdown";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const { user, userProfile, signOut } = useAuth();
-
-  const handleSignOut = async () => {
-    await signOut();
-    router.push('/');
-  };
+  const { user, logout } = useAuth();
 
   const navItems = [
     { name: "팀 찾기", href: "/teams" },
@@ -71,7 +64,8 @@ export function Header() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-8 w-8">
-                      <AvatarFallback>{userProfile?.nickname.slice(0, 2)}</AvatarFallback>
+                      <AvatarImage src={user.avatar} alt={user.nickname} />
+                      <AvatarFallback>{user.nickname.slice(0, 2)}</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
@@ -79,16 +73,16 @@ export function Header() {
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium leading-none">
-                      {userProfile?.nickname}
+                      {user.nickname}
                     </p>
                     <p className="text-xs leading-none text-muted-foreground">
-                      {userProfile?.email}
+                      {user.email}
                     </p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href={`/profile/${userProfile?.id}`}>
+                  <Link href={`/profile/${user.id}`}>
                     <User className="mr-2 h-4 w-4" />
                     <span>내 프로필</span>
                   </Link>
@@ -100,19 +94,13 @@ export function Header() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/my/matches">
-                    <Calendar className="mr-2 h-4 w-4" />
-                    <span>내 경기</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
                   <Link href="/settings">
                     <Settings className="mr-2 h-4 w-4" />
                     <span>설정</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut}>
+                <DropdownMenuItem onClick={logout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>로그아웃</span>
                 </DropdownMenuItem>
@@ -121,14 +109,16 @@ export function Header() {
             </>
           ) : (
             <>
-              <Link href="/login">
-                <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/login">
                   로그인
-                </Button>
-              </Link>
-              <Link href="/signup">
-                <Button size="sm">회원가입</Button>
-              </Link>
+                </Link>
+              </Button>
+              <Button size="sm" asChild>
+                <Link href="/signup">
+                  회원가입
+                </Link>
+              </Button>
             </>
           )}
         </div>
@@ -167,32 +157,35 @@ export function Header() {
                     <>
                       <div className="flex items-center gap-3 mb-4 p-2 bg-muted rounded-lg">
                         <Avatar>
-                          <AvatarFallback>{userProfile?.nickname.slice(0, 2)}</AvatarFallback>
+                          <AvatarImage src={user.avatar} />
+                          <AvatarFallback>{user.nickname.slice(0, 2)}</AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium">{userProfile?.nickname}</p>
-                          <p className="text-xs text-muted-foreground">{userProfile?.email}</p>
+                          <p className="font-medium">{user.nickname}</p>
+                          <p className="text-xs text-muted-foreground">{user.email}</p>
                         </div>
                       </div>
-                      <Link href={`/profile/${userProfile?.id}`} onClick={() => setIsOpen(false)}>
-                        <Button variant="outline" className="w-full justify-start">
+                      <Button variant="outline" className="w-full justify-start" asChild>
+                        <Link href={`/profile/${user.id}`} onClick={() => setIsOpen(false)}>
                           <User className="mr-2 h-4 w-4" /> 내 프로필
-                        </Button>
-                      </Link>
-                      <Button variant="ghost" className="w-full justify-start text-destructive" onClick={() => { handleSignOut(); setIsOpen(false); }}>
+                        </Link>
+                      </Button>
+                      <Button variant="ghost" className="w-full justify-start text-destructive" onClick={() => { logout(); setIsOpen(false); }}>
                         <LogOut className="mr-2 h-4 w-4" /> 로그아웃
                       </Button>
                     </>
                   ) : (
                     <>
-                      <Link href="/login" onClick={() => setIsOpen(false)}>
-                        <Button variant="outline" className="w-full">
+                      <Button variant="outline" className="w-full" asChild>
+                        <Link href="/login" onClick={() => setIsOpen(false)}>
                           로그인
-                        </Button>
-                      </Link>
-                      <Link href="/signup" onClick={() => setIsOpen(false)}>
-                        <Button className="w-full">회원가입</Button>
-                      </Link>
+                        </Link>
+                      </Button>
+                      <Button className="w-full" asChild>
+                        <Link href="/signup" onClick={() => setIsOpen(false)}>
+                          회원가입
+                        </Link>
+                      </Button>
                     </>
                   )}
                 </div>

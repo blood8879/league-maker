@@ -8,6 +8,8 @@ import { Users, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
+export const dynamic = 'force-dynamic';
+
 export default function MyTeamsPage() {
   const [teams, setTeams] = useState(mockMyTeams);
 
