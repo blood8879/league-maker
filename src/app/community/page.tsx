@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Search, PenSquare, Filter, TrendingUp, Clock, MessageCircle } from 'lucide-react';
@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { PostCard } from '@/components/community/PostCard';
 import { getPosts, Post } from '@/lib/mock-community';
 
-export default function CommunityPage() {
+function CommunityContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category') || 'all';
   
@@ -155,5 +155,13 @@ export default function CommunityPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CommunityPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CommunityContent />
+    </Suspense>
   );
 }

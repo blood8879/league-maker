@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, Suspense } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -17,7 +17,7 @@ import { MOCK_TEAMS, MOCK_LEAGUES } from '@/lib/mock-data';
 import { mockMatches } from '@/data/mock-matches';
 import { MOCK_POSTS } from '@/lib/mock-community';
 
-export default function SearchPage() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
   const [activeTab, setActiveTab] = useState<SearchCategory>('all');
@@ -320,5 +320,13 @@ function EmptyState({ query, category }: { query: string; category?: string }) {
       </p>
       <p className="text-sm mt-1">다른 검색어로 다시 시도해보세요</p>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchContent />
+    </Suspense>
   );
 }

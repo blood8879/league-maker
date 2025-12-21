@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase/client';
 import type { Database } from '@/lib/supabase/types';
 
 type UserProfile = Database['public']['Tables']['users']['Row'];
+type UserInsert = Database['public']['Tables']['users']['Insert'];
 
 interface AuthContextType {
   user: SupabaseUser | null;
@@ -130,7 +131,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     // Create user profile in users table
-    const profileData = {
+    const profileData: UserInsert = {
       id: authData.user.id,
       email,
       nickname: userData.nickname,
@@ -142,7 +143,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const { data: insertedData, error: profileError } = await supabase
       .from('users')
-      .insert([profileData])
+      .insert(profileData as any)
       .select()
       .single();
 
