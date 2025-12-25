@@ -18,6 +18,9 @@ export function LoginForm() {
   const [error, setError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Check for password reset success message
+  const resetSuccess = searchParams.get('reset') === 'success';
+
   const {
     register,
     handleSubmit,
@@ -48,6 +51,12 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {resetSuccess && (
+        <div className="p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm">
+          비밀번호가 성공적으로 재설정되었습니다. 새 비밀번호로 로그인하세요.
+        </div>
+      )}
+
       {error && (
         <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
           {error}
@@ -86,15 +95,15 @@ export function LoginForm() {
         )}
       </div>
 
-      {/* Forgot Password Link - Coming Soon */}
-      {/* <div className="text-right">
+      {/* Forgot Password Link */}
+      <div className="text-right">
         <Link
           href="/forgot-password"
           className="text-sm text-purple-600 hover:underline"
         >
           비밀번호를 잊으셨나요?
         </Link>
-      </div> */}
+      </div>
 
       {/* Submit Button */}
       <Button
