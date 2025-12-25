@@ -721,3 +721,13 @@ export function getUserTeams(userId: string) {
   if (!user) return [];
   return MOCK_TEAMS.filter(team => user.teamIds.includes(team.id));
 }
+
+export function getTeamRecentMatches(teamId: string, limit: number = 5) {
+  return MOCK_MATCHES
+    .filter(match =>
+      (match.homeTeamId === teamId || match.awayTeamId === teamId) &&
+      match.status === 'finished'
+    )
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, limit);
+}

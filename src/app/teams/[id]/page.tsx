@@ -1,6 +1,7 @@
-import { MOCK_TEAMS } from "@/lib/mock-data";
+import { MOCK_TEAMS, getTeamRecentMatches } from "@/lib/mock-data";
 import { TeamProfile } from "@/components/teams/TeamProfile";
 import { MemberList } from "@/components/teams/MemberList";
+import { RecentMatches } from "@/components/teams/RecentMatches";
 import { notFound } from "next/navigation";
 
 interface TeamDetailPageProps {
@@ -15,9 +16,12 @@ export default async function TeamDetailPage({ params }: TeamDetailPageProps) {
     notFound();
   }
 
+  const recentMatches = getTeamRecentMatches(id);
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 space-y-8">
       <TeamProfile team={team} />
+      <RecentMatches matches={recentMatches} teamId={id} />
       <MemberList members={team.members} />
     </div>
   );

@@ -10,6 +10,7 @@ export default function TeamsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [regionFilter, setRegionFilter] = useState("all");
   const [levelFilter, setLevelFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("latest");
 
   const filteredTeams = MOCK_TEAMS.filter((team) => {
     const matchesSearch = team.name
@@ -22,10 +23,24 @@ export default function TeamsPage() {
     return matchesSearch && matchesRegion && matchesLevel;
   });
 
+  const sortedTeams = [...filteredTeams].sort((a, b) => {
+    switch (sortBy) {
+      case "latest":
+        return new Date(b.foundedDate).getTime() - new Date(a.foundedDate).getTime();
+      case "popular":
+        return b.stats.matchCount - a.stats.matchCount;
+      case "members":
+        return b.memberCount - a.memberCount;
+      default:
+        return 0;
+    }
+  });
+
   const handleReset = () => {
     setSearchQuery("");
     setRegionFilter("all");
     setLevelFilter("all");
+    setSortBy("latest");
   };
 
   return (
@@ -43,14 +58,16 @@ export default function TeamsPage() {
           <TeamFilters
             region={regionFilter}
             level={levelFilter}
+            sortBy={sortBy}
             onRegionChange={setRegionFilter}
             onLevelChange={setLevelFilter}
+            onSortChange={setSortBy}
             onReset={handleReset}
           />
         </div>
       </div>
 
-      <TeamList teams={filteredTeams} />
+      <TeamList teams={sortedTeams} />
     </div>
   );
 }
