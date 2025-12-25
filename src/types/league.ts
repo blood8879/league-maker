@@ -82,7 +82,7 @@ export interface Match {
   date: string;
   time: string;
   venue: string;
-  status: 'scheduled' | 'live' | 'finished';
+  status: 'scheduled' | 'live' | 'finished' | 'cancelled';
   score?: {
     home: number;
     away: number;

@@ -1,9 +1,11 @@
 "use client";
 
-import { Team } from "@/types/team";
+import type { Database } from "@/lib/supabase/types";
 import { TeamCard } from "./TeamCard";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+
+type Team = Database['public']['Tables']['teams']['Row'];
 
 interface TeamListProps {
   teams: Team[];

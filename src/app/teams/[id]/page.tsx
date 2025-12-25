@@ -1,4 +1,4 @@
-import { MOCK_TEAMS, getTeamRecentMatches } from "@/lib/mock-data";
+import { getTeamWithMembers, getTeamRecentMatches as getDBTeamMatches } from "@/lib/supabase/queries/teams";
 import { TeamProfile } from "@/components/teams/TeamProfile";
 import { MemberList } from "@/components/teams/MemberList";
 import { RecentMatches } from "@/components/teams/RecentMatches";
@@ -10,13 +10,14 @@ interface TeamDetailPageProps {
 
 export default async function TeamDetailPage({ params }: TeamDetailPageProps) {
   const { id } = await params;
-  const team = MOCK_TEAMS.find((t) => t.id === id);
+
+  const team = await getTeamWithMembers(id);
 
   if (!team) {
     notFound();
   }
 
-  const recentMatches = getTeamRecentMatches(id);
+  const recentMatches = await getDBTeamMatches(id);
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">

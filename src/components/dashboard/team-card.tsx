@@ -29,7 +29,7 @@ export const TeamCard = memo(function TeamCard({ team, onLeaveTeam }: TeamCardPr
   const getRoleBadge = () => {
     const roles = {
       captain: { label: '주장', variant: 'default' as const },
-      'vice-captain': { label: '부주장', variant: 'secondary' as const },
+      vice_captain: { label: '부주장', variant: 'secondary' as const },
       member: { label: '팀원', variant: 'outline' as const },
     };
 

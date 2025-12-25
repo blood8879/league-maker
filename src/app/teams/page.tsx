@@ -1,40 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TeamList } from "@/components/teams/TeamList";
 import { TeamFilters } from "@/components/teams/TeamFilters";
 import { TeamSearch } from "@/components/teams/TeamSearch";
-import { MOCK_TEAMS } from "@/lib/mock-data";
+import { getTeams } from "@/lib/supabase/queries/teams";
+import type { Database } from "@/lib/supabase/types";
+
+type Team = Database['public']['Tables']['teams']['Row'];
 
 export default function TeamsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [regionFilter, setRegionFilter] = useState("all");
   const [levelFilter, setLevelFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("latest");
+  const [sortBy, setSortBy] = useState<"latest" | "popular" | "members">("latest");
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredTeams = MOCK_TEAMS.filter((team) => {
-    const matchesSearch = team.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesRegion =
-      regionFilter === "all" || team.region === regionFilter;
-    const matchesLevel = levelFilter === "all" || team.level === levelFilter;
-
-    return matchesSearch && matchesRegion && matchesLevel;
-  });
-
-  const sortedTeams = [...filteredTeams].sort((a, b) => {
-    switch (sortBy) {
-      case "latest":
-        return new Date(b.foundedDate).getTime() - new Date(a.foundedDate).getTime();
-      case "popular":
-        return b.stats.matchCount - a.stats.matchCount;
-      case "members":
-        return b.memberCount - a.memberCount;
-      default:
-        return 0;
+  useEffect(() => {
+    async function loadTeams() {
+      try {
+        setLoading(true);
+        const data = await getTeams({
+          search: searchQuery,
+          region: regionFilter,
+          level: levelFilter,
+          sortBy,
+        });
+        setTeams(data);
+      } catch (error) {
+        console.error('Failed to load teams:', error);
+      } finally {
+        setLoading(false);
+      }
     }
-  });
+
+    loadTeams();
+  }, [searchQuery, regionFilter, levelFilter, sortBy]);
 
   const handleReset = () => {
     setSearchQuery("");
@@ -61,13 +63,19 @@ export default function TeamsPage() {
             sortBy={sortBy}
             onRegionChange={setRegionFilter}
             onLevelChange={setLevelFilter}
-            onSortChange={setSortBy}
+            onSortChange={(value) => setSortBy(value as "latest" | "popular" | "members")}
             onReset={handleReset}
           />
         </div>
       </div>
 
-      <TeamList teams={sortedTeams} />
+      {loading ? (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">팀 목록을 불러오는 중...</p>
+        </div>
+      ) : (
+        <TeamList teams={teams} />
+      )}
     </div>
   );
 }

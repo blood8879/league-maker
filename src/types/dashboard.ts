@@ -8,7 +8,7 @@ export interface MatchWithAttendance extends Match {
 
 // 역할 정보가 포함된 팀
 export interface TeamWithRole extends Team {
-  myRole: 'captain' | 'vice-captain' | 'member';
+  myRole: 'captain' | 'vice_captain' | 'member';
 }
 
 // 사용자 통계 (User.stats와 동일하지만 명시적으로 정의)
