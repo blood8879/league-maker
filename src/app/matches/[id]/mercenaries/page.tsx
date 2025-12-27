@@ -43,10 +43,16 @@ export default function MercenaryPage({ params }: MercenaryPageProps) {
     async function loadMatch() {
       try {
         const data = await getMatchById(id);
-        const positions = data.mercenary_positions ? JSON.parse(JSON.stringify(data.mercenary_positions)) : [];
+        if (!data) {
+          setLoading(false);
+          return;
+        }
+
+        const positions = (data as MatchData).mercenary_positions ?
+          JSON.parse(JSON.stringify((data as MatchData).mercenary_positions)) : [];
 
         setMatch({
-          ...data,
+          ...(data as MatchData),
           mercenary_positions: positions,
         } as MatchData);
       } catch (error) {
@@ -89,6 +95,11 @@ export default function MercenaryPage({ params }: MercenaryPageProps) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (!match || !user) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
 
     if (!position || !level || !introduction.trim()) {
       alert('모든 필수 항목을 입력해주세요.');

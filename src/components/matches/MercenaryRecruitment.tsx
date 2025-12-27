@@ -25,12 +25,23 @@ export function MercenaryRecruitment({ matchId }: MercenaryRecruitmentProps) {
     async function loadMercenaryData() {
       try {
         const match = await getMatchById(matchId);
+        if (!match) {
+          setMercenaryData({ enabled: false, positions: [], count: 0 });
+          setLoading(false);
+          return;
+        }
 
-        if (match.mercenary_recruitment_enabled) {
+        const matchData = match as {
+          mercenary_recruitment_enabled: boolean;
+          mercenary_positions?: string[] | null;
+          mercenary_count?: number | null;
+        };
+
+        if (matchData.mercenary_recruitment_enabled) {
           setMercenaryData({
             enabled: true,
-            positions: match.mercenary_positions ? JSON.parse(JSON.stringify(match.mercenary_positions)) : [],
-            count: match.mercenary_count || 0,
+            positions: matchData.mercenary_positions ? JSON.parse(JSON.stringify(matchData.mercenary_positions)) : [],
+            count: matchData.mercenary_count || 0,
           });
         } else {
           setMercenaryData({ enabled: false, positions: [], count: 0 });

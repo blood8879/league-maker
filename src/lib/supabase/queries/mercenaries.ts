@@ -1,19 +1,38 @@
 import { supabase } from '../client';
 import type { Database } from '../types';
 
-type MercenaryApplication = Database['public']['Tables']['mercenary_applications']['Row'];
+type Mercenary = Database['public']['Tables']['mercenaries']['Row'];
+type MercenaryInsert = Database['public']['Tables']['mercenaries']['Insert'];
 
 /**
  * Get all mercenary applications for a match
  */
-export async function getMercenaryApplications(matchId: string) {
+export async function getMatchMercenaries(matchId: string) {
   const { data, error } = await supabase
-    .from('mercenary_applications')
+    .from('mercenaries')
     .select(`
       *,
-      user:users!mercenary_applications_user_id_fkey(id, nickname, avatar_url, preferred_position)
+      user:users!mercenaries_user_id_fkey(id, nickname, avatar_url, preferred_position)
     `)
     .eq('match_id', matchId)
+    .order('created_at', { ascending: false});
+
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Get mercenaries by status for a match
+ */
+export async function getMercenariesByStatus(matchId: string, status: 'pending' | 'approved' | 'rejected') {
+  const { data, error } = await supabase
+    .from('mercenaries')
+    .select(`
+      *,
+      user:users!mercenaries_user_id_fkey(id, nickname, avatar_url)
+    `)
+    .eq('match_id', matchId)
+    .eq('status', status)
     .order('created_at', { ascending: false });
 
   if (error) throw error;
@@ -25,7 +44,7 @@ export async function getMercenaryApplications(matchId: string) {
  */
 export async function getUserMercenaryApplication(matchId: string, userId: string) {
   const { data, error } = await supabase
-    .from('mercenary_applications')
+    .from('mercenaries')
     .select('*')
     .eq('match_id', matchId)
     .eq('user_id', userId)
@@ -36,19 +55,13 @@ export async function getUserMercenaryApplication(matchId: string, userId: strin
 }
 
 /**
- * Create a mercenary application
+ * Apply as a mercenary for a match
  */
-export async function createMercenaryApplication(application: {
-  match_id: string;
-  team_id: string;
-  user_id: string;
-  position: string;
-  message?: string | null;
-}) {
+export async function applyMercenary(mercenary: MercenaryInsert) {
   const { data, error } = await supabase
-    .from('mercenary_applications')
+    .from('mercenaries')
     // @ts-expect-error - Supabase type inference issue
-    .insert(application)
+    .insert(mercenary)
     .select()
     .single();
 
@@ -57,16 +70,13 @@ export async function createMercenaryApplication(application: {
 }
 
 /**
- * Update mercenary application status
+ * Approve a mercenary application
  */
-export async function updateMercenaryApplicationStatus(
-  id: string,
-  status: 'pending' | 'approved' | 'rejected'
-) {
+export async function approveMercenary(id: string) {
   const { data, error } = await supabase
-    .from('mercenary_applications')
+    .from('mercenaries')
     // @ts-expect-error - Supabase type inference issue
-    .update({ status })
+    .update({ status: 'approved' })
     .eq('id', id)
     .select()
     .single();
@@ -76,13 +86,35 @@ export async function updateMercenaryApplicationStatus(
 }
 
 /**
- * Delete mercenary application
+ * Reject a mercenary application
  */
-export async function deleteMercenaryApplication(id: string) {
-  const { error } = await supabase
-    .from('mercenary_applications')
-    .delete()
-    .eq('id', id);
+export async function rejectMercenary(id: string) {
+  const { data, error } = await supabase
+    .from('mercenaries')
+    // @ts-expect-error - Supabase type inference issue
+    .update({ status: 'rejected' })
+    .eq('id', id)
+    .select()
+    .single();
 
   if (error) throw error;
+  return data;
+}
+
+/**
+ * Get all approved mercenaries for a match
+ */
+export async function getApprovedMercenaries(matchId: string) {
+  const { data, error} = await supabase
+    .from('mercenaries')
+    .select(`
+      *,
+      user:users!mercenaries_user_id_fkey(id, nickname, avatar_url, preferred_position)
+    `)
+    .eq('match_id', matchId)
+    .eq('status', 'approved')
+    .order('position');
+
+  if (error) throw error;
+  return data;
 }
