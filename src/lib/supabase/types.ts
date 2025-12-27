@@ -310,6 +310,44 @@ export interface Database {
           updated_at?: string;
         };
       };
+      mercenaries: {
+        Row: {
+          id: string;
+          match_id: string;
+          user_id: string;
+          team_id: string;
+          position: string;
+          level: string;
+          introduction: string;
+          status: 'pending' | 'approved' | 'rejected';
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          match_id: string;
+          user_id: string;
+          team_id: string;
+          position: string;
+          level: string;
+          introduction: string;
+          status?: 'pending' | 'approved' | 'rejected';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          match_id?: string;
+          user_id?: string;
+          team_id?: string;
+          position?: string;
+          level?: string;
+          introduction?: string;
+          status?: 'pending' | 'approved' | 'rejected';
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
     };
     Views: {
       [_ in never]: never;
