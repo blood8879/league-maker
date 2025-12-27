@@ -348,6 +348,94 @@ export interface Database {
           updated_at?: string;
         };
       };
+      match_events: {
+        Row: {
+          id: string;
+          match_id: string;
+          event_type: 'goal' | 'yellow_card' | 'red_card' | 'substitution';
+          team_id: string;
+          player_id: string;
+          minute: number;
+          half: 'first' | 'second';
+          related_player_id: string | null;
+          is_mercenary: boolean;
+          description: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          match_id: string;
+          event_type: 'goal' | 'yellow_card' | 'red_card' | 'substitution';
+          team_id: string;
+          player_id: string;
+          minute: number;
+          half: 'first' | 'second';
+          related_player_id?: string | null;
+          is_mercenary?: boolean;
+          description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          match_id?: string;
+          event_type?: 'goal' | 'yellow_card' | 'red_card' | 'substitution';
+          team_id?: string;
+          player_id?: string;
+          minute?: number;
+          half?: 'first' | 'second';
+          related_player_id?: string | null;
+          is_mercenary?: boolean;
+          description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      match_lineups: {
+        Row: {
+          id: string;
+          match_id: string;
+          team_id: string;
+          player_id: string;
+          is_starter: boolean;
+          position: string | null;
+          jersey_number: number | null;
+          substituted_at: number | null;
+          substituted_by: string | null;
+          is_mercenary: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          match_id: string;
+          team_id: string;
+          player_id: string;
+          is_starter?: boolean;
+          position?: string | null;
+          jersey_number?: number | null;
+          substituted_at?: number | null;
+          substituted_by?: string | null;
+          is_mercenary?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          match_id?: string;
+          team_id?: string;
+          player_id?: string;
+          is_starter?: boolean;
+          position?: string | null;
+          jersey_number?: number | null;
+          substituted_at?: number | null;
+          substituted_by?: string | null;
+          is_mercenary?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
     };
     Views: {
       [_ in never]: never;
