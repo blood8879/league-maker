@@ -25,6 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { createTeam } from "@/lib/supabase/queries/teams";
 
 const teamFormSchema = z.object({
   name: z.string().min(2, "팀 이름은 2글자 이상이어야 합니다."),
@@ -57,15 +58,27 @@ export function TeamForm() {
     },
   });
 
-  function onSubmit(data: TeamFormValues) {
-    setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log(data);
+  async function onSubmit(data: TeamFormValues) {
+    try {
+      setIsSubmitting(true);
+
+      await createTeam({
+        name: data.name,
+        region: data.region,
+        level: data.level,
+        description: data.description,
+        activity_days: data.activityDays as unknown as never,
+        is_recruiting: true,
+      });
+
       alert("팀이 성공적으로 생성되었습니다!");
-      setIsSubmitting(false);
       router.push("/teams");
-    }, 1000);
+    } catch (error) {
+      console.error('Failed to create team:', error);
+      alert("팀 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (

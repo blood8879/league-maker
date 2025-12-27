@@ -10,7 +10,7 @@ interface MemberListProps {
 export function MemberList({ members }: MemberListProps) {
   // Sort members: Captain -> Vice-Captain -> Member
   const sortedMembers = [...members].sort((a, b) => {
-    const roleOrder = { captain: 0, "vice-captain": 1, member: 2 };
+    const roleOrder = { captain: 0, vice_captain: 1, member: 2 };
     return roleOrder[a.role] - roleOrder[b.role];
   });
 
@@ -38,7 +38,7 @@ export function MemberList({ members }: MemberListProps) {
                       주장
                     </Badge>
                   )}
-                  {member.role === "vice-captain" && (
+                  {member.role === "vice_captain" && (
                     <Badge variant="secondary" className="text-[10px] px-1 py-0 h-5">
                       부주장
                     </Badge>

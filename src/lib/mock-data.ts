@@ -58,7 +58,7 @@ export const MOCK_TEAMS: Team[] = [
     },
     members: [
       { id: "m1", name: "김철수", position: "FW", number: 10, role: "captain" },
-      { id: "m2", name: "이영희", position: "MF", number: 8, role: "vice-captain" },
+      { id: "m2", name: "이영희", position: "MF", number: 8, role: "vice_captain" },
       // ... more members would go here
     ],
   },
@@ -720,4 +720,14 @@ export function getUserTeams(userId: string) {
   const user = MOCK_USERS.find(u => u.id === userId);
   if (!user) return [];
   return MOCK_TEAMS.filter(team => user.teamIds.includes(team.id));
+}
+
+export function getTeamRecentMatches(teamId: string, limit: number = 5) {
+  return MOCK_MATCHES
+    .filter(match =>
+      (match.homeTeamId === teamId || match.awayTeamId === teamId) &&
+      match.status === 'finished'
+    )
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, limit);
 }

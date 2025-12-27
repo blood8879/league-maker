@@ -1,5 +1,5 @@
 export type MatchType = 'league' | 'cup' | 'friendly' | 'practice';
-export type MatchStatus = 'scheduled' | 'live' | 'finished';
+export type MatchStatus = 'scheduled' | 'live' | 'finished' | 'cancelled';
 export type AttendanceStatus = 'attending' | 'absent' | 'pending';
 export type EventType = 'goal' | 'yellow' | 'red' | 'substitution';
 export type TimerPhase = 'first-half' | 'half-time' | 'second-half' | 'finished';

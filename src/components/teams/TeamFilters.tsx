@@ -13,16 +13,20 @@ import { Label } from "@/components/ui/label";
 interface TeamFiltersProps {
   region: string;
   level: string;
+  sortBy: string;
   onRegionChange: (value: string) => void;
   onLevelChange: (value: string) => void;
+  onSortChange: (value: string) => void;
   onReset: () => void;
 }
 
 export function TeamFilters({
   region,
   level,
+  sortBy,
   onRegionChange,
   onLevelChange,
+  onSortChange,
   onReset,
 }: TeamFiltersProps) {
   return (
@@ -65,6 +69,20 @@ export function TeamFilters({
             <SelectItem value="beginner">초급</SelectItem>
             <SelectItem value="intermediate">중급</SelectItem>
             <SelectItem value="advanced">상급</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="grid gap-2 w-full sm:w-[180px]">
+        <Label htmlFor="sort-filter">정렬</Label>
+        <Select value={sortBy} onValueChange={onSortChange}>
+          <SelectTrigger id="sort-filter">
+            <SelectValue placeholder="정렬 선택" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="latest">최신순</SelectItem>
+            <SelectItem value="popular">인기순</SelectItem>
+            <SelectItem value="members">멤버 수순</SelectItem>
           </SelectContent>
         </Select>
       </div>

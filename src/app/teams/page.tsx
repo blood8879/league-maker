@@ -1,31 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TeamList } from "@/components/teams/TeamList";
 import { TeamFilters } from "@/components/teams/TeamFilters";
 import { TeamSearch } from "@/components/teams/TeamSearch";
-import { MOCK_TEAMS } from "@/lib/mock-data";
+import { getTeams } from "@/lib/supabase/queries/teams";
+import type { Database } from "@/lib/supabase/types";
+
+type Team = Database['public']['Tables']['teams']['Row'];
 
 export default function TeamsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [regionFilter, setRegionFilter] = useState("all");
   const [levelFilter, setLevelFilter] = useState("all");
+  const [sortBy, setSortBy] = useState<"latest" | "popular" | "members">("latest");
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredTeams = MOCK_TEAMS.filter((team) => {
-    const matchesSearch = team.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesRegion =
-      regionFilter === "all" || team.region === regionFilter;
-    const matchesLevel = levelFilter === "all" || team.level === levelFilter;
+  useEffect(() => {
+    async function loadTeams() {
+      try {
+        setLoading(true);
+        const data = await getTeams({
+          search: searchQuery,
+          region: regionFilter,
+          level: levelFilter,
+          sortBy,
+        });
+        setTeams(data);
+      } catch (error) {
+        console.error('Failed to load teams:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-    return matchesSearch && matchesRegion && matchesLevel;
-  });
+    loadTeams();
+  }, [searchQuery, regionFilter, levelFilter, sortBy]);
 
   const handleReset = () => {
     setSearchQuery("");
     setRegionFilter("all");
     setLevelFilter("all");
+    setSortBy("latest");
   };
 
   return (
@@ -43,14 +60,22 @@ export default function TeamsPage() {
           <TeamFilters
             region={regionFilter}
             level={levelFilter}
+            sortBy={sortBy}
             onRegionChange={setRegionFilter}
             onLevelChange={setLevelFilter}
+            onSortChange={(value) => setSortBy(value as "latest" | "popular" | "members")}
             onReset={handleReset}
           />
         </div>
       </div>
 
-      <TeamList teams={filteredTeams} />
+      {loading ? (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">팀 목록을 불러오는 중...</p>
+        </div>
+      ) : (
+        <TeamList teams={teams} />
+      )}
     </div>
   );
 }
