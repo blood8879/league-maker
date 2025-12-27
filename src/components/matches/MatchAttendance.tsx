@@ -1,53 +1,77 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Match, MatchAttendance as MatchAttendanceType } from "@/types/league";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Check, X, HelpCircle } from "lucide-react";
-import { MOCK_USERS } from "@/lib/mock-data";
+import { getMatchAttendances, upsertAttendance } from "@/lib/supabase/queries/attendances";
 
-interface MatchAttendanceProps {
-  match: Match;
+interface AttendanceData {
+  id: string;
+  user_id: string;
+  status: 'attending' | 'absent' | 'pending';
+  user?: {
+    id: string;
+    nickname: string;
+    avatar_url?: string | null;
+  };
 }
 
-export function MatchAttendance({ match }: MatchAttendanceProps) {
+interface MatchAttendanceProps {
+  matchId: string;
+  teamId: string;
+}
+
+export function MatchAttendance({ matchId, teamId }: MatchAttendanceProps) {
   const { user } = useAuth();
-  const [attendances, setAttendances] = useState<MatchAttendanceType[]>(match.attendances || []);
+  const [attendances, setAttendances] = useState<AttendanceData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
 
-  const myAttendance = user ? attendances.find(a => a.playerId === user.id) : null;
+  useEffect(() => {
+    loadAttendances();
+  }, [matchId]);
 
-  const handleAttendance = (status: MatchAttendanceType['status']) => {
-    if (!user) return;
-
-    const newAttendance: MatchAttendanceType = {
-      matchId: match.id,
-      playerId: user.id,
-      status,
-      updatedAt: new Date().toISOString(),
-    };
-
-    const existingIndex = attendances.findIndex(a => a.playerId === user.id);
-    if (existingIndex >= 0) {
-      const newAttendances = [...attendances];
-      newAttendances[existingIndex] = newAttendance;
-      setAttendances(newAttendances);
-    } else {
-      setAttendances([...attendances, newAttendance]);
+  async function loadAttendances() {
+    try {
+      const data = await getMatchAttendances(matchId);
+      setAttendances(data as AttendanceData[]);
+    } catch (error) {
+      console.error('Failed to load attendances:', error);
+    } finally {
+      setLoading(false);
     }
-  };
+  }
+
+  const myAttendance = user ? attendances.find(a => a.user_id === user.id) : null;
+
+  async function handleAttendance(status: 'attending' | 'absent' | 'pending') {
+    if (!user || updating) return;
+
+    setUpdating(true);
+    try {
+      await upsertAttendance({
+        match_id: matchId,
+        user_id: user.id,
+        team_id: teamId,
+        status,
+      });
+
+      await loadAttendances();
+    } catch (error) {
+      console.error('Failed to update attendance:', error);
+      alert('참석 상태 업데이트에 실패했습니다.');
+    } finally {
+      setUpdating(false);
+    }
+  }
 
   const attending = attendances.filter(a => a.status === 'attending');
   const absent = attendances.filter(a => a.status === 'absent');
   const pending = attendances.filter(a => a.status === 'pending');
-
-  const getPlayerName = (playerId: string) => {
-    const player = MOCK_USERS.find(u => u.id === playerId);
-    return player ? player.nickname : "Unknown";
-  };
 
   return (
     <Card>
