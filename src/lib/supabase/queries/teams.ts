@@ -82,7 +82,7 @@ export async function getTeamWithMembers(id: string) {
     .from('team_members')
     .select(`
       *,
-      user:users(id, nickname, avatar_url)
+      user:users(id, nickname)
     `)
     .eq('team_id', id)
     .order('role', { ascending: true })
@@ -97,7 +97,7 @@ export async function getTeamWithMembers(id: string) {
     members: (members || []).map((member: any) => ({
       id: member.id,
       name: member.user?.nickname || 'Unknown',
-      avatar: member.user?.avatar_url,
+      avatar: undefined,
       position: member.position || '-',
       number: member.jersey_number || 0,
       role: member.role as 'captain' | 'vice_captain' | 'member',
