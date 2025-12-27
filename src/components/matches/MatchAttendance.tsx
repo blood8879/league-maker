@@ -73,6 +73,16 @@ export function MatchAttendance({ matchId, teamId }: MatchAttendanceProps) {
   const absent = attendances.filter(a => a.status === 'absent');
   const pending = attendances.filter(a => a.status === 'pending');
 
+  if (loading) {
+    return (
+      <Card>
+        <CardContent className="py-8 text-center text-muted-foreground">
+          로딩 중...
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -98,6 +108,7 @@ export function MatchAttendance({ matchId, teamId }: MatchAttendanceProps) {
               variant={myAttendance?.status === 'attending' ? "default" : "outline"}
               className={myAttendance?.status === 'attending' ? "bg-green-600 hover:bg-green-700" : ""}
               onClick={() => handleAttendance('attending')}
+              disabled={updating}
             >
               <Check className="mr-2 h-4 w-4" /> 참석
             </Button>
@@ -105,6 +116,7 @@ export function MatchAttendance({ matchId, teamId }: MatchAttendanceProps) {
               variant={myAttendance?.status === 'absent' ? "default" : "outline"}
               className={myAttendance?.status === 'absent' ? "bg-red-600 hover:bg-red-700" : ""}
               onClick={() => handleAttendance('absent')}
+              disabled={updating}
             >
               <X className="mr-2 h-4 w-4" /> 불참
             </Button>
@@ -112,6 +124,7 @@ export function MatchAttendance({ matchId, teamId }: MatchAttendanceProps) {
               variant={myAttendance?.status === 'pending' ? "default" : "outline"}
               className={myAttendance?.status === 'pending' ? "bg-yellow-600 hover:bg-yellow-700" : ""}
               onClick={() => handleAttendance('pending')}
+              disabled={updating}
             >
               <HelpCircle className="mr-2 h-4 w-4" /> 미정
             </Button>
@@ -123,12 +136,12 @@ export function MatchAttendance({ matchId, teamId }: MatchAttendanceProps) {
             <h4 className="text-sm font-medium mb-3 text-muted-foreground">참석자 ({attending.length})</h4>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {attending.map((a) => (
-                <div key={a.playerId} className="flex items-center gap-2 p-2 rounded border bg-card">
+                <div key={a.id} className="flex items-center gap-2 p-2 rounded border bg-card">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={`https://placehold.co/100x100/png?text=${getPlayerName(a.playerId)[0]}`} />
-                    <AvatarFallback>{getPlayerName(a.playerId)[0]}</AvatarFallback>
+                    <AvatarImage src={a.user?.avatar_url || `https://placehold.co/100x100/png?text=${a.user?.nickname[0] || 'U'}`} />
+                    <AvatarFallback>{a.user?.nickname[0] || 'U'}</AvatarFallback>
                   </Avatar>
-                  <span className="text-sm font-medium truncate">{getPlayerName(a.playerId)}</span>
+                  <span className="text-sm font-medium truncate">{a.user?.nickname || 'Unknown'}</span>
                 </div>
               ))}
               {attending.length === 0 && <div className="text-sm text-muted-foreground col-span-full text-center py-2">참석자가 없습니다.</div>}
