@@ -62,6 +62,19 @@ interface Player {
   is_mercenary: boolean;
 }
 
+interface Attendance {
+  id: string;
+  user_id: string;
+  team_id: string;
+  jersey_number: number | null;
+  position: string | null;
+  users: {
+    nickname: string;
+    avatar_url: string | null;
+    preferred_position: string | null;
+  };
+}
+
 interface MatchEvent {
   id: string;
   event_type: 'goal' | 'yellow_card' | 'red_card' | 'substitution';
@@ -105,7 +118,9 @@ export default function MatchRecordPage({ params }: PageProps) {
           .single();
 
         if (matchError) throw matchError;
-        setMatch(matchData as unknown as MatchData);
+
+        const typedMatchData = matchData as unknown as MatchData;
+        setMatch(typedMatchData);
 
         // Fetch attending players for both teams
         const { data: attendances, error: attendanceError } = await supabase
@@ -127,13 +142,15 @@ export default function MatchRecordPage({ params }: PageProps) {
 
         if (attendanceError) throw attendanceError;
 
-        const home = (attendances || [])
-          .filter((a: Player) => a.id.includes(matchData.home_team_id))
-          .map((a: Player) => ({ ...a, is_mercenary: false }));
+        const typedAttendances = (attendances || []) as unknown as Attendance[];
 
-        const away = (attendances || [])
-          .filter((a: Player) => a.id.includes(matchData.away_team_id))
-          .map((a: Player) => ({ ...a, is_mercenary: false }));
+        const home = typedAttendances
+          .filter((a) => a.team_id === typedMatchData.home_team_id)
+          .map((a) => ({ ...a, is_mercenary: false }));
+
+        const away = typedAttendances
+          .filter((a) => a.team_id === typedMatchData.away_team_id)
+          .map((a) => ({ ...a, is_mercenary: false }));
 
         setHomePlayers(home);
         setAwayPlayers(away);
@@ -160,7 +177,20 @@ export default function MatchRecordPage({ params }: PageProps) {
 
       if (error) throw error;
 
-      const eventsWithNames = (data || []).map((event) => {
+      interface RawMatchEvent {
+        id: string;
+        event_type: 'goal' | 'yellow_card' | 'red_card' | 'substitution';
+        team_id: string;
+        player_id: string;
+        minute: number;
+        half: 'first' | 'second';
+        related_player_id: string | null;
+        description: string | null;
+      }
+
+      const rawEvents = (data || []) as unknown as RawMatchEvent[];
+
+      const eventsWithNames = rawEvents.map((event) => {
         const allPlayers = [...homePlayers, ...awayPlayers];
         const player = allPlayers.find((p) => p.user_id === event.player_id);
         const relatedPlayer = event.related_player_id
