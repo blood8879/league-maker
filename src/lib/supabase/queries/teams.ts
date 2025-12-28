@@ -186,3 +186,29 @@ export async function deleteTeam(id: string) {
 
   if (error) throw error;
 }
+
+/**
+ * Add a member to a team
+ */
+export async function addTeamMember(params: {
+  team_id: string;
+  user_id: string;
+  role: 'captain' | 'vice_captain' | 'member';
+  position?: string;
+  jersey_number?: number;
+}) {
+  const { data, error } = await supabase
+    .from('team_members')
+    .insert({
+      team_id: params.team_id,
+      user_id: params.user_id,
+      role: params.role,
+      position: params.position ?? null,
+      jersey_number: params.jersey_number ?? null,
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
