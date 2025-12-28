@@ -81,3 +81,34 @@ export async function deleteAttendance(matchId: string, userId: string) {
 
   if (error) throw error;
 }
+
+/**
+ * Update attendance status for a user
+ */
+export async function updateAttendanceStatus(
+  matchId: string,
+  userId: string,
+  status: 'attending' | 'absent' | 'pending'
+) {
+  try {
+    // First, get the current attendance to find team_id
+    const existing = await getUserAttendance(matchId, userId);
+
+    if (!existing) {
+      console.error('No existing attendance found for user');
+      return false;
+    }
+
+    const { error } = await supabase
+      .from('match_attendances')
+      .update({ status })
+      .eq('match_id', matchId)
+      .eq('user_id', userId);
+
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error('Error updating attendance status:', error);
+    return false;
+  }
+}
