@@ -25,7 +25,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { createTeam } from "@/lib/supabase/queries/teams";
+import { createTeam, addTeamMember } from "@/lib/supabase/queries/teams";
+import { useAuth } from "@/hooks/useAuth";
 
 const teamFormSchema = z.object({
   name: z.string().min(2, "팀 이름은 2글자 이상이어야 합니다."),
@@ -47,6 +48,7 @@ const REGIONS = [
 export function TeamForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { userProfile } = useAuth();
 
   const form = useForm<TeamFormValues>({
     resolver: zodResolver(teamFormSchema),
@@ -62,7 +64,14 @@ export function TeamForm() {
     try {
       setIsSubmitting(true);
 
-      await createTeam({
+      // 로그인 확인
+      if (!userProfile) {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+
+      // 1. 팀 생성
+      const newTeam = await createTeam({
         name: data.name,
         region: data.region,
         level: data.level,
@@ -71,8 +80,16 @@ export function TeamForm() {
         is_recruiting: true,
       });
 
+      // 2. 생성자를 주장(captain)으로 팀에 추가
+      await addTeamMember({
+        team_id: newTeam.id,
+        user_id: userProfile.id,
+        role: 'captain',
+        position: userProfile.preferred_position || undefined,
+      });
+
       alert("팀이 성공적으로 생성되었습니다!");
-      router.push("/teams");
+      router.push(`/teams/${newTeam.id}`);
     } catch (error) {
       console.error('Failed to create team:', error);
       alert("팀 생성 중 오류가 발생했습니다. 다시 시도해주세요.");

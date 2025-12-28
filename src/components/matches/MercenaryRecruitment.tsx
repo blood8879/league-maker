@@ -1,20 +1,64 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Match } from "@/types/league";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users } from "lucide-react";
+import { getMatchById } from "@/lib/supabase/queries/matches";
 
 interface MercenaryRecruitmentProps {
-  match: Match;
+  matchId: string;
+  teamId: string;
 }
 
-export function MercenaryRecruitment({ match }: MercenaryRecruitmentProps) {
-  if (!match.mercenaryRecruitment?.enabled) {
+export function MercenaryRecruitment({ matchId }: MercenaryRecruitmentProps) {
+  const [mercenaryData, setMercenaryData] = useState<{
+    enabled: boolean;
+    positions: string[];
+    count: number;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadMercenaryData() {
+      try {
+        const match = await getMatchById(matchId);
+        if (!match) {
+          setMercenaryData({ enabled: false, positions: [], count: 0 });
+          setLoading(false);
+          return;
+        }
+
+        const matchData = match as {
+          mercenary_recruitment_enabled: boolean;
+          mercenary_positions?: string[] | null;
+          mercenary_count?: number | null;
+        };
+
+        if (matchData.mercenary_recruitment_enabled) {
+          setMercenaryData({
+            enabled: true,
+            positions: matchData.mercenary_positions ? JSON.parse(JSON.stringify(matchData.mercenary_positions)) : [],
+            count: matchData.mercenary_count || 0,
+          });
+        } else {
+          setMercenaryData({ enabled: false, positions: [], count: 0 });
+        }
+      } catch (error) {
+        console.error('Failed to load mercenary data:', error);
+        setMercenaryData({ enabled: false, positions: [], count: 0 });
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadMercenaryData();
+  }, [matchId]);
+
+  if (loading || !mercenaryData?.enabled) {
     return null;
   }
-
-  const { positions, count } = match.mercenaryRecruitment;
 
   return (
     <Card className="border-blue-200 bg-blue-50/30">
@@ -32,7 +76,7 @@ export function MercenaryRecruitment({ match }: MercenaryRecruitmentProps) {
           <div className="space-y-1 text-center md:text-left">
             <div className="text-sm text-muted-foreground">모집 포지션</div>
             <div className="flex gap-2">
-              {positions.map((pos) => (
+              {mercenaryData.positions.map((pos) => (
                 <Badge key={pos} variant="outline" className="bg-white">
                   {pos}
                 </Badge>
@@ -41,10 +85,10 @@ export function MercenaryRecruitment({ match }: MercenaryRecruitmentProps) {
           </div>
           <div className="space-y-1 text-center md:text-left">
             <div className="text-sm text-muted-foreground">모집 인원</div>
-            <div className="font-bold">{count}명</div>
+            <div className="font-bold">{mercenaryData.count}명</div>
           </div>
           <Button asChild className="w-full md:w-auto">
-            <Link href={`/matches/${match.id}/mercenaries`}>
+            <Link href={`/matches/${matchId}/mercenaries`}>
               용병 신청하기
             </Link>
           </Button>
