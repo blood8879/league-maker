@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createTeam, addTeamMember } from "@/lib/supabase/queries/teams";
 import { useAuth } from "@/hooks/useAuth";
+import type { Json } from "@/lib/supabase/types";
 
 const teamFormSchema = z.object({
   name: z.string().min(2, "팀 이름은 2글자 이상이어야 합니다."),
@@ -76,7 +77,7 @@ export function TeamForm() {
         region: data.region,
         level: data.level,
         description: data.description,
-        activity_days: data.activityDays as unknown as never,
+        activity_days: data.activityDays as unknown as Json,
         is_recruiting: true,
       });
 
@@ -92,7 +93,8 @@ export function TeamForm() {
       router.push(`/teams/${newTeam.id}`);
     } catch (error) {
       console.error('Failed to create team:', error);
-      alert("팀 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
+      const errorMessage = error instanceof Error ? error.message : "알 수 없는 오류";
+      alert(`팀 생성 중 오류가 발생했습니다.\n오류: ${errorMessage}\n\n다시 시도해주세요.`);
     } finally {
       setIsSubmitting(false);
     }
