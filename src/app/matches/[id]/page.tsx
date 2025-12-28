@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getMatchById } from "@/lib/supabase/queries/matches";
 import { MatchAttendance } from "@/components/matches/MatchAttendance";
 import { MercenaryRecruitment } from "@/components/matches/MercenaryRecruitment";
+import { MatchResult } from "@/components/matches/MatchResult";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface MatchPageProps {
@@ -60,6 +61,16 @@ export default function MatchPage({ params }: MatchPageProps) {
     notFound();
   }
 
+  // Show match result for finished matches (Phase 5)
+  if (match.status === 'finished') {
+    return (
+      <div className="container mx-auto py-8 px-4">
+        <MatchResult matchId={id} />
+      </div>
+    );
+  }
+
+  // Show attendance and mercenary recruitment for scheduled/live matches
   return (
     <div className="container mx-auto py-8 px-4">
       <Card className="mb-6">
