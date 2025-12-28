@@ -179,6 +179,27 @@ export async function deleteTeam(id: string) {
 }
 
 /**
+ * Check if user is a member of a team
+ */
+export async function isUserTeamMember(teamId: string, userId: string | null | undefined): Promise<boolean> {
+  if (!userId) return false;
+
+  const { data, error } = await supabase
+    .from('team_members')
+    .select('id')
+    .eq('team_id', teamId)
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Failed to check team membership:', error);
+    return false;
+  }
+
+  return !!data;
+}
+
+/**
  * Add a member to a team
  */
 export async function addTeamMember(params: {

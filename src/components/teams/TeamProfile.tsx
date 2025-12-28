@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Users, Calendar } from "lucide-react";
 import Image from "next/image";
 import type { Database } from "@/lib/supabase/types";
+import { useAuth } from "@/contexts/AuthContext";
+import { useEffect, useState } from "react";
+import { isUserTeamMember } from "@/lib/supabase/queries/teams";
 
 type Team = Database['public']['Tables']['teams']['Row'];
 
@@ -13,6 +16,24 @@ interface TeamProfileProps {
 }
 
 export function TeamProfile({ team }: TeamProfileProps) {
+  const { user } = useAuth();
+  const [isMember, setIsMember] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function checkMembership() {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      const memberStatus = await isUserTeamMember(team.id, user.id);
+      setIsMember(memberStatus);
+      setLoading(false);
+    }
+
+    checkMembership();
+  }, [user, team.id]);
   return (
     <div className="bg-card border rounded-lg p-6 shadow-sm mb-8">
       <div className="flex flex-col md:flex-row gap-6 items-start">
@@ -54,7 +75,7 @@ export function TeamProfile({ team }: TeamProfileProps) {
                 )}
               </div>
             </div>
-            <Button size="lg">가입 신청</Button>
+            {!loading && !isMember && <Button size="lg">가입 신청</Button>}
           </div>
 
           <div className="flex flex-wrap gap-2 mb-6">
