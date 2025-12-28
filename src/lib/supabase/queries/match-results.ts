@@ -220,13 +220,13 @@ export async function getMatchMVP(matchId: string) {
     }, {} as Record<string, AssistStat>);
 
   // Find top scorer
-  const topScorer = Object.values(goalsByPlayer).sort(
-    (a: PlayerStat, b: PlayerStat) => b.goals - a.goals
+  const topScorer = (Object.values(goalsByPlayer) as PlayerStat[]).sort(
+    (a, b) => b.goals - a.goals
   )[0];
 
   // Find top assister
-  const topAssister = Object.values(assistsByPlayer).sort(
-    (a: AssistStat, b: AssistStat) => b.assists - a.assists
+  const topAssister = (Object.values(assistsByPlayer) as AssistStat[]).sort(
+    (a, b) => b.assists - a.assists
   )[0];
 
   return {

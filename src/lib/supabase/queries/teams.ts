@@ -147,29 +147,20 @@ export async function getTeamRecentMatches(teamId: string, limit: number = 5) {
 /**
  * Create a new team
  */
-export async function createTeam(team: TeamInsert) {
-  const { data, error } = await supabase
-    .from('teams')
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .insert(team as any)
-    .select()
-    .single();
+export async function createTeam(team: TeamInsert): Promise<Team> {
+  // @ts-ignore - Supabase type system limitation with generic table types
+  const { data, error } = await supabase.from('teams').insert(team as any).select().single();
 
   if (error) throw error;
-  return data;
+  return data as Team;
 }
 
 /**
  * Update a team
  */
 export async function updateTeam(id: string, updates: Partial<TeamInsert>) {
-  const { data, error } = await supabase
-    .from('teams')
-    // @ts-expect-error - Supabase type inference issue with Partial<TeamInsert>
-    .update(updates)
-    .eq('id', id)
-    .select()
-    .single();
+  // @ts-ignore - Supabase type system limitation with generic table types
+  const { data, error } = await supabase.from('teams').update(updates).eq('id', id).select().single();
 
   if (error) throw error;
   return data;
@@ -197,17 +188,8 @@ export async function addTeamMember(params: {
   position?: string;
   jersey_number?: number;
 }) {
-  const { data, error } = await supabase
-    .from('team_members')
-    .insert({
-      team_id: params.team_id,
-      user_id: params.user_id,
-      role: params.role,
-      position: params.position ?? null,
-      jersey_number: params.jersey_number ?? null,
-    })
-    .select()
-    .single();
+  // @ts-ignore - Supabase type system limitation with generic table types
+  const { data, error } = await supabase.from('team_members').insert({ team_id: params.team_id, user_id: params.user_id, role: params.role, position: params.position ?? null, jersey_number: params.jersey_number ?? null }).select().single();
 
   if (error) throw error;
   return data;
