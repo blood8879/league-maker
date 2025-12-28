@@ -143,11 +143,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     console.log('💾 Creating user profile...', profileData);
 
-    const { data: insertedData, error: profileError } = await supabase
-      .from('users')
-      .insert(profileData)
-      .select()
-      .single();
+    // @ts-ignore - Supabase type system limitation with generic table types
+    const { data: insertedData, error: profileError } = await supabase.from('users').insert(profileData).select().single();
 
     if (profileError) {
       console.error('❌ Profile creation error:', {
