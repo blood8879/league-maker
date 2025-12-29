@@ -13,8 +13,12 @@ export function Footer() {
               아마추어 풋살 & 축구 리그 관리 플랫폼
             </p>
             <ul className="space-y-2 text-gray-400 text-sm">
-              <li><Link href="/about" className="hover:text-white transition-colors">회사 소개</Link></li>
-              <li><Link href="/contact" className="hover:text-white transition-colors">문의하기</Link></li>
+              <li><span className="text-gray-500 cursor-not-allowed">회사 소개 (준비중)</span></li>
+              <li>
+                <a href="mailto:support@leaguemaker.com" className="hover:text-white transition-colors">
+                  문의하기
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -22,9 +26,9 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4">약관 및 정책</h3>
             <ul className="space-y-2 text-gray-400 text-sm">
-              <li><Link href="/terms" className="hover:text-white transition-colors">이용약관</Link></li>
-              <li><Link href="/privacy" className="hover:text-white transition-colors">개인정보 처리방침</Link></li>
-              <li><Link href="/guidelines" className="hover:text-white transition-colors">커뮤니티 가이드</Link></li>
+              <li><span className="text-gray-500 cursor-not-allowed">이용약관 (준비중)</span></li>
+              <li><span className="text-gray-500 cursor-not-allowed">개인정보 처리방침 (준비중)</span></li>
+              <li><span className="text-gray-500 cursor-not-allowed">커뮤니티 가이드 (준비중)</span></li>
             </ul>
           </div>
 
@@ -43,8 +47,8 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4">고객 지원</h3>
             <ul className="space-y-2 text-gray-400 text-sm">
-              <li><Link href="/faq" className="hover:text-white transition-colors">자주 묻는 질문</Link></li>
-              <li><Link href="/support" className="hover:text-white transition-colors">고객센터</Link></li>
+              <li><span className="text-gray-500 cursor-not-allowed">자주 묻는 질문 (준비중)</span></li>
+              <li><span className="text-gray-500 cursor-not-allowed">고객센터 (준비중)</span></li>
               <li>
                 <a href="mailto:support@leaguemaker.com" className="hover:text-white transition-colors flex items-center gap-2">
                   <Mail className="h-4 w-4" />
@@ -91,8 +95,8 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
             <p>© 2025 League Maker. All rights reserved.</p>
             <div className="flex gap-4">
-              <Link href="/terms" className="hover:text-white transition-colors">이용약관</Link>
-              <Link href="/privacy" className="hover:text-white transition-colors">개인정보처리방침</Link>
+              <span className="cursor-not-allowed">이용약관 (준비중)</span>
+              <span className="cursor-not-allowed">개인정보처리방침 (준비중)</span>
             </div>
           </div>
         </div>

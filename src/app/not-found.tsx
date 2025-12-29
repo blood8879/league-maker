@@ -83,9 +83,6 @@ export default function NotFound() {
               <Link href="/community">
                 <Button variant="link" size="sm">커뮤니티</Button>
               </Link>
-              <Link href="/support">
-                <Button variant="link" size="sm">고객센터</Button>
-              </Link>
             </div>
           </div>
         </div>

@@ -17,7 +17,7 @@ interface UserProfileProps {
 }
 
 export function UserProfile({ userId }: UserProfileProps) {
-  const { user, userProfile: currentUserProfile } = useAuth();
+  const { user, userProfile: currentUserProfile, loading: authLoading } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
@@ -25,6 +25,11 @@ export function UserProfile({ userId }: UserProfileProps) {
   const isOwnProfile = user?.id === userId;
 
   useEffect(() => {
+    // Wait for auth to finish loading before attempting to fetch profile
+    if (authLoading) {
+      return;
+    }
+
     async function fetchProfile() {
       try {
         setLoading(true);
@@ -52,7 +57,7 @@ export function UserProfile({ userId }: UserProfileProps) {
     } else {
       fetchProfile();
     }
-  }, [userId, isOwnProfile, currentUserProfile]);
+  }, [userId, isOwnProfile, currentUserProfile, authLoading]);
 
   if (loading) {
     return (
