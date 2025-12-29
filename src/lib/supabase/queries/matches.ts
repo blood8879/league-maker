@@ -1,5 +1,6 @@
 import { supabase } from '../client';
 import type { Database } from '../types';
+import { hasTeamManagementPermission } from './teams';
 
 type Match = Database['public']['Tables']['matches']['Row'];
 type MatchInsert = Database['public']['Tables']['matches']['Insert'];
@@ -99,4 +100,46 @@ export async function deleteMatch(id: string) {
     .eq('id', id);
 
   if (error) throw error;
+}
+
+/**
+ * Check if user can create/edit matches for a team
+ * User must be captain, coach, or manager of the team
+ */
+export async function canManageMatchForTeam(teamId: string, userId: string | null | undefined): Promise<boolean> {
+  if (!userId) return false;
+  return await hasTeamManagementPermission(teamId, userId);
+}
+
+/**
+ * Check if user can manage a specific match
+ * User must be captain, coach, or manager of either home or away team
+ */
+export async function canManageMatch(matchId: string, userId: string | null | undefined): Promise<boolean> {
+  if (!userId) return false;
+
+  // Get match to find team IDs
+  const { data: match, error } = await supabase
+    .from('matches')
+    .select('home_team_id, away_team_id')
+    .eq('id', matchId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Failed to get match for permission check:', error);
+    return false;
+  }
+
+  if (!match) {
+    return false;
+  }
+
+  // Check if user has management permission for either team
+  // @ts-expect-error - Supabase type inference issue
+  const hasHomePermission = await hasTeamManagementPermission(match.home_team_id, userId);
+  if (hasHomePermission) return true;
+
+  // @ts-expect-error - Supabase type inference issue
+  const hasAwayPermission = await hasTeamManagementPermission(match.away_team_id, userId);
+  return hasAwayPermission;
 }

@@ -23,7 +23,7 @@ export default async function TeamDetailPage({ params }: TeamDetailPageProps) {
     <div className="container mx-auto px-4 py-8 space-y-8">
       <TeamProfile team={team} />
       <RecentMatches matches={recentMatches} teamId={id} />
-      <MemberList members={team.members} />
+      <MemberList members={team.members} teamId={id} />
     </div>
   );
 }
