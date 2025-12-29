@@ -4,7 +4,7 @@ import type { Database } from '@/lib/supabase/types';
 type Team = Database['public']['Tables']['teams']['Row'];
 
 export interface UserTeamDetail extends Team {
-  memberRole: 'captain' | 'vice_captain' | 'member';
+  memberRole: 'captain' | 'coach' | 'manager' | 'member';
   position: string | null;
   jerseyNumber: number | null;
   joinedAt: string;

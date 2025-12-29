@@ -115,16 +115,20 @@ export default function MyTeamsPage() {
                       className={`px-2 py-1 text-xs rounded ${
                         team.memberRole === 'captain'
                           ? 'bg-yellow-100 text-yellow-800'
-                          : team.memberRole === 'vice_captain'
+                          : team.memberRole === 'coach'
                             ? 'bg-blue-100 text-blue-800'
-                            : 'bg-gray-100 text-gray-800'
+                            : team.memberRole === 'manager'
+                              ? 'bg-purple-100 text-purple-800'
+                              : 'bg-gray-100 text-gray-800'
                       }`}
                     >
                       {team.memberRole === 'captain'
                         ? '주장'
-                        : team.memberRole === 'vice_captain'
-                          ? '부주장'
-                          : '팀원'}
+                        : team.memberRole === 'coach'
+                          ? '코치'
+                          : team.memberRole === 'manager'
+                            ? '감독'
+                            : '팀원'}
                     </span>
                   </div>
                   <div className="text-sm text-gray-600 mb-2">
