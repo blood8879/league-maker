@@ -58,7 +58,7 @@ export const MOCK_TEAMS: Team[] = [
     },
     members: [
       { id: "m1", name: "김철수", position: "FW", number: 10, role: "captain" },
-      { id: "m2", name: "이영희", position: "MF", number: 8, role: "vice_captain" },
+      { id: "m2", name: "이영희", position: "MF", number: 8, role: "coach" },
       // ... more members would go here
     ],
   },

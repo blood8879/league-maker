@@ -13,7 +13,7 @@ export interface Member {
   avatar?: string;
   position: string;
   number: number;
-  role: 'captain' | 'vice_captain' | 'member';
+  role: 'captain' | 'coach' | 'manager' | 'member';
 }
 
 export interface Team {

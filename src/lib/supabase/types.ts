@@ -156,7 +156,7 @@ export interface Database {
           id: string;
           team_id: string;
           user_id: string;
-          role: 'captain' | 'vice_captain' | 'member';
+          role: 'captain' | 'coach' | 'manager' | 'member';
           position: string | null;
           jersey_number: number | null;
           joined_at: string;
@@ -169,7 +169,7 @@ export interface Database {
           id?: string;
           team_id: string;
           user_id: string;
-          role?: 'captain' | 'vice_captain' | 'member';
+          role?: 'captain' | 'coach' | 'manager' | 'member';
           position?: string | null;
           jersey_number?: number | null;
           joined_at?: string;
@@ -182,7 +182,7 @@ export interface Database {
           id?: string;
           team_id?: string;
           user_id?: string;
-          role?: 'captain' | 'vice_captain' | 'member';
+          role?: 'captain' | 'coach' | 'manager' | 'member';
           position?: string | null;
           jersey_number?: number | null;
           joined_at?: string;

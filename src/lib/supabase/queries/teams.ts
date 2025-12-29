@@ -100,7 +100,7 @@ export async function getTeamWithMembers(id: string) {
       avatar: undefined,
       position: member.position || '-',
       number: member.jersey_number || 0,
-      role: member.role as 'captain' | 'vice_captain' | 'member',
+      role: member.role as 'captain' | 'coach' | 'manager' | 'member',
     })),
   };
 }
@@ -205,7 +205,7 @@ export async function isUserTeamMember(teamId: string, userId: string | null | u
 export async function addTeamMember(params: {
   team_id: string;
   user_id: string;
-  role: 'captain' | 'vice_captain' | 'member';
+  role: 'captain' | 'coach' | 'manager' | 'member';
   position?: string;
   jersey_number?: number;
 }) {
@@ -214,4 +214,69 @@ export async function addTeamMember(params: {
 
   if (error) throw error;
   return data;
+}
+
+/**
+ * Check if user has management permissions (captain, coach, or manager)
+ */
+export async function hasTeamManagementPermission(teamId: string, userId: string | null | undefined): Promise<boolean> {
+  if (!userId) return false;
+
+  const { data, error } = await supabase
+    .from('team_members')
+    .select('role')
+    .eq('team_id', teamId)
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Failed to check team management permission:', error);
+    return false;
+  }
+
+  if (!data) return false;
+
+  // @ts-expect-error - Supabase type inference issue
+  return ['captain', 'coach', 'manager'].includes(data.role);
+}
+
+/**
+ * Get user's role in a team
+ */
+export async function getUserTeamRole(teamId: string, userId: string | null | undefined): Promise<'captain' | 'coach' | 'manager' | 'member' | null> {
+  if (!userId) return null;
+
+  const { data, error } = await supabase
+    .from('team_members')
+    .select('role')
+    .eq('team_id', teamId)
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Failed to get user team role:', error);
+    return null;
+  }
+
+  // @ts-expect-error - Supabase type inference issue
+  return data?.role || null;
+}
+
+/**
+ * Update a team member's role
+ * Only captain, coach, or manager can update roles
+ */
+export async function updateTeamMemberRole(params: {
+  memberId: string;
+  teamId: string;
+  newRole: 'captain' | 'coach' | 'manager' | 'member';
+}): Promise<void> {
+  const { error } = await supabase
+    .from('team_members')
+    // @ts-expect-error - Supabase type system limitation
+    .update({ role: params.newRole })
+    .eq('id', params.memberId)
+    .eq('team_id', params.teamId);
+
+  if (error) throw error;
 }
