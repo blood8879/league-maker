@@ -436,6 +436,59 @@ export interface Database {
           updated_at?: string;
         };
       };
+      stadiums: {
+        Row: {
+          id: string;
+          team_id: string;
+          name: string;
+          address: string;
+          address_detail: string | null;
+          road_address: string | null;
+          jibun_address: string | null;
+          zone_code: string | null;
+          latitude: number | null;
+          longitude: number | null;
+          phone: string | null;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+          created_by: string | null;
+        };
+        Insert: {
+          id?: string;
+          team_id: string;
+          name: string;
+          address: string;
+          address_detail?: string | null;
+          road_address?: string | null;
+          jibun_address?: string | null;
+          zone_code?: string | null;
+          latitude?: number | null;
+          longitude?: number | null;
+          phone?: string | null;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+          created_by?: string | null;
+        };
+        Update: {
+          id?: string;
+          team_id?: string;
+          name?: string;
+          address?: string;
+          address_detail?: string | null;
+          road_address?: string | null;
+          jibun_address?: string | null;
+          zone_code?: string | null;
+          latitude?: number | null;
+          longitude?: number | null;
+          phone?: string | null;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+          created_by?: string | null;
+        };
+      };
     };
     Views: {
       [_ in never]: never;
